@@ -1,0 +1,19 @@
+% ---- VENUE SWITCH: uncomment exactly one ----
+\documentclass[11pt]{article}        % venue-agnostic long-form draft
+% \documentclass[journal]{IEEEtran}  % IEEE Transactions
+% \documentclass[review,11pt]{elsarticle}  % Elsevier econ/stats
+
+\input{preamble}
+\input{macros}
+\addbibresource{bib/references.bib}
+
+\begin{document}
+\subfile{sections/00_abstract}
+\subfile{sections/01_introduction}
+\subfile{sections/02_background}
+% ... through 14
+\appendix
+\subfile{appendix/A_notation}
+% ...
+\printbibliography
+\end{document}
