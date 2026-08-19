@@ -1,0 +1,6 @@
+% !TEX root = ../main.tex
+\section{Related Work}
+The decomposition of nonstationary signals into time-varying frequency components is classically addressed by the Hilbert--Huang Transform (HHT), which extracts intrinsic mode functions (IMFs) and instantaneous frequencies \cite{huang1998empirical}. Unlike Fourier methods, HHT allows adaptive, nonstationary decomposition.
+Recent work extends spectral modeling into neural frameworks. Neural spectral density estimation demonstrates that neural networks can approximate full spectral operators under mild conditions \cite{mohammadi2026spectral}. This provides theoretical grounding for learning frequency structure directly from data.
+However, spectral entanglement remains a challenge: trends, cycles, and noise overlap in frequency space, particularly in nonstationary settings \cite{an2026fredn}. This motivates architectures capable of adaptive decomposition.
+NS-SDN can be viewed as a neural generalization of IMF decomposition, where spectral components are learned endogenously rather than extracted via signal processing.

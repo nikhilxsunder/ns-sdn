@@ -1,0 +1,11 @@
+% !TEX root = ../main.tex
+\section{Introduction}
+Macroeconomic time series such as long-term Treasury yields exhibit structural breaks, evolving cyclicality, and nonstationary variance. Classical econometric approaches including VAR and SVAR impose linear structure and fixed relationships, limiting their ability to capture time-varying spectral properties \cite{sims1980,lutkepohl2005,primiceritvp}.
+Recent neural approaches introduce flexible nonlinear dynamics, including neural state-space models \cite{durbin2012time} and periodic activation networks \cite{sitzmann2020implicit}, yet they typically lack interpretability in the frequency domain.
+This paper evaluates the NS-SDN architecture through the lens of its spectral emission heads. Specifically, we analyze how the model learns time-varying amplitudes, instantaneous frequencies, and a component-selection gating signal, and how these quantities evolve across economic regimes.
+The contribution is not improved forecasting performance, but rather:
+\begin{itemize}
+\item Demonstrating that NS-SDN learns an interpretable spectral decomposition,
+\item Showing that emission heads reveal regime-dependent frequency structure,
+\item Establishing frequency convergence as a meaningful economic signal.
+\end{itemize}

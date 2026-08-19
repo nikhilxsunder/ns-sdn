@@ -1,0 +1,10 @@
+% !TEX root = ../main.tex
+\section{Data: DGS10}
+We evaluate on the 10-Year Treasury yield (DGS10), obtained from the Federal Reserve Economic Data (FRED) database via the open-source \texttt{fedfred} Python client \cite{sunderfedfred}, sampled daily from February 1, 2000 through March 26, 2026 (9{,}551 daily observations after gap filling; the final 365 form the holdout beginning March 27, 2025).
+
+\subsection{Rationale}
+DGS10 is selected for three reasons.
+\paragraph{Macro-financial centrality} Long-term Treasury yields encode expectations of inflation, growth, and monetary policy, making them a canonical macroeconomic indicator.
+\paragraph{Known regime shifts} DGS10 exhibits well-documented structural breaks \cite{hamilton1989}, including the zero-lower-bound period and the 2020 COVID shock, providing a natural testbed for nonstationary models.
+\paragraph{Multi-scale cyclicality} Treasury yields reflect overlapping cycles (business cycles, policy cycles, liquidity cycles), making them suitable for spectral analysis.
+These properties align with prior econometric work emphasizing the importance of structural dynamics in macro time series \cite{hamilton1994}.

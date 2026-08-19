@@ -1,0 +1,67 @@
+% !TEX root = ../main.tex
+\section{Model Architecture}
+The Nonstationary Spectral Decomposition Network (NS-SDN) is a neural state-space model that represents a time series as a sum of latent sinusoidal components with time-varying amplitude, frequency, phase, and a learned gating signal \cite{sunder2026nssdn}. Unlike fixed-basis spectral methods, all spectral parameters are generated dynamically from a latent state.
+
+\subsection{Spectral Representation}
+The observed series is modeled as:
+\begin{equation}
+\hat{y}_t = B_t + \sum_{k=1}^{K} g_{t,k}\, A_{t,k}\,\sin(\theta_{t,k} + \phi_{t,k})
+\label{eq:synthesis}
+\end{equation}
+where:
+\begin{itemize}
+\item $B_t$ is a time-varying trend component,
+\item $A_{t,k} > 0$ is the amplitude of component $k$,
+\item $\theta_{t,k}$ is cumulative phase,
+\item $\phi_{t,k}$ is a learned phase offset,
+\item $g_{t,k} \in (0,1)$ is a learned gating weight controlling component selection.
+\end{itemize}
+This formulation is analogous to intrinsic mode function (IMF) decompositions in the Hilbert--Huang Transform, where signals are expressed as sums of oscillatory components with evolving envelopes and instantaneous frequencies \cite{huang1998empirical}, and is formalized in the NS-SDN framework introduced in \cite{sunder2026nssdn}. The gating signal $g_{t,k}$ implements a soft selection mechanism, allowing the effective spectral basis to contract or expand endogenously.
+
+\subsection{Latent State Dynamics}
+Spectral parameters are governed by a latent state $h_t \in \mathbb{R}^d$ evolving according to:
+\begin{equation}
+h_t = F_{\psi}(h_{t-1}, x_t, \Delta t)
+\end{equation}
+where $F_{\psi}$ is a nonlinear transition function. This parallels classical state-space formulations \cite{durbin2012time}, with a nonlinear neural transition function \cite{rangapuramdeep} in place of linear Gaussian dynamics. It is also conceptually related to state-space decompositions of time series into oscillatory components with data-driven phase estimation \cite{matsuda2016oscillation}. In the experiments reported here, $F_{\psi}$ is instantiated as a gated recurrent unit (GRU) cell \cite{cho2014learningphrase} with $d = 128$.
+
+\subsection{Spectral Emission Heads}
+Given the latent state, spectral parameters are produced by parallel emission heads:
+\begin{equation}
+B_t,\; A_t,\; \omega_t,\; \phi_t,\; g_t = g_{\psi}(h_t)
+\end{equation}
+Each emission head maps the latent state to a specific spectral quantity. The heads apply nonnegativity and bounding constraints as follows:
+\begin{itemize}
+\item Trend head: $B_t = W_B h_t + b_B$
+\item Amplitude head: $A_{t,k} = \mathrm{softplus}\big((W_A h_t + b_A)_k\big) + \epsilon$
+\item Frequency head: $\omega_{t,k} = \mathrm{softplus}\big(\omega_{\mathrm{base},k} + (W_\omega h_t + b_\omega)_k\big) + \epsilon$
+\item Phase-offset head: $\phi_{t,k} = (W_\phi h_t + b_\phi)_k$
+\item Gating head: $g_{t,k} = \sigma\big((W_g h_t + b_g)_k\big)$
+\end{itemize}
+where $\sigma$ is the sigmoid function and $\epsilon = 10^{-4}$ enforces strict positivity for stable phase integration. The $\mathrm{softplus}$ activation on $\omega_{t,k}$ constrains instantaneous frequencies to be positive, which is required for unambiguous interpretation as cycle rates. The base term $\omega_{\mathrm{base},k}$ is a learnable per-component anchor initialized to zero.
+\textit{Implementation note.} The per-component oscillatory contributions are combined via a learned linear projection $w_{\mathrm{mix}} \in \mathbb{R}^K$ before being added to the trend:
+\begin{equation}
+\hat y_t = B_t + \sum_{k=1}^{K} w_{\mathrm{mix},k}\, g_{t,k}\, A_{t,k}\, \sin(\theta_{t,k} + \phi_{t,k}).
+\end{equation}
+Since $w_{\mathrm{mix},k}$ is constant in $t$, we absorb it into the amplitude head when reporting diagnostic paths, so that $A_{t,k}$ in figures denotes the effective component amplitude.
+This structure enables the model to learn a \textit{state-dependent spectral basis}, where the magnitude, frequency, and selection of oscillatory components evolve over time.
+
+\subsection{Phase Evolution and Instantaneous Frequency}
+Instantaneous frequency governs phase dynamics through discrete-time integration:
+\begin{equation}
+\theta_{t,k} = \theta_{t-1,k} + \omega_{t,k}\Delta t
+\end{equation}
+with $\theta_{0,k}$ a learnable initial phase. This formulation is critical: frequency is not directly observed but determines the evolution of phase, which in turn controls the oscillatory components. As a result, $\omega_{t,k}$ provides a direct measure of local cycle dynamics.
+
+\subsection{Spectral Synthesis}
+The final prediction is given by Equation~\eqref{eq:synthesis}. This synthesis step distinguishes NS-SDN from conventional neural time-series models: instead of directly predicting values, the model generates interpretable spectral parameters that reconstruct the signal.
+
+\subsection{Interpretation}
+The architecture can be interpreted as a neural generalization of spectral decomposition:
+\begin{itemize}
+\item The latent state $h_t$ encodes the underlying economic regime,
+\item Emission heads define a time-varying spectral basis,
+\item The gating signal $g_t$ implements adaptive component selection,
+\item The model performs adaptive decomposition into trend and oscillatory components.
+\end{itemize}
+This formulation aligns with neural spectral operator perspectives, where neural networks approximate time-varying frequency structure rather than fixed basis expansions.

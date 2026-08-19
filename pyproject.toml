@@ -9,7 +9,8 @@ description = ""
 readme = "README.md"
 license = { text = "MIT" }
 authors = [
-    { name = "Nikhil Sunder", email = "nsunder724@gmail.com" }
+    { name = "Nikhil Sunder", email = "nsunder724@gmail.com" },
+    { name = "Maikel Leon", email = "mleon@miami.edu" }
 ]
 requires-python = ">=3.10,<4.0"
 keywords = [

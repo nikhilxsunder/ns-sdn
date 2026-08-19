@@ -1,0 +1,16 @@
+% !TEX root = ../main.tex
+\section{Experimental Setup}
+We train NS-SDN under a one-step-ahead conditional forecasting regime:
+\begin{itemize}
+\item Daily DGS10 observations (log-transformed),
+\item Single train/holdout split, with the final 365 observations reserved as a holdout window,
+\item Teacher forcing during training and conditional one-step evaluation \cite{flunkertdeepar},
+\item $K=16$ spectral components (four representative components shown in figures),
+\item Latent state dimension $d = 128$, GRU transition.
+\end{itemize}
+Training uses Adam \cite{adamoptim} (two-stage: $\mathrm{lr}=10^{-3}$ for 1{,}200 steps, then $\mathrm{lr}=4\!\times\!10^{-4}$ for 1{,}800 steps) with smoothness penalties on amplitude and frequency drift. The focus is not forecasting accuracy alone, but the behavior of:
+\begin{itemize}
+\item Instantaneous frequencies $\omega_{t,k}$,
+\item Amplitudes $A_{t,k}$,
+\item Gating weights $g_{t,k}$.
+\end{itemize}
