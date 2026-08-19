@@ -1,0 +1,103 @@
+\section{Non-Stationary Spectral Decomposition Network}
+
+\subsection{Spectral Decomposition Representation}
+Rather than assuming stationary periodic structure, the proposed model represents a time series as a sum of sinusoidal components whose amplitude, frequency, and phase vary over time:
+\begin{equation}
+\hat{y}_t = B_t + \sum_{k=1}^{K} A_{t,k}\sin(\theta_{t,k} + \phi_{t,k})
+\alt{Observation modeled as a sum of a low-frequency trend component and multiple sinusoidal components whose amplitudes, phases, and frequencies vary over time.}
+\end{equation}
+Here, $B_t$ is a low-frequency trend component, $A_{t,k}$ is the amplitude of component $k$, $\theta_{t,k}$ is cumulative phase, and $\phi_{t,k}$ is a phase offset. This representation is related to instantaneous-frequency decompositions such as the Hilbert--Huang Transform, where signals are interpreted as sums of oscillatory modes with evolving envelopes and frequencies \cite{huang1998hht}. 
+
+\subsection{State-Space Dynamics}
+The spectral parameters are generated through a latent dynamical state. Let $h_t \in \mathbb{R}^d$ denote a latent state evolving according to
+\begin{equation}
+h_t = F_{\psi}(h_{t-1}, x_t, \Delta t)
+\alt{Latent state updated through a learned nonlinear transition function of the previous state, current inputs, and time increment.}
+\end{equation}
+where $F_{\psi}$ is a learned transition function, $x_t$ represents available information at time $t$, and $\Delta t$ denotes the time increment between observations. This formulation follows the structure of nonlinear state-space models commonly used in econometric analysis \cite{durbin2012statespace}.
+Given the latent state, the model emits spectral parameters through neural projection heads,
+\begin{equation}
+B_t, A_t, \omega_t, \phi_t = g_{\psi}(h_t)
+\alt{Trend, amplitude, instantaneous frequency, and phase parameters generated as functions of the latent state through a neural projection mapping.}
+\end{equation}
+where $\omega_{t,k}$ denotes instantaneous angular frequency for component $k$. Phase evolves through discrete-time integration,
+\begin{equation}
+\theta_{t,k} = \theta_{t-1,k} + \omega_{t,k}\Delta t
+\alt{Cumulative phase updated by integrating instantaneous angular frequency over the time increment in discrete time.}
+\end{equation}
+allowing oscillatory components to adapt dynamically as the latent state evolves. The resulting architecture combines ideas from neural implicit representations with interpretable spectral synthesis, producing a forecasting model capable of representing nonstationary cyclical behavior \cite{sitzmann2020siren}.
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+    node distance=0.4cm,
+    >=Latex,
+    every node/.style={font=\small},
+    box/.style={
+        draw,
+        rounded corners,
+        align=center,
+        minimum width=3cm,
+        minimum height=0.8cm
+    },
+    smallbox/.style={
+        draw,
+        rounded corners,
+        align=center,
+        minimum width=2.6cm,
+        minimum height=0.7cm
+    },
+    line/.style={->, thick}
+]
+\node[smallbox] (input) {$h_{t-1},\ x_t,\ \Delta t$};
+
+\node[box, below=of input] (transition)
+{Latent Transition\\
+$h_t = F_{\psi}(h_{t-1},x_t,\Delta t)$};
+
+\node[smallbox, below=of transition] (state)
+{Latent State $h_t$};
+
+\node[smallbox, below left=0.4cm and 0.4cm of state] (B)
+{Trend\\$B_t$};
+
+\node[smallbox, below=0.4cm of state] (A)
+{Amplitude\\$A_t$};
+
+\node[smallbox, below right=0.4cm and 0.4cm of state] (omega)
+{Frequency\\$\omega_t$};
+
+\node[smallbox, below=of A] (phi)
+{Phase Offset\\$\phi_t$};
+
+\node[box, below=0.4cm of phi] (theta)
+{Phase Integration\\
+$\theta_t=\theta_{t-1}+\omega_t\Delta t$};
+
+\node[box, below=of theta] (synth)
+{Spectral Synthesis\\
+$\sum_{k=1}^{K} A_{t,k}\sin(\theta_{t,k}+\phi_{t,k})$};
+
+\node[box, below=of synth] (output)
+{Prediction\\
+$\hat{y}_t = B_t + \sum_{k} A_{t,k}\sin(\theta_{t,k}+\phi_{t,k})$};
+
+\draw[line] (input) -- (transition);
+\draw[line] (transition) -- (state);
+
+\draw[line] (state) -- (B);
+\draw[line] (state) -- (A);
+\draw[line] (state) -- (omega);
+
+\draw[line] (A) -- (phi);
+\draw[line] (omega) |- (theta);
+\draw[line] (phi) -- (theta);
+
+\draw[line] (B) |- (output);
+\draw[line] (theta) -- (synth);
+\draw[line] (synth) -- (output);
+\end{tikzpicture}
+
+\alt{Flow diagram of the NS-SDN architecture where inputs $h_{t-1}$, $x_t$, and $\Delta{t}$ are passed through a latent transition function to produce $h_t$, which is then projected into trend, amplitude, frequency, and phase parameters; frequency and phase are integrated to form cumulative phase, sinusoidal components are synthesized using amplitudes and phases, and combined with the trend to produce the final prediction.}
+\caption{Vertical architecture of the Non-Stationary Spectral Decomposition Network (NS-SDN).}
+\label{fig:nssdn_architecture}
+\end{figure}

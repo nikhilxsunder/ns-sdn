@@ -1,0 +1,9 @@
+\section{Training and Forecasting Setup}
+The proposed architecture is evaluated in a univariate forecasting setting. Let $\{y_1, y_2, \dots, y_T\}$ denote an observed time series. The model is trained using sequential one-step-ahead prediction, where the latent state is updated at each time step and the network predicts the next observation.
+Given observations up to time $t$, the model generates a forecast
+\begin{equation}
+\hat{y}_{t+1} = f(y_t, h_t)
+\alt{Next-step prediction produced as a function of the current observation and latent state.}
+\end{equation}
+where $h_t$ denotes the latent state after observing $y_t$. Multi-step forecasts are produced recursively by feeding predicted values back into the model. This recursive forecasting strategy is commonly used in neural time-series models and allows evaluation across multiple horizons \cite{flunkert2020deepar}.
+Model parameters are estimated by minimizing mean squared prediction error over the training sequence. Spectral parameters such as amplitude and frequency are learned jointly with the latent transition dynamics through gradient-based optimization.
