@@ -1,0 +1,7 @@
+\section{Interpretation and Positioning}
+The resulting architecture is conceptually related to FM synthesis in signal processing \citep{chowning1973}, and closely related to instantaneous frequency representations \citep{huang1998} and neural ordinary differential equation architectures \citep{chen2018}. NS-SDN differs in two critical ways:
+\begin{enumerate}
+\item \textbf{Nonstationary envelopes and frequencies are state-driven:} $A_n$ and $\omega_n$ evolve with $h_n$, allowing time-varying cycles rather than fixed Fourier bases.
+\item \textbf{Econometric state-space structure:} the model explicitly separates latent dynamics $h_n$ (transition equation) from measurement construction $\hat y_n$ (spectral emission), paralleling classical trend--cycle state-space decomposition \citep{harvey1989,durbin2012} while allowing nonlinear, data-driven evolution.
+\end{enumerate}
+For these reasons, the architecture is naturally described as a Non-Stationary Spectral Decomposition Network (NS-SDN).

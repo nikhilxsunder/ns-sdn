@@ -1,0 +1,15 @@
+\section{Network Overview}
+\subsection{From stationary sinusoid to nonstationary spectral sum}
+A single stationary sinusoid is inadequate for macro-financial data because amplitude and frequency are rarely constant. NS-SDN therefore models the signal as:
+\begin{equation}
+f(t) = B(t) + \sum_{k=1}^{K} A_k(t)\,\sin\big(\theta_k(t) + \varphi_k(t)\big),
+\label{eq:spectralsum}
+\end{equation}
+where:
+\begin{itemize}
+\item $B(t)$ is the trend/low-frequency component,
+\item $A_k(t)$ is the (positive) time-varying amplitude (``envelope'') of component $k$,
+\item $\theta_k(t)$ is the cumulative phase of component $k$,
+\item $\varphi_k(t)$ is a time-varying phase offset (``horizontal shift'') that allows alignment changes without forcing distortion into amplitude or frequency.
+\end{itemize}
+The defining feature is that $B(t)$, $A_k(t)$, $\theta_k(t)$, and $\varphi_k(t)$ are functions of discrete time through a learned latent state.

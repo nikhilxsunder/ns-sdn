@@ -1,0 +1,40 @@
+\section{Evaluation and Forecasting Efficacy}
+\subsection{Benchmark models}
+To evaluate the forecasting performance of NS-SDN, it will be compared against a set of widely used econometric and machine learning benchmarks, chosen to span increasing levels of model flexibility:
+\begin{itemize}
+\item \textbf{Linear econometric models:} AR($p$); ARIMA($p,d,q$); VAR (for multivariate extensions).
+\item \textbf{State-space and decomposition models:} local-level and local-trend models; unobserved-components models with stochastic cycles; Kalman-filter-based trend--cycle decompositions.
+\item \textbf{Neural network baselines:} feedforward neural networks (MLP); recurrent neural networks (LSTM/GRU).
+\end{itemize}
+These benchmarks are well understood, commonly used in applied econometrics, and provide a meaningful reference for assessing gains from nonstationary spectral modeling.
+
+\subsection{Training and evaluation protocol}
+To ensure comparability across models, all methods will be evaluated under a rolling-origin out-of-sample forecasting design standard in forecast comparison \citep{west1996}:
+\begin{enumerate}
+\item Split the data into an initial estimation window and an evaluation window.
+\item Estimate each model using data up to time $t$.
+\item Generate forecasts for horizons $h = 1, 4, 8, 12$ (depending on data frequency).
+\item Roll the estimation window forward and repeat.
+\end{enumerate}
+This procedure mimics real-time forecasting and avoids look-ahead bias.
+
+\subsection{Forecast accuracy metrics}
+Forecast performance will be assessed using standard loss functions: mean squared error (MSE), root mean squared error (RMSE), and mean absolute error (MAE). For each horizon $h$, loss is computed as:
+\begin{equation}
+\mathrm{MSE}(h) = \frac{1}{N}\sum_{i=1}^N \big(y_{t_i+h} - \hat y_{t_i+h}\big)^2.
+\end{equation}
+Results will be reported both per horizon and aggregated across horizons, enabling comparison of short-term versus medium-term forecasting ability.
+
+\subsection{Statistical comparison of forecasting performance}
+To formally assess whether NS-SDN delivers statistically significant improvements, forecast errors will be compared using standard forecast comparison tests, such as Diebold--Mariano tests for equal predictive accuracy \citep{diebold1995}, horizon-specific loss differentials, and cumulative squared forecast error plots. This ensures that any observed improvements are not due to sampling variability alone.
+
+\subsection{Diagnostic analysis and interpretability}
+Beyond point forecast accuracy, NS-SDN allows inspection of learned internal components: time-varying amplitudes $A_{n,k}$, evolving frequencies $\omega_{n,k}$, and inferred latent state trajectories $h_n$. These diagnostics will be analyzed to determine whether the model captures economically meaningful patterns, such as changes in business-cycle duration, post-shock damping or amplification, and regime-dependent cyclical behavior. Unlike black-box neural models, NS-SDN provides interpretable component structure \citep{oreshkin2020,lim2021}.
+
+\subsection{Hypotheses}
+The empirical analysis will test the following hypotheses:
+\begin{enumerate}
+\item \textbf{Forecasting hypothesis:} NS-SDN achieves lower out-of-sample forecast error than traditional linear econometric models for medium-horizon forecasts.
+\item \textbf{Nonstationarity hypothesis:} gains from NS-SDN are largest during periods of structural change or regime transition.
+\item \textbf{Interpretability hypothesis:} learned spectral components correspond to economically plausible cyclical dynamics rather than noise-fitting.
+\end{enumerate}

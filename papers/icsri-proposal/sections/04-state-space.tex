@@ -1,0 +1,88 @@
+\section{Discrete-Time State-Space NS-SDN}
+Let the time grid be $t_0 < t_1 < \dots < t_N$, with $\Delta t_n := t_n - t_{n-1}$ for $n \ge 1$. Let the observed data be $y_n := y(t_n)$ and the model output be $\hat y_n := f(t_n)$.
+
+\subsection{Latent state with transition equation}
+NS-SDN is formulated as a nonlinear state-space model \citep{durbin2012}, with time-varying parameters analogous to TVP-VAR specifications \citep{lubik2015}.
+
+\paragraph{State transition}
+\begin{equation}
+h_n = F_\psi(h_{n-1}, x_n, \Delta t_n), \qquad h_n \in \mathbb{R}^d,
+\label{eq:transition}
+\end{equation}
+where $x_n$ is the information available at time $t_n$ (e.g., $x_n = y_n$ for univariate autoregressive forecasting, or a vector of predictors in the multivariate case). This transition can be instantiated as a GRU/LSTM cell \citep{cho2014,hochreiter1997}, or as a time-aware update of the form $h_n = h_{n-1} + \Delta t_n \cdot g_\psi(h_{n-1}, x_n)$, which is a discrete-time analog of continuous-time dynamics \citep{chen2018}.
+
+\paragraph{Emission (spectral synthesis)}
+Given $h_n$, the model emits $\hat y_n$ via nonstationary spectral synthesis.
+
+\subsection{Emission components}
+\paragraph{Trend component}
+\begin{equation}
+B_n := B(t_n) = w_B^\top h_n + b_B.
+\end{equation}
+
+\paragraph{Amplitude (positive envelope)}
+\begin{equation}
+A_n = \softplus(W_A h_n + b_A) \in \mathbb{R}_{>0}^{K},
+\qquad
+A_{n,k} = \softplus(w_{A,k}^\top h_n + b_{A,k}).
+\end{equation}
+
+\paragraph{Instantaneous angular frequency}
+\begin{equation}
+\omega_n = \omega_{\mathrm{base}} + W_\omega h_n + b_\omega \in \mathbb{R}^K,
+\qquad
+\omega_{n,k} = \omega_{\mathrm{base},k} + w_{\omega,k}^\top h_n + b_{\omega,k}.
+\end{equation}
+\emph{Design note:} $\omega_n$ may be left unconstrained in $\mathbb{R}^K$, or constrained positive via softplus if interpretability and identifiability are desired. This update mirrors the definition of instantaneous frequency in the Hilbert--Huang framework \citep{huang1998}.
+
+\paragraph{Cumulative phase (discrete-time integration)}
+\begin{equation}
+\theta_{0,k}\ \text{learned}, \qquad
+\theta_{n,k} = \theta_{n-1,k} + \omega_{n,k}\,\Delta t_n \quad (n \ge 1).
+\end{equation}
+
+\paragraph{Phase offset (horizontal shift from state)}
+\begin{equation}
+\varphi_n = W_\varphi h_n + b_\varphi \in \mathbb{R}^K,
+\qquad
+\varphi_{n,k} = w_{\varphi,k}^\top h_n + b_{\varphi,k}.
+\end{equation}
+
+\subsection{Final NS-SDN output equation}
+The emission is:
+\begin{equation}
+\hat y_n = B_n + \sum_{k=1}^{K} A_{n,k}\,\sin(\theta_{n,k} + \varphi_{n,k}).
+\label{eq:emission}
+\end{equation}
+Optionally, for numerical symmetry one may use the trigonometric identity
+\begin{equation}
+\sin(\theta + \varphi) = \sin(\theta)\cos(\varphi) + \cos(\theta)\sin(\varphi),
+\end{equation}
+so that
+\begin{equation}
+\hat y_n = B_n + \sum_{k=1}^{K} A_{n,k}\Big[\sin(\theta_{n,k})\cos(\varphi_{n,k}) + \cos(\theta_{n,k})\sin(\varphi_{n,k})\Big].
+\end{equation}
+In expanded form, with $\theta_{0,k} \in \mathbb{R}$ a learned initial phase parameter for component $k$:
+\begin{equation}
+\hat{y}(t) =
+\begin{cases}
+w_B^{\top} h_n + b_B
++ \displaystyle\sum_{k=1}^K
+\softplus(w_{A,k}^{\top} h_n + b_{A,k})
+\sin\!\Big(
+\theta_{0,k}
++ w_{\varphi,k}^{\top} h_n + b_{\varphi,k}
+\Big),
+& n = 0, \\[1.2em]
+w_B^{\top} h_n + b_B
++ \displaystyle\sum_{k=1}^K
+\softplus(w_{A,k}^{\top} h_n + b_{A,k})
+\sin\!\Big(
+\theta_{n-1,k}
++ \tilde\omega_{n,k}\,\Delta t_n
++ w_{\varphi,k}^{\top} h_n + b_{\varphi,k}
+\Big),
+& n \ge 1,
+\end{cases}
+\end{equation}
+where $\tilde\omega_{n,k} := \omega_{\mathrm{base},k} + w_{\omega,k}^{\top} h_n + b_{\omega,k}$.

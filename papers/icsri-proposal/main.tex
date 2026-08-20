@@ -20,188 +20,19 @@
 \noindent This proposal outlines the research proposition for the Non-Stationary Spectral Decomposition Network (NS-SDN): a neural state-space architecture that decomposes econometric time series into interpretable trend and oscillatory components with time-varying amplitude, instantaneous frequency, and phase, and adapts these components over time through a learned latent state.
 \end{abstract}
 
-\section{Introduction}
-Recent work in neural implicit representations has shown that sinusoidal nonlinearities can represent highly oscillatory structure with strong gradient flow properties \citep{sitzmann2020}. In particular, Sinusoidal Representation Networks (SIREN) replace conventional activations (e.g., sigmoid or $\tanh$) with $\sin(\cdot)$, enabling compact representation of periodic structure. This is well aligned with domains such as signal processing and physics-informed modeling, where harmonic structure is intrinsic.
+\input{sections/01-introduction}
 
-This proposal asks whether sinusoidal function representations can be adapted to econometric time series forecasting, where observables often exhibit both secular trend and cyclical variation, and where cycles may be nonstationary---time-varying amplitude, time-varying frequency, and phase shifts after shocks \citep{huang1998,lubik2015}. The goal is a forecasting architecture that explicitly decomposes a series into interpretable components and adapts these components over time via a latent state.
+\input{sections/02-design-concept}
 
-\section{Design Concept}
-\subsection{Econometric decomposition target}
-Assume an observed scalar time series $y(t)$ admits an additive decomposition into trend, cyclical structure, and idiosyncratic error \citep{harvey1989,beveridge1981}:
-\begin{equation}
-y(t) = T(t) + C(t) + \epsilon(t).
-\end{equation}
-Rather than imposing fixed-frequency stochastic cycles \citep{harvey1989}, NS-SDN allows time-varying frequency and amplitude consistent with the Hilbert--Huang framework \citep{huang1998}.
+\input{sections/03-network-overview}
 
-\section{Network Overview}
-\subsection{From stationary sinusoid to nonstationary spectral sum}
-A single stationary sinusoid is inadequate for macro-financial data because amplitude and frequency are rarely constant. NS-SDN therefore models the signal as:
-\begin{equation}
-f(t) = B(t) + \sum_{k=1}^{K} A_k(t)\,\sin\big(\theta_k(t) + \varphi_k(t)\big),
-\label{eq:spectralsum}
-\end{equation}
-where:
-\begin{itemize}
-\item $B(t)$ is the trend/low-frequency component,
-\item $A_k(t)$ is the (positive) time-varying amplitude (``envelope'') of component $k$,
-\item $\theta_k(t)$ is the cumulative phase of component $k$,
-\item $\varphi_k(t)$ is a time-varying phase offset (``horizontal shift'') that allows alignment changes without forcing distortion into amplitude or frequency.
-\end{itemize}
-The defining feature is that $B(t)$, $A_k(t)$, $\theta_k(t)$, and $\varphi_k(t)$ are functions of discrete time through a learned latent state.
+\input{sections/04-state-space}
 
-\section{Discrete-Time State-Space NS-SDN}
-Let the time grid be $t_0 < t_1 < \dots < t_N$, with $\Delta t_n := t_n - t_{n-1}$ for $n \ge 1$. Let the observed data be $y_n := y(t_n)$ and the model output be $\hat y_n := f(t_n)$.
+\input{sections/05-interpretation}
 
-\subsection{Latent state with transition equation}
-NS-SDN is formulated as a nonlinear state-space model \citep{durbin2012}, with time-varying parameters analogous to TVP-VAR specifications \citep{lubik2015}.
+\input{sections/06-application}
 
-\paragraph{State transition}
-\begin{equation}
-h_n = F_\psi(h_{n-1}, x_n, \Delta t_n), \qquad h_n \in \mathbb{R}^d,
-\label{eq:transition}
-\end{equation}
-where $x_n$ is the information available at time $t_n$ (e.g., $x_n = y_n$ for univariate autoregressive forecasting, or a vector of predictors in the multivariate case). This transition can be instantiated as a GRU/LSTM cell \citep{cho2014,hochreiter1997}, or as a time-aware update of the form $h_n = h_{n-1} + \Delta t_n \cdot g_\psi(h_{n-1}, x_n)$, which is a discrete-time analog of continuous-time dynamics \citep{chen2018}.
-
-\paragraph{Emission (spectral synthesis)}
-Given $h_n$, the model emits $\hat y_n$ via nonstationary spectral synthesis.
-
-\subsection{Emission components}
-\paragraph{Trend component}
-\begin{equation}
-B_n := B(t_n) = w_B^\top h_n + b_B.
-\end{equation}
-
-\paragraph{Amplitude (positive envelope)}
-\begin{equation}
-A_n = \softplus(W_A h_n + b_A) \in \mathbb{R}_{>0}^{K},
-\qquad
-A_{n,k} = \softplus(w_{A,k}^\top h_n + b_{A,k}).
-\end{equation}
-
-\paragraph{Instantaneous angular frequency}
-\begin{equation}
-\omega_n = \omega_{\mathrm{base}} + W_\omega h_n + b_\omega \in \mathbb{R}^K,
-\qquad
-\omega_{n,k} = \omega_{\mathrm{base},k} + w_{\omega,k}^\top h_n + b_{\omega,k}.
-\end{equation}
-\emph{Design note:} $\omega_n$ may be left unconstrained in $\mathbb{R}^K$, or constrained positive via softplus if interpretability and identifiability are desired. This update mirrors the definition of instantaneous frequency in the Hilbert--Huang framework \citep{huang1998}.
-
-\paragraph{Cumulative phase (discrete-time integration)}
-\begin{equation}
-\theta_{0,k}\ \text{learned}, \qquad
-\theta_{n,k} = \theta_{n-1,k} + \omega_{n,k}\,\Delta t_n \quad (n \ge 1).
-\end{equation}
-
-\paragraph{Phase offset (horizontal shift from state)}
-\begin{equation}
-\varphi_n = W_\varphi h_n + b_\varphi \in \mathbb{R}^K,
-\qquad
-\varphi_{n,k} = w_{\varphi,k}^\top h_n + b_{\varphi,k}.
-\end{equation}
-
-\subsection{Final NS-SDN output equation}
-The emission is:
-\begin{equation}
-\hat y_n = B_n + \sum_{k=1}^{K} A_{n,k}\,\sin(\theta_{n,k} + \varphi_{n,k}).
-\label{eq:emission}
-\end{equation}
-Optionally, for numerical symmetry one may use the trigonometric identity
-\begin{equation}
-\sin(\theta + \varphi) = \sin(\theta)\cos(\varphi) + \cos(\theta)\sin(\varphi),
-\end{equation}
-so that
-\begin{equation}
-\hat y_n = B_n + \sum_{k=1}^{K} A_{n,k}\Big[\sin(\theta_{n,k})\cos(\varphi_{n,k}) + \cos(\theta_{n,k})\sin(\varphi_{n,k})\Big].
-\end{equation}
-In expanded form, with $\theta_{0,k} \in \mathbb{R}$ a learned initial phase parameter for component $k$:
-\begin{equation}
-\hat{y}(t) =
-\begin{cases}
-w_B^{\top} h_n + b_B
-+ \displaystyle\sum_{k=1}^K
-\softplus(w_{A,k}^{\top} h_n + b_{A,k})
-\sin\!\Big(
-\theta_{0,k}
-+ w_{\varphi,k}^{\top} h_n + b_{\varphi,k}
-\Big),
-& n = 0, \\[1.2em]
-w_B^{\top} h_n + b_B
-+ \displaystyle\sum_{k=1}^K
-\softplus(w_{A,k}^{\top} h_n + b_{A,k})
-\sin\!\Big(
-\theta_{n-1,k}
-+ \tilde\omega_{n,k}\,\Delta t_n
-+ w_{\varphi,k}^{\top} h_n + b_{\varphi,k}
-\Big),
-& n \ge 1,
-\end{cases}
-\end{equation}
-where $\tilde\omega_{n,k} := \omega_{\mathrm{base},k} + w_{\omega,k}^{\top} h_n + b_{\omega,k}$.
-
-\section{Interpretation and Positioning}
-The resulting architecture is conceptually related to FM synthesis in signal processing \citep{chowning1973}, and closely related to instantaneous frequency representations \citep{huang1998} and neural ordinary differential equation architectures \citep{chen2018}. NS-SDN differs in two critical ways:
-\begin{enumerate}
-\item \textbf{Nonstationary envelopes and frequencies are state-driven:} $A_n$ and $\omega_n$ evolve with $h_n$, allowing time-varying cycles rather than fixed Fourier bases.
-\item \textbf{Econometric state-space structure:} the model explicitly separates latent dynamics $h_n$ (transition equation) from measurement construction $\hat y_n$ (spectral emission), paralleling classical trend--cycle state-space decomposition \citep{harvey1989,durbin2012} while allowing nonlinear, data-driven evolution.
-\end{enumerate}
-For these reasons, the architecture is naturally described as a Non-Stationary Spectral Decomposition Network (NS-SDN).
-
-\section{Econometric Application}
-\subsection{Targeted use case}
-The proposed NS-SDN architecture is designed for macroeconomic and financial time series that exhibit secular trend and evolving cycle durations and volatility \citep{hamilton1989,lubik2015}, where the amplitude, frequency, and phase of cycles may evolve over time due to regime changes, policy shocks, or structural breaks.
-
-Canonical examples include: real GDP and output gap measures; inflation and inflation expectations; interest rates and yield spreads; unemployment and labor market indicators; and commodity prices and real exchange rates. These series are known to exhibit (i) persistent low-frequency trends, (ii) medium-frequency business-cycle dynamics, and (iii) episodic nonstationarity following shocks (e.g., monetary tightening, supply disruptions). Traditional linear constant-parameter models may fail to capture such evolving macroeconomic dynamics \citep{lubik2015}.
-
-\subsection{Mapping NS-SDN to econometric structure}
-NS-SDN can be interpreted as a nonlinear, nonstationary unobserved-components model, in which the latent state $h_n$ plays the role of an unobserved economic state; the trend component $B_n$ corresponds to a stochastic trend; the sinusoidal components correspond to stochastic cycles with time-varying amplitude and frequency; and the observation equation is explicitly additive and interpretable.
-
-Unlike classical unobserved-components models or Kalman-filter-based stochastic cycle models, NS-SDN does not impose fixed frequencies, does not assume linear Gaussian dynamics, and allows regime-dependent evolution of spectral structure. This makes NS-SDN particularly suitable for environments where cyclical behavior itself is nonstationary, such as post-crisis macroeconomic regimes.
-
-\subsection{Forecasting task formulation}
-Let $\{y_1, \dots, y_T\}$ denote an observed time series. The forecasting task is defined as predicting future values $\hat y_{T+1}, \hat y_{T+2}, \dots, \hat y_{T+H}$ given information available up to time $T$.
-
-NS-SDN is trained in a recursive one-step-ahead forecasting framework, where the latent state $h_n$ is updated sequentially, predictions are generated via the spectral emission equation, and multi-step forecasts are generated recursively, consistent with standard practice in neural autoregressive forecasting \citep{salinas2020}. This setup mirrors the forecasting protocols used for VARs, state-space models, and neural sequence models, enabling fair comparison.
-
-\section{Evaluation and Forecasting Efficacy}
-\subsection{Benchmark models}
-To evaluate the forecasting performance of NS-SDN, it will be compared against a set of widely used econometric and machine learning benchmarks, chosen to span increasing levels of model flexibility:
-\begin{itemize}
-\item \textbf{Linear econometric models:} AR($p$); ARIMA($p,d,q$); VAR (for multivariate extensions).
-\item \textbf{State-space and decomposition models:} local-level and local-trend models; unobserved-components models with stochastic cycles; Kalman-filter-based trend--cycle decompositions.
-\item \textbf{Neural network baselines:} feedforward neural networks (MLP); recurrent neural networks (LSTM/GRU).
-\end{itemize}
-These benchmarks are well understood, commonly used in applied econometrics, and provide a meaningful reference for assessing gains from nonstationary spectral modeling.
-
-\subsection{Training and evaluation protocol}
-To ensure comparability across models, all methods will be evaluated under a rolling-origin out-of-sample forecasting design standard in forecast comparison \citep{west1996}:
-\begin{enumerate}
-\item Split the data into an initial estimation window and an evaluation window.
-\item Estimate each model using data up to time $t$.
-\item Generate forecasts for horizons $h = 1, 4, 8, 12$ (depending on data frequency).
-\item Roll the estimation window forward and repeat.
-\end{enumerate}
-This procedure mimics real-time forecasting and avoids look-ahead bias.
-
-\subsection{Forecast accuracy metrics}
-Forecast performance will be assessed using standard loss functions: mean squared error (MSE), root mean squared error (RMSE), and mean absolute error (MAE). For each horizon $h$, loss is computed as:
-\begin{equation}
-\mathrm{MSE}(h) = \frac{1}{N}\sum_{i=1}^N \big(y_{t_i+h} - \hat y_{t_i+h}\big)^2.
-\end{equation}
-Results will be reported both per horizon and aggregated across horizons, enabling comparison of short-term versus medium-term forecasting ability.
-
-\subsection{Statistical comparison of forecasting performance}
-To formally assess whether NS-SDN delivers statistically significant improvements, forecast errors will be compared using standard forecast comparison tests, such as Diebold--Mariano tests for equal predictive accuracy \citep{diebold1995}, horizon-specific loss differentials, and cumulative squared forecast error plots. This ensures that any observed improvements are not due to sampling variability alone.
-
-\subsection{Diagnostic analysis and interpretability}
-Beyond point forecast accuracy, NS-SDN allows inspection of learned internal components: time-varying amplitudes $A_{n,k}$, evolving frequencies $\omega_{n,k}$, and inferred latent state trajectories $h_n$. These diagnostics will be analyzed to determine whether the model captures economically meaningful patterns, such as changes in business-cycle duration, post-shock damping or amplification, and regime-dependent cyclical behavior. Unlike black-box neural models, NS-SDN provides interpretable component structure \citep{oreshkin2020,lim2021}.
-
-\subsection{Hypotheses}
-The empirical analysis will test the following hypotheses:
-\begin{enumerate}
-\item \textbf{Forecasting hypothesis:} NS-SDN achieves lower out-of-sample forecast error than traditional linear econometric models for medium-horizon forecasts.
-\item \textbf{Nonstationarity hypothesis:} gains from NS-SDN are largest during periods of structural change or regime transition.
-\item \textbf{Interpretability hypothesis:} learned spectral components correspond to economically plausible cyclical dynamics rather than noise-fitting.
-\end{enumerate}
+\input{sections/07-evaluation}
 
 \bibliographystyle{apalike}
 \bibliography{references}
