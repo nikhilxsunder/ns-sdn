@@ -4,42 +4,51 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ns-sdn"
-version = "0.0.1"
-description = ""
+dynamic = ["version"]
+description = "Non-Stationary Spectral Decomposition Network: a neural state-space model emitting an interpretable time-varying spectral decomposition of economic and financial time series."
 readme = "README.md"
 license = { text = "MIT" }
 authors = [
     { name = "Nikhil Sunder", email = "nsunder724@gmail.com" },
-    { name = "Maikel Leon", email = "mleon@miami.edu" }
+    { name = "Maikel Leon", email = "mleon@miami.edu" },
 ]
-requires-python = ">=3.10,<4.0"
+requires-python = ">=3.12,<4.0"
 keywords = [
-    
+    "time series",
+    "spectral decomposition",
+    "state space",
+    "instantaneous frequency",
+    "econometrics",
+    "neural network",
+    "pytorch",
 ]
 classifiers = [
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.10',
-    'Programming Language :: Python :: 3.11',
-    'Programming Language :: Python :: 3.12',
-    'Programming Language :: Python :: 3.13',
-    'Programming Language :: Python :: 3.14',
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
     "Intended Audience :: Financial and Insurance Industry",
-    "Topic :: Office/Business :: Financial :: Investment"
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Typing :: Typed",
 ]
 dependencies = [
-    
+    "numpy>=1.26",
+    "torch>=2.2",
 ]
 
+# Optional extras a user installs by name: `pip install "ns-sdn[pandas,data]"`.
 [project.optional-dependencies]
-types = ["pandas-stubs", "types-cachetools", "types-geopandas"]
-dask = ["dask", "dask-geopandas"]
-polars = ["polars", "polars-st"]
-torch = ["torch"]
-pyarrow = ["pyarrow"]
+pandas = ["pandas"]
+data = ["fedfred"]
+plot = ["matplotlib"]
+all = ["pandas", "fedfred", "matplotlib"]
 
 [project.urls]
 Repository    = "https://github.com/nikhilxsunder/ns-sdn"
@@ -52,17 +61,12 @@ Documentation = "https://nikhilxsunder.github.io/ns-sdn/"
 [dependency-groups]
 types = [
     "pandas-stubs",
-    "types-cachetools",
-    "types-geopandas",
 ]
 test = [
     "pytest",
     "pytest-cov",
-    "pytest-asyncio",
-    "pytest-mock",
     "hypothesis",
-    "tomli",
-    "respx",
+    "pandas",
     { include-group = "types" },
 ]
 lint = [
@@ -86,21 +90,19 @@ docs = [
 notebooks = [
     "ipykernel",
     "notebook",
+    "fedfred",
+    "matplotlib",
+    "pandas",
 ]
-extras = [
-    "polars",
-    "polars-st",
-    "dask",
-    "dask-geopandas",
-    "torch",
-    "pyarrow",
+tools = [
+    "pre-commit",
 ]
 dev = [
     { include-group = "test" },
     { include-group = "lint" },
     { include-group = "docs" },
     { include-group = "notebooks" },
-    { include-group = "extras" },
+    { include-group = "tools" },
 ]
 
 # ── uv config ────────────────────────────────────────────────────────────────
@@ -110,42 +112,68 @@ managed = true
 
 # ── build ────────────────────────────────────────────────────────────────────
 
+[tool.hatch.version]
+path = "src/ns_sdn/__about__.py"
+
 [tool.hatch.build.targets.wheel]
-packages = ["src/ns-sdn"]
+packages = ["src/ns_sdn"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    ".ns-sdn",
+    ".github",
+    ".vscode",
+    "assets",
+    "conda-forge",
+    "conda-recipe",
+    "dist",
+    "docs",
+    "figures",
+    "notebooks",
+    "papers",
+    "references",
+    "*.md",
+    "!README.md",
+    "!CHANGELOG.md",
+]
 
 # ── tool configs ─────────────────────────────────────────────────────────────
 
 [tool.mypy]
-files = "src/ns-sdn"
+files = "src/ns_sdn"
+python_version = "3.12"
 ignore_missing_imports = true
 
 [tool.ruff]
 line-length = 100
-target-version = "py313"
+target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "ANN", "D"]
-ignore = ["D203", "D213"]
+ignore = ["D203", "D213", "D105", "D107"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D103"]
+"examples/*" = ["D", "E402"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
 [tool.bandit]
-exclude_dirs = ["tests", "docs"]
+exclude_dirs = ["tests", "docs", "notebooks"]
 
 [tool.pytest.ini_options]
-addopts = "--cov=src --cov-report=term-missing --cov-report=html"
-testpaths = ["tests"]
-pythonpath = "src"
+addopts = "--doctest-modules --cov=src/ns_sdn --cov-report=term-missing --cov-report=html"
+testpaths = ["src/ns_sdn", "tests"]
+pythonpath = ["src"]
 
 [tool.coverage.run]
-source = ["src/ns-sdn"]
+source = ["src/ns_sdn"]
 omit = [
     "tests/*",
     "*/tests/*",
     "*_test.py",
 ]
-
 
 [tool.coverage.report]
 exclude_lines = [
@@ -153,5 +181,6 @@ exclude_lines = [
     "def __repr__",
     "raise AssertionError",
     "raise NotImplementedError",
+    "if TYPE_CHECKING:",
     '@(typing\.)?overload',
 ]
