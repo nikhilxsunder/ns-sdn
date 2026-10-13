@@ -1,0 +1,184 @@
+name: Build and Publish Prerelease
+
+on:
+  push:
+    tags:
+      # PEP 440 prerelease segments only: v0.1.0a1, v0.1.0b2, v0.1.0rc1
+      - "v[0-9]+.[0-9]+.[0-9]+[ab][0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+rc[0-9]+"
+  # Re-run for a tag that already exists, e.g. after a workflow fix: the tag
+  # is checked out and verified exactly as a tag push would be.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing prerelease tag to publish (e.g. v0.1.0a2)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+# Every job needs the tag name; a tag push supplies it as the ref, a manual
+# run supplies it as the input.
+env:
+  TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+
+concurrency:
+  group: prerelease-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build distribution
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ env.TAG }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Prereleases cut from dev when that branch exists, otherwise from main.
+      - name: Verify tag is a prerelease on dev or main
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "${TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(a|b|rc)[0-9]+$ ]] \
+            || { echo "::error::${TAG} is not a PEP 440 prerelease tag"; exit 1; }
+          git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null \
+            || { echo "::error::Tag ${TAG} does not exist"; exit 1; }
+          base=origin/dev
+          git rev-parse -q --verify "$base" >/dev/null || base=origin/main
+          git merge-base --is-ancestor "${TAG}" "$base" \
+            || { echo "::error::Tag ${TAG} is not reachable from ${base#origin/}"; exit 1; }
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.14"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install dependencies
+        run: uv sync --group test
+
+      - name: Run the test suite against the tagged tree
+        run: uv run pytest
+
+      - name: Build package
+        run: uv build
+
+      - name: Verify tag matches built version
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="${TAG#v}"
+          test -f "dist/ns_sdn-${version}.tar.gz" \
+            || { echo "::error::No sdist for ${version} in dist/ ($(ls dist))"; exit 1; }
+          # The notebooks carry credentials and must never ship in the sdist.
+          if tar tzf "dist/ns_sdn-${version}.tar.gz" | grep -qi '\.ipynb$'; then
+            echo "::error::sdist contains notebooks"; exit 1
+          fi
+          ls -la dist/
+
+      - name: Store the distribution packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+  publish-to-pypi:
+    name: Publish prerelease to PyPI
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.14"
+          enable-cache: false
+
+      # Trusted publishing via OIDC; --check-url makes a re-run of an already
+      # published tag a no-op instead of a failure.
+      - name: Publish to PyPI
+        run: uv publish --check-url https://pypi.org/simple/ns-sdn/ dist/*
+
+  sign-and-release:
+    name: Sign and publish GitHub prerelease
+    needs:
+      - publish-to-pypi
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ env.TAG }}
+          persist-credentials: false
+
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Sign the dists with Sigstore
+        uses: sigstore/gh-action-sigstore-python@v3.0.0
+        with:
+          inputs: >-
+            ./dist/*.tar.gz
+            ./dist/*.whl
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v7
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: GPG sign packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in dist/*.tar.gz dist/*.whl; do
+            echo "Signing $file"
+            gpg --detach-sign --armor "$file"
+          done
+          ls -la dist/
+
+      - name: Verify GPG signatures
+        shell: bash
+        run: |
+          set -euo pipefail
+          for asc in dist/*.asc; do
+            echo "Verifying ${asc%.asc}"
+            gpg --verify "$asc" "${asc%.asc}"
+          done
+
+      - name: Create GitHub prerelease
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: ${{ env.TAG }}
+          draft: false
+          prerelease: true
+          generate_release_notes: true
+          files: |
+            dist/*.tar.gz
+            dist/*.whl
+            dist/*.asc
+            dist/*.sigstore.json
+          token: ${{ secrets.GITHUB_TOKEN }}

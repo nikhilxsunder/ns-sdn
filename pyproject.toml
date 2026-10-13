@@ -110,6 +110,17 @@ dev = [
 [tool.uv]
 managed = true
 
+# CI runners are Linux: pin torch there to the CPU wheels so a sync is a few
+# hundred MB instead of the multi-GB CUDA stack PyPI's Linux wheel pulls in.
+# macOS keeps PyPI's wheel, which is already CPU/MPS.
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
 # ── build ────────────────────────────────────────────────────────────────────
 
 [tool.hatch.version]

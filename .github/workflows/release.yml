@@ -1,0 +1,350 @@
+name: Build, Publish and Sign Release
+
+on:
+  push:
+    tags:
+      # Final releases only: v0.1.0, v1.2.3. Prereleases go through prerelease.yml.
+      - "v[0-9]+.[0-9]+.[0-9]+"
+  # Re-run for a tag that already exists, e.g. after a workflow fix, or to
+  # trigger the opt-in conda jobs for a release that is already on PyPI.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to publish (e.g. v0.1.0)"
+        required: true
+        type: string
+      publish_to_anaconda:
+        description: "Build the conda recipe and upload to Anaconda"
+        required: false
+        default: false
+        type: boolean
+      update_feedstock:
+        description: "Open the conda-forge feedstock PR (the autotick bot normally does this)"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+# Every job needs the tag name; a tag push supplies it as the ref, a manual
+# run supplies it as the input.
+env:
+  TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+
+concurrency:
+  group: release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build distribution
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ env.TAG }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify tag is a final release on main
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "${TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] \
+            || { echo "::error::${TAG} is not a final release tag"; exit 1; }
+          git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null \
+            || { echo "::error::Tag ${TAG} does not exist"; exit 1; }
+          git merge-base --is-ancestor "${TAG}" origin/main \
+            || { echo "::error::Tag ${TAG} is not reachable from main"; exit 1; }
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.14"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install dependencies
+        run: uv sync --group test
+
+      - name: Run the test suite against the tagged tree
+        run: uv run pytest
+
+      - name: Build package
+        run: uv build
+
+      - name: Verify tag matches built version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="${TAG#v}"
+          test -f "dist/ns_sdn-${version}.tar.gz" \
+            || { echo "::error::No sdist for ${version} in dist/ ($(ls dist))"; exit 1; }
+          # The notebooks carry credentials and must never ship in the sdist.
+          if tar tzf "dist/ns_sdn-${version}.tar.gz" | grep -qi '\.ipynb$'; then
+            echo "::error::sdist contains notebooks"; exit 1
+          fi
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          ls -la dist/
+
+      - name: Store the distribution packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Store conda recipe
+        uses: actions/upload-artifact@v4
+        with:
+          name: conda-recipe
+          path: conda-recipe/
+
+  publish-to-pypi:
+    name: Publish Python distribution to PyPI
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.14"
+          enable-cache: false
+
+      # Trusted publishing via OIDC; --check-url makes a re-run of an already
+      # published tag a no-op instead of a failure.
+      - name: Publish to PyPI
+        run: uv publish --check-url https://pypi.org/simple/ns-sdn/ dist/*
+
+  publish-to-anaconda:
+    name: Publish conda package to Anaconda
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_to_anaconda
+    needs:
+      - build
+      - publish-to-pypi
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.build.outputs.version }}
+
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Download conda recipe
+        uses: actions/download-artifact@v4
+        with:
+          name: conda-recipe
+          path: conda-recipe/
+
+      - name: Verify the recipe exists
+        shell: bash
+        run: |
+          test -s conda-recipe/meta.yaml \
+            || { echo "::error::conda-recipe/meta.yaml is empty; write the recipe before publishing to Anaconda"; exit 1; }
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: "3.14"
+          channels: conda-forge
+
+      - name: Install conda-build and anaconda-client
+        shell: bash -el {0}
+        run: conda install -y conda-build anaconda-client conda-verify
+
+      - name: Build conda package from the sdist
+        shell: bash -el {0}
+        run: |
+          set -euo pipefail
+          TARBALL_PATH=$(realpath "dist/ns_sdn-${VERSION}.tar.gz")
+          SHA256=$(sha256sum "$TARBALL_PATH" | cut -d ' ' -f 1)
+          sed -i "s/version:.*/version: ${VERSION}/" conda-recipe/meta.yaml
+          sed -i "s|url:.*|url: \"file://${TARBALL_PATH}\"|" conda-recipe/meta.yaml
+          sed -i "s/sha256:.*/sha256: \"${SHA256}\"/" conda-recipe/meta.yaml
+          conda build conda-recipe/
+
+      - name: Publish to Anaconda
+        shell: bash -el {0}
+        env:
+          ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          CONDA_PACKAGE=$(conda build conda-recipe/ --output)
+          anaconda upload --user nikhil.sunder --force "$CONDA_PACKAGE"
+
+  # conda-forge's autotick bot opens the version-bump PR on its own within a
+  # few hours of the PyPI release; this job is the manual fallback.
+  update-feedstock:
+    name: Update conda-forge feedstock
+    if: github.event_name == 'workflow_dispatch' && inputs.update_feedstock
+    needs:
+      - build
+      - publish-to-pypi
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.build.outputs.version }}
+      FORK: nikhilxsunder/ns-sdn-feedstock
+      UPSTREAM: conda-forge/ns-sdn-feedstock
+      GH_TOKEN: ${{ secrets.FEEDSTOCK_TOKEN }}
+
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Download conda recipe
+        uses: actions/download-artifact@v4
+        with:
+          name: conda-recipe
+          path: conda-recipe/
+
+      - name: Verify the recipe exists
+        shell: bash
+        run: |
+          test -s conda-recipe/meta.yaml \
+            || { echo "::error::conda-recipe/meta.yaml is empty; write the recipe before updating the feedstock"; exit 1; }
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: "3.14"
+          channels: conda-forge
+
+      - name: Install conda-smithy
+        shell: bash -el {0}
+        run: conda install -y conda-smithy
+
+      - name: Clone the feedstock fork
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone "https://x-access-token:${GH_TOKEN}@github.com/${FORK}.git" feedstock
+          git -C feedstock remote add upstream "https://github.com/${UPSTREAM}.git"
+          git -C feedstock fetch upstream main
+          git -C feedstock checkout -b "update-${TAG}" upstream/main
+
+      - name: Point the recipe at the PyPI sdist
+        shell: bash
+        run: |
+          set -euo pipefail
+          SHA256=$(sha256sum "dist/ns_sdn-${VERSION}.tar.gz" | cut -d ' ' -f 1)
+          sed -i "s/version:.*/version: ${VERSION}/" conda-recipe/meta.yaml
+          sed -i "s|url:.*|url: \"https://pypi.io/packages/source/n/ns-sdn/ns_sdn-${VERSION}.tar.gz\"|" conda-recipe/meta.yaml
+          sed -i "s/sha256:.*/sha256: \"${SHA256}\"/" conda-recipe/meta.yaml
+          cp conda-recipe/meta.yaml feedstock/recipe/meta.yaml
+
+      - name: Rerender and push
+        shell: bash -el {0}
+        run: |
+          set -euo pipefail
+          cd feedstock
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add recipe/meta.yaml
+          git commit -m "Update ns-sdn to ${VERSION}"
+          conda smithy rerender -c auto
+          git push origin "HEAD:update-${TAG}"
+
+      - name: Open the feedstock pull request
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh pr create \
+            --repo "${UPSTREAM}" \
+            --base main \
+            --head "${FORK%%/*}:update-${TAG}" \
+            --title "ns-sdn ${VERSION}" \
+            --body "Updates the recipe to ns-sdn ${VERSION}: version, PyPI sdist URL and sha256, rerendered with conda-smithy."
+
+  sign-and-release:
+    name: Sign and publish GitHub release
+    # Runs after PyPI regardless of whether the opt-in conda job was requested.
+    if: ${{ !cancelled() && needs.publish-to-pypi.result == 'success' && contains(fromJSON('["success", "skipped"]'), needs.publish-to-anaconda.result) }}
+    needs:
+      - publish-to-pypi
+      - publish-to-anaconda
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ env.TAG }}
+          persist-credentials: false
+
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+      - name: Sign the dists with Sigstore
+        uses: sigstore/gh-action-sigstore-python@v3.0.0
+        with:
+          inputs: >-
+            ./dist/*.tar.gz
+            ./dist/*.whl
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v7
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: GPG sign packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in dist/*.tar.gz dist/*.whl; do
+            echo "Signing $file"
+            gpg --detach-sign --armor "$file"
+          done
+          ls -la dist/
+
+      - name: Verify GPG signatures
+        shell: bash
+        run: |
+          set -euo pipefail
+          for asc in dist/*.asc; do
+            echo "Verifying ${asc%.asc}"
+            gpg --verify "$asc" "${asc%.asc}"
+          done
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: Release ${{ env.TAG }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            dist/*.tar.gz
+            dist/*.whl
+            dist/*.asc
+            dist/*.sigstore.json
+          token: ${{ secrets.GITHUB_TOKEN }}

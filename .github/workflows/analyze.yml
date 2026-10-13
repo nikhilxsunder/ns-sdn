@@ -1,0 +1,50 @@
+name: Analyze
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev]
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Lint, type-check and audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.14"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install dependencies
+        run: uv sync --group lint
+
+      # Lint and typing are blocking: the package ships clean under both.
+      - name: Ruff (lint)
+        run: uv run ruff check src/ns_sdn tests examples
+
+      - name: Ruff (format)
+        run: uv run ruff format --check src/ns_sdn tests examples
+
+      - name: Mypy
+        run: uv run mypy
+
+      # Security scans are advisory: findings surface in the log without
+      # blocking a merge on a torch advisory nobody here can fix.
+      - name: Bandit
+        continue-on-error: true
+        run: uv run bandit -r src/ns_sdn
+
+      - name: pip-audit
+        continue-on-error: true
+        run: uv run pip-audit

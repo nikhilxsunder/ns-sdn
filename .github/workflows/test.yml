@@ -1,0 +1,111 @@
+name: Tests and Coverage
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    # Only the main-branch 3.14 cell pushes TEST_COVERAGE.md; the token is
+    # scoped to this job rather than the workflow.
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install dependencies
+        run: uv sync --group test
+
+      # pyproject's addopts already select doctests + tests and the terminal
+      # coverage report; only the XML report for Codecov is added here.
+      - name: Run tests with coverage
+        shell: bash
+        run: |
+          set -o pipefail
+          uv run pytest --cov-report=xml 2>&1 | tee coverage_output.txt
+
+      - name: Upload coverage to Codecov
+        if: matrix.python-version == '3.14'
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+          name: ns-sdn-coverage
+          verbose: true
+
+      - name: Extract coverage percentage
+        if: matrix.python-version == '3.14' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+        shell: bash
+        run: |
+          COVERAGE=$(grep "^TOTAL" coverage_output.txt | awk '{print $NF}' | sed 's/%//')
+          echo "COVERAGE=$COVERAGE" >> "$GITHUB_ENV"
+
+      - name: Update TEST_COVERAGE.md
+        if: matrix.python-version == '3.14' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+        shell: bash
+        run: |
+          DATE=$(date +"%Y-%m-%d")
+          cat > TEST_COVERAGE.md << EOF
+          # Test Coverage Report
+
+          Last updated: $DATE
+
+          ## Coverage Summary
+
+          Overall coverage: ${COVERAGE}%
+
+          ## Detailed Coverage
+
+          \`\`\`
+          $(cat coverage_output.txt)
+          \`\`\`
+
+          ## Running Test Coverage Locally
+
+          The doctests and the behavioral suite run together with coverage:
+
+          \`\`\`bash
+          uv sync --group test
+          uv run pytest
+          \`\`\`
+
+          Then open \`htmlcov/index.html\` in your browser for the line-level report.
+
+          ## Coverage Goals
+
+          - Maintain at least 80% overall coverage
+          - All public APIs should have 100% coverage
+          - Focus on testing edge cases and error conditions
+          EOF
+
+      - name: Commit coverage report
+        if: matrix.python-version == '3.14' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+        shell: bash
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add TEST_COVERAGE.md
+          git commit -m "Update test coverage report" || echo "No changes to commit"
+          git push

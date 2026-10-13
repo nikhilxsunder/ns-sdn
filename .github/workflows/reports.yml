@@ -1,0 +1,70 @@
+name: Reports
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  reports:
+    name: Coverage, lint, typing and security reports
+    runs-on: ubuntu-latest
+
+    env:
+      NS_SDN_SRC: src/ns_sdn
+      NS_SDN_TESTS: tests
+      REPORT_DIR: reports
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.14"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Install dependencies
+        run: uv sync --group test --group lint
+
+      - name: Create report directory
+        run: mkdir -p "${REPORT_DIR}"
+
+      - name: Pytest with coverage
+        run: uv run pytest --cov-report=xml:"${REPORT_DIR}/coverage.xml"
+
+      - name: Ruff
+        run: |
+          uv run ruff check "${NS_SDN_SRC}" "${NS_SDN_TESTS}" \
+            --output-format=concise \
+            > "${REPORT_DIR}/ruff.txt" || true
+
+      - name: Mypy
+        run: |
+          uv run mypy "${NS_SDN_SRC}" "${NS_SDN_TESTS}" \
+            --no-pretty \
+            --show-column-numbers \
+            --show-error-codes \
+            > "${REPORT_DIR}/mypy.txt" || true
+
+      - name: Bandit
+        run: |
+          uv run bandit -r "${NS_SDN_SRC}" \
+            -f json \
+            -o "${REPORT_DIR}/bandit.json" || true
+
+      - name: Store reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-${{ github.sha }}
+          path: ${{ env.REPORT_DIR }}/
+          retention-days: 30

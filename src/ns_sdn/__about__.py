@@ -17,7 +17,7 @@ __description__ = (
     "Non-Stationary Spectral Decomposition Network: a neural state-space model"
     " emitting an interpretable time-varying spectral decomposition."
 )
-__version__ = "0.0.2"
+__version__ = "1.0.0a1"
 __copyright__ = "Copyright (c) 2026 Nikhil Sunder"
 __author__ = "Nikhil Sunder"
 __email__ = "nsunder724@gmail.com"
