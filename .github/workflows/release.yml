@@ -160,7 +160,7 @@ jobs:
             || { echo "::error::conda-recipe/meta.yaml is empty; write the recipe before publishing to Anaconda"; exit 1; }
 
       - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           auto-update-conda: true
           python-version: "3.14"
@@ -225,7 +225,7 @@ jobs:
             || { echo "::error::conda-recipe/meta.yaml is empty; write the recipe before updating the feedstock"; exit 1; }
 
       - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           auto-update-conda: true
           python-version: "3.14"
