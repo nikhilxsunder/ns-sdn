@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+
+<html data-content_root="../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Reading an NS-SDN decomposition: the paths on the result, how they add up to the emission, the original and training scales, running the network over a new sample, and the dataframe layout." name="description"/>
+<meta content="The decomposition" property="og:title"/>
+<meta content="website" property="og:type"/>
+<meta content="https://nikhilxsunder.github.io/ns-sdn/stable/user_guide/decomposition.html" property="og:url"/>
+<meta content="ns-sdn" property="og:site_name"/>
+<meta content="The decomposition is the product of the model, so the result carries every path the paper’s figures are drawn from, as arrays. This page lists them, shows how they combine, and says which scale each is on. The model page defines the quantities; here they are read. Throughout, r is the number of p..." property="og:description"/>
+<meta content="https://nikhilxsunder.github.io/ns-sdn/stable/_static/ns-sdn-mark.png" property="og:image"/>
+<meta content="ns-sdn" property="og:image:alt"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="ns-sdn Documentation" property="og:site_name"/>
+<meta content="ns-sdn Logo" property="og:image:alt"/>
+<meta content="2026-10-14T12:54:25+00:00" property="article:modified_time"/>
+<title>The decomposition — ns-sdn</title>
+<script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+<!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+<noscript>
+<style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+</noscript>
+<!-- Loaded before other Sphinx assets -->
+<link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet"/>
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet"/>
+<link href="../_static/pygments.css?v=8f2a1f02" rel="stylesheet" type="text/css"/>
+<link href="../_static/sphinx-codeautolink.css?v=b2176991" rel="stylesheet" type="text/css"/>
+<link href="../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../_static/plot_directive.css" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery.css?v=c83e6b79" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="../_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
+<link href="../_static/custom.css?v=3724b800" rel="stylesheet" type="text/css"/>
+<!-- So that users can add custom icons -->
+<script defer="" src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+<!-- Pre-loaded scripts that we'll load fully later -->
+<link as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" rel="preload"/>
+<link as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" rel="preload"/>
+<script src="../_static/documentation_options.js?v=a480e030"></script>
+<script src="../_static/doctools.js?v=fd6eb6e6"></script>
+<script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+<script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../_static/copybutton.js?v=f281be69"></script>
+<script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+<script src="../_static/design-tabs.js?v=f930bc37"></script>
+<script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('consent', 'default', {
+                    'ad_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied',
+                    'analytics_storage': 'denied'
+                });
+            </script>
+<script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T9HLR97XCS"></script>
+<script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-T9HLR97XCS');
+            </script>
+<script defer="defer" src="https://unpkg.com/@popperjs/core@2"></script>
+<script defer="defer" src="https://unpkg.com/tippy.js@6"></script>
+<script defer="defer" src="../_static/tippy/user_guide/decomposition.9b8411ec-1001-49fa-b601-9a02b509b053.js"></script>
+<script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+<script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/decomposition';</script>
+<script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nikhilxsunder.github.io/ns-sdn/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'stable';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+<script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+<link href="https://nikhilxsunder.github.io/ns-sdn/stable/user_guide/decomposition.html" rel="canonical"/>
+<link href="../_static/ns-sdn-favicon.ico" rel="icon"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="forecasting.html" rel="next" title="Forecasting"/>
+<link href="model.html" rel="prev" title="The model"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="light dark" name="color-scheme"/>
+<meta content="en" name="docsearch:language"/>
+<meta content="1.0" name="docsearch:version"/>
+<meta content="2026-10-14" name="docbuild:last-update"/>
+<script src="../_static/searchtools.js"></script>
+<script src="../_static/language_data.js"></script>
+<script src="../searchindex.js"></script>
+</head>
+<body data-default-mode="">
+<div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
+<div id="pst-scroll-pixel-helper"></div>
+<button class="btn rounded-pill" id="pst-back-to-top" type="button">
+<i class="fa-solid fa-arrow-up"></i>Back to top</button>
+<dialog id="pst-search-dialog">
+<form action="../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search the docs ..." autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search the docs ..." spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</dialog>
+<div class="pst-async-banner-revealer d-none">
+<aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
+</div>
+<header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none" id="pst-header">
+<div class="bd-header__inner bd-page-width">
+<button aria-label="Site navigation" class="pst-navbar-icon sidebar-toggle primary-toggle" type="button">
+<span class="fa-solid fa-bars"></span>
+</button>
+<div class="navbar-header-items__start">
+<div class="navbar-item">
+<a class="navbar-brand logo" href="../index.html">
+<img alt="ns-sdn - Home" class="logo__image only-light" src="../_static/ns-sdn-logo.png"/>
+<img alt="ns-sdn - Home" class="logo__image only-dark pst-js-only" src="../_static/ns-sdn-logo-dark.png"/>
+</a></div>
+<div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+<button aria-controls="pst-version-switcher-list-2" aria-haspopup="listbox" aria-label="Version switcher list" class="version-switcher__button btn btn-sm dropdown-toggle" data-bs-toggle="dropdown" id="pst-version-switcher-button-2" type="button">
+    Choose version  <!-- this text may get changed later by javascript -->
+<span class="caret"></span>
+</button>
+<div aria-labelledby="pst-version-switcher-button-2" class="version-switcher__menu dropdown-menu list-group-flush py-0" id="pst-version-switcher-list-2" role="listbox">
+<!-- dropdown will be populated by javascript on page load -->
+</div>
+</div></div>
+</div>
+<div class="navbar-header-items">
+<div class="me-auto navbar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+<li class="nav-item current active">
+<a class="nav-link nav-internal" href="index.html">
+    User guide
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../api/index.html">
+    API reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../engine/index.html">
+    Engine reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../project/index.html">
+    Project
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="navbar-header-items__end">
+<div class="navbar-item navbar-persistent--container">
+<button aria-label="Search" class="btn search-button-field search-button__button pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Search" type="button">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span class="search-button__default-text">Search</span>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+</div>
+<div class="navbar-item">
+<div class="theme-switch-container dropdown pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Color mode">
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" data-bs-toggle="dropdown" type="button">
+<i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+</button>
+<ul class="dropdown-menu dropdown-menu-end">
+<li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto" type="button"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+<li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light" type="button"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+<li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark" type="button"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+</ul>
+</div></div>
+<div class="navbar-item"><ul aria-label="Icon Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/nikhilxsunder/ns-sdn" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fab fa-github fa-lg"></i><span class="visually-hidden">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://pypi.org/project/ns-sdn/" rel="noopener" target="_blank" title="PyPI"><i aria-hidden="true" class="fab fa-python fa-lg"></i><span class="visually-hidden">PyPI</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn" rel="noopener" target="_blank" title="Codecov"><i aria-hidden="true" class="fas fa-umbrella fa-lg"></i><span class="visually-hidden">Codecov</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="navbar-persistent--mobile">
+<button aria-label="Search" class="btn search-button-field search-button__button pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Search" type="button">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span class="search-button__default-text">Search</span>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+</div>
+<button aria-label="On this page" class="pst-navbar-icon sidebar-toggle secondary-toggle" type="button">
+<span class="fa-solid fa-outdent"></span>
+</button>
+</div>
+</header>
+<div class="bd-container">
+<div class="bd-container__inner bd-page-width">
+<dialog id="pst-primary-sidebar-modal"></dialog>
+<div class="bd-sidebar-primary bd-sidebar" id="pst-primary-sidebar">
+<div class="sidebar-header-items sidebar-primary__section">
+<div class="sidebar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+<li class="nav-item current active">
+<a class="nav-link nav-internal" href="index.html">
+    User guide
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../api/index.html">
+    API reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../engine/index.html">
+    Engine reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../project/index.html">
+    Project
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="sidebar-header-items__end">
+<div class="navbar-item">
+<div class="theme-switch-container dropdown pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Color mode">
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" data-bs-toggle="dropdown" type="button">
+<i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+</button>
+<ul class="dropdown-menu dropdown-menu-end">
+<li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto" type="button"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+<li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light" type="button"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+<li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark" type="button"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+</ul>
+</div></div>
+<div class="navbar-item"><ul aria-label="Icon Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/nikhilxsunder/ns-sdn" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fab fa-github fa-lg"></i><span class="visually-hidden">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://pypi.org/project/ns-sdn/" rel="noopener" target="_blank" title="PyPI"><i aria-hidden="true" class="fab fa-python fa-lg"></i><span class="visually-hidden">PyPI</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn" rel="noopener" target="_blank" title="Codecov"><i aria-hidden="true" class="fas fa-umbrella fa-lg"></i><span class="visually-hidden">Codecov</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sidebar-primary-items__start sidebar-primary__section">
+<div class="sidebar-primary-item pst-sidebar-collapse"><button aria-controls="pst-primary-sidebar" aria-expanded="true" id="pst-collapse-sidebar-button" type="button">
+<svg aria-hidden="true" class="pst-icon" focusable="false" role="img" viewbox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z" fill="currentColor"></path>
+</svg>
+<span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+<span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+<div class="sidebar-primary-item">
+<nav aria-label="Section Navigation" class="bd-docs-nav bd-links">
+<p aria-level="1" class="bd-links__title" role="heading">Section Navigation</p>
+<div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">The model</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="model.html">The model</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">The decomposition</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Using a fit</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="forecasting.html">Forecasting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spectral_state.html">The spectral state</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Foundations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="conventions.html">Conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nuances.html">Nuances</a></li>
+</ul>
+</div>
+</nav></div>
+</div>
+<div class="sidebar-primary-items__end sidebar-primary__section">
+<div class="sidebar-primary-item">
+<div class="flat" data-ea-manual="true" data-ea-publisher="readthedocs" data-ea-type="readthedocs-sidebar" id="ethical-ad-placement">
+</div></div>
+</div>
+</div>
+<main class="bd-main" id="main-content" role="main">
+<div class="bd-content">
+<div class="bd-article-container">
+<div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+<div class="header-article-items__start">
+<div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+<ul class="bd-breadcrumbs">
+<li class="breadcrumb-item breadcrumb-home">
+<a aria-label="Home" class="nav-link" href="../index.html">
+<i class="fa-solid fa-home"></i>
+</a>
+</li>
+<li class="breadcrumb-item"><a class="nav-link" href="index.html">User guide</a></li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">The decomposition</span></li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<div id="searchbox"></div>
+<article class="bd-article">
+<section id="the-decomposition">
+<h1>The decomposition<a class="headerlink" href="#the-decomposition" title="Link to this heading">#</a></h1>
+<p>The decomposition is the product of the model, so the result carries
+every path the paper’s figures are drawn from, as arrays. This page
+lists them, shows how they combine, and says which scale each is on.
+The <a class="reference internal" href="model.html"><span class="doc">model page</span></a> defines the quantities; here they are
+read.</p>
+<p>Throughout, <span class="math notranslate nohighlight">\(r\)</span> is the number of path rows: the sample length
+<span class="math notranslate nohighlight">\(n\)</span> under the filtered alignment, <span class="math notranslate nohighlight">\(n - 1\)</span> under the
+predicted one. <code class="docutils literal notranslate"><span class="pre">observed</span></code> is the slice of the series the rows align
+with.</p>
+<section id="the-paths">
+<h2>The paths<a class="headerlink" href="#the-paths" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 24.0%"/>
+<col style="width: 14.0%"/>
+<col style="width: 62.0%"/>
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Attribute</p></th>
+<th class="head"><p>Shape</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">observed</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,)</span></code></p></td>
+<td><p>The series rows the paths describe.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">emission</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat y_t\)</span>, the synthesized series (Fig. 1 of IEEE-ORSS).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">trend</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(B_t\)</span> (Fig. 3).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">oscillation</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">emission</span> <span class="pre">-</span> <span class="pre">trend</span></code>, everything the components contribute.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">amplitude_raw</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">k)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(A_{t,k}\)</span>, the softplus amplitude before the gate.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">amplitude</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">k)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(g_{t,k} A_{t,k}\)</span>, the gated amplitude (Fig. 4).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">effective_amplitude</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">k)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(|w_k|\, g_{t,k} A_{t,k}\)</span>, the amplitude of each contribution.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">frequency</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">k)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\omega_{t,k}\)</span>, radians per unit time (Fig. 5).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">period</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">k)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(2\pi / \omega_{t,k}\)</span>, in time units.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">phase</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">k)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\theta_{t,k}\)</span>, the cumulative phase.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">phase_offset</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">k)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\phi_{t,k}\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gate</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">k)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(g_{t,k}\)</span> (Fig. 6); ones when <code class="docutils literal notranslate"><span class="pre">gating=False</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">components</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">k)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(w_k\, g_{t,k} A_{t,k} \sin(\theta_{t,k} + \phi_{t,k})\)</span>, each summand.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">state</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">d)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(h_t\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mix</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(k,)</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(w\)</span>, the mixing vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">power_share</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(k,)</span></code></p></td>
+<td><p>Each component’s share of mean contribution power over the sample.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fields are arrays; <code class="docutils literal notranslate"><span class="pre">period</span></code>, <code class="docutils literal notranslate"><span class="pre">effective_amplitude</span></code>, <code class="docutils literal notranslate"><span class="pre">components</span></code>,
+<code class="docutils literal notranslate"><span class="pre">oscillation</span></code>, <code class="docutils literal notranslate"><span class="pre">power_share</span></code> and <code class="docutils literal notranslate"><span class="pre">observed</span></code> are properties computed
+from them, so they cost a little each call and are always consistent
+with the fields.</p>
+</section>
+<section id="how-they-add-up">
+<h2>How they add up<a class="headerlink" href="#how-they-add-up" title="Link to this heading">#</a></h2>
+<p>The synthesis equation is an identity on the result:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/index.html#module-numpy"><span class="nn">numpy</span></a><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.html#module-ns_sdn.spectral_decomposition"><span class="nn">ns_sdn.spectral_decomposition</span></a><span class="w"> </span><span class="kn">import</span> <a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDN.html#ns_sdn.spectral_decomposition.NSSDN" title="ns_sdn.spectral_decomposition.NSSDN"><span class="n">NSSDN</span></a><span class="p">,</span> <a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.Stage.html#ns_sdn.spectral_decomposition.Stage" title="ns_sdn.spectral_decomposition.Stage"><span class="n">Stage</span></a>
+
+<span class="n">t</span> <span class="o">=</span> <a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mf">240.0</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.3</span> <span class="o">*</span> <a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="mf">0.08</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+<a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.html#ns_sdn.spectral_decomposition.NSSDNResult" title="ns_sdn.spectral_decomposition.NSSDNResult"><span class="n">res</span></a> <span class="o">=</span> <a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDN.html#ns_sdn.spectral_decomposition.NSSDN" title="ns_sdn.spectral_decomposition.NSSDN"><span class="n">NSSDN</span></a><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">state_dim</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">schedule</span><span class="o">=</span><span class="p">(</span><a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.Stage.html#ns_sdn.spectral_decomposition.Stage" title="ns_sdn.spectral_decomposition.Stage"><span class="n">Stage</span></a><span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mi">40</span><span class="p">),),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDN.fit.html#ns_sdn.spectral_decomposition.NSSDN.fit" title="ns_sdn.spectral_decomposition.NSSDN.fit"><span class="n">fit</span></a><span class="p">()</span>
+
+<span class="n">summands</span> <span class="o">=</span> <a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.mix.html#ns_sdn.spectral_decomposition.NSSDNResult.mix" title="ns_sdn.spectral_decomposition.NSSDNResult.mix"><span class="n">res</span><span class="o">.</span><span class="n">mix</span></a> <span class="o">*</span> <a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.amplitude.html#ns_sdn.spectral_decomposition.NSSDNResult.amplitude" title="ns_sdn.spectral_decomposition.NSSDNResult.amplitude"><span class="n">res</span><span class="o">.</span><span class="n">amplitude</span></a> <span class="o">*</span> <a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.phase.html#ns_sdn.spectral_decomposition.NSSDNResult.phase" title="ns_sdn.spectral_decomposition.NSSDNResult.phase"><span class="n">res</span><span class="o">.</span><span class="n">phase</span></a> <span class="o">+</span> <a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.phase_offset.html#ns_sdn.spectral_decomposition.NSSDNResult.phase_offset" title="ns_sdn.spectral_decomposition.NSSDNResult.phase_offset"><span class="n">res</span><span class="o">.</span><span class="n">phase_offset</span></a><span class="p">)</span>
+<a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#print"><span class="nb">print</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#bool"><span class="nb">bool</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/generated/numpy.allclose.html#numpy.allclose" title="numpy.allclose"><span class="n">np</span><span class="o">.</span><span class="n">allclose</span></a><span class="p">(</span><span class="n">summands</span><span class="p">,</span> <a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.components.html#ns_sdn.spectral_decomposition.NSSDNResult.components" title="ns_sdn.spectral_decomposition.NSSDNResult.components"><span class="n">res</span><span class="o">.</span><span class="n">components</span></a><span class="p">)))</span>
+<a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#print"><span class="nb">print</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#bool"><span class="nb">bool</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/generated/numpy.allclose.html#numpy.allclose" title="numpy.allclose"><span class="n">np</span><span class="o">.</span><span class="n">allclose</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.trend.html#ns_sdn.spectral_decomposition.NSSDNResult.trend" title="ns_sdn.spectral_decomposition.NSSDNResult.trend"><span class="n">res</span><span class="o">.</span><span class="n">trend</span></a> <span class="o">+</span> <span class="n">res</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.emission.html#ns_sdn.spectral_decomposition.NSSDNResult.emission" title="ns_sdn.spectral_decomposition.NSSDNResult.emission"><span class="n">res</span><span class="o">.</span><span class="n">emission</span></a><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)))</span>
+<a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#print"><span class="nb">print</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#bool"><span class="nb">bool</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/generated/numpy.allclose.html#numpy.allclose" title="numpy.allclose"><span class="n">np</span><span class="o">.</span><span class="n">allclose</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.oscillation.html#ns_sdn.spectral_decomposition.NSSDNResult.oscillation" title="ns_sdn.spectral_decomposition.NSSDNResult.oscillation"><span class="n">res</span><span class="o">.</span><span class="n">oscillation</span></a><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)))</span>
+<a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#print"><span class="nb">print</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#bool"><span class="nb">bool</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/generated/numpy.allclose.html#numpy.allclose" title="numpy.allclose"><span class="n">np</span><span class="o">.</span><span class="n">allclose</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.mix.html#ns_sdn.spectral_decomposition.NSSDNResult.mix" title="ns_sdn.spectral_decomposition.NSSDNResult.mix"><span class="n">res</span><span class="o">.</span><span class="n">mix</span></a><span class="p">)</span> <span class="o">*</span> <a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.amplitude.html#ns_sdn.spectral_decomposition.NSSDNResult.amplitude" title="ns_sdn.spectral_decomposition.NSSDNResult.amplitude"><span class="n">res</span><span class="o">.</span><span class="n">amplitude</span></a><span class="p">,</span> <a class="sphinx-codeautolink-a" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.effective_amplitude.html#ns_sdn.spectral_decomposition.NSSDNResult.effective_amplitude" title="ns_sdn.spectral_decomposition.NSSDNResult.effective_amplitude"><span class="n">res</span><span class="o">.</span><span class="n">effective_amplitude</span></a><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>True
+True
+True
+True
+</pre></div>
+</div>
+<p>Reading a single component means reading the row of <code class="docutils literal notranslate"><span class="pre">components</span></code> it
+contributes, the <code class="docutils literal notranslate"><span class="pre">amplitude</span></code> that bounds it, the <code class="docutils literal notranslate"><span class="pre">frequency</span></code> that
+paces it, and the <code class="docutils literal notranslate"><span class="pre">gate</span></code> that switches it. A component whose gate sits
+near zero over a stretch is silent there whatever its raw amplitude
+says, which is why the figures plot the gated amplitude.</p>
+</section>
+<section id="two-scales">
+<h2>Two scales<a class="headerlink" href="#two-scales" title="Link to this heading">#</a></h2>
+<p>The network trains on a copy of the series min-max scaled to
+<span class="math notranslate nohighlight">\([-1, 1]\)</span> on the fitted sample (<code class="docutils literal notranslate"><span class="pre">scaling="minmax"</span></code>; <code class="docutils literal notranslate"><span class="pre">"none"</span></code>
+trains on the raw series). Every array on the result is mapped back to
+the original scale: <code class="docutils literal notranslate"><span class="pre">emission</span></code>, <code class="docutils literal notranslate"><span class="pre">trend</span></code> and <code class="docutils literal notranslate"><span class="pre">observed</span></code> through the
+full affine map, the amplitudes and components through its slope alone,
+since they are differences rather than levels. <code class="docutils literal notranslate"><span class="pre">frequency</span></code>, <code class="docutils literal notranslate"><span class="pre">phase</span></code>,
+<code class="docutils literal notranslate"><span class="pre">phase_offset</span></code>, <code class="docutils literal notranslate"><span class="pre">gate</span></code> and <code class="docutils literal notranslate"><span class="pre">state</span></code> are scale-free.</p>
+<p>The paper’s figures are drawn in training units. <code class="docutils literal notranslate"><span class="pre">decompose(scaled=True)</span></code>
+returns the same paths without the inverse map, and the <code class="docutils literal notranslate"><span class="pre">scale</span></code> field
+holds the map itself:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">paths</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">scaled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#print"><span class="nb">print</span></a><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="s2">"trend"</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#bool"><span class="nb">bool</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="s2">"observed"</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">1e-9</span><span class="p">)))</span>
+<a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#print"><span class="nb">print</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#bool"><span class="nb">bool</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">scale</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="s2">"emission"</span><span class="p">]),</span> <span class="n">res</span><span class="o">.</span><span class="n">emission</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(240,) True
+True
+</pre></div>
+</div>
+</section>
+<section id="a-new-sample">
+<h2>A new sample<a class="headerlink" href="#a-new-sample" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">decompose(endog)</span></code> runs the trained network over another series under
+teacher forcing from the learned initial state and returns its paths,
+on the original scale of the <em>fitted</em> series’ map. This is how the
+paper’s figures are drawn over the full sample after fitting on the
+training segment, and how a decomposition is read off out-of-sample
+data without refitting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">longer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">y</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">240.0</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">))])</span>
+<span class="n">paths</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">longer</span><span class="p">)</span>
+<a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#print"><span class="nb">print</span></a><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="s2">"emission"</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">paths</span><span class="p">[</span><span class="s2">"components"</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(300,) (300, 2)
+</pre></div>
+</div>
+<p>A fit with covariates needs <code class="docutils literal notranslate"><span class="pre">exog</span></code> again here, with one row per
+observation of the new series, and <code class="docutils literal notranslate"><span class="pre">time</span></code> takes the new grid.</p>
+</section>
+<section id="as-a-dataframe">
+<h2>As a dataframe<a class="headerlink" href="#as-a-dataframe" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">to_dict()</span></code> returns the observed series, the emission, the trend, the
+oscillation and every per-component path as a flat mapping with
+one-based component suffixes; <code class="docutils literal notranslate"><span class="pre">to_pandas(index=...)</span></code> is the same
+mapping as a frame, with your dates attached if you pass them:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/stdtypes.html#list"><span class="nb">list</span></a><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+<a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#print"><span class="nb">print</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#len"><span class="nb">len</span></a><span class="p">(</span><span class="n">columns</span><span class="p">),</span> <span class="n">columns</span><span class="p">[:</span><span class="mi">4</span><span class="p">],</span> <span class="n">columns</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>16 ['observed', 'emission', 'trend', 'oscillation'] ['amplitude_1', 'frequency_1', 'phase_1', 'phase_offset_1', 'gate_1', 'component_1']
+</pre></div>
+</div>
+<p>The flat layout is for plotting and export. For analysis, the <code class="docutils literal notranslate"><span class="pre">(r,</span> <span class="pre">k)</span></code>
+arrays on the result are the better handle, and the
+<a class="reference internal" href="spectral_state.html"><span class="doc">spectral state</span></a> is the better summary.</p>
+</section>
+<section id="reading-the-figures">
+<h2>Reading the figures<a class="headerlink" href="#reading-the-figures" title="Link to this heading">#</a></h2>
+<p>The IEEE-ORSS figures correspond to the paths as follows, each drawn in
+training units over the full DGS10 sample with the holdout boundary
+marked:</p>
+<ol class="arabic simple">
+<li><p><em>Forecast versus actual</em>: <code class="docutils literal notranslate"><span class="pre">observed</span></code> and <code class="docutils literal notranslate"><span class="pre">emission</span></code> (training
+segment) with <code class="docutils literal notranslate"><span class="pre">predict</span></code> over the holdout.</p></li>
+<li><p><em>Squared error</em>: <code class="docutils literal notranslate"><span class="pre">resid</span> <span class="pre">**</span> <span class="pre">2</span></code> from the one-step fit.</p></li>
+<li><p><em>Learned trend</em>: <code class="docutils literal notranslate"><span class="pre">trend</span></code>.</p></li>
+<li><p><em>Amplitude paths</em>: columns of <code class="docutils literal notranslate"><span class="pre">amplitude</span></code> for a few components.</p></li>
+<li><p><em>Instantaneous frequency paths</em>: columns of <code class="docutils literal notranslate"><span class="pre">frequency</span></code>.</p></li>
+<li><p><em>Gating paths</em>: columns of <code class="docutils literal notranslate"><span class="pre">gate</span></code>.</p></li>
+</ol>
+<p>The <a class="reference internal" href="../auto_examples/plot_02_dgs10_spectral_state.html"><span class="doc">DGS10 example</span></a>
+draws them, and the <a class="reference internal" href="../auto_examples/plot_03_reproduce_orss.html"><span class="doc">reproduction example</span></a> writes the full set.</p>
+</section>
+</section>
+</article>
+<footer class="prev-next-footer d-print-none">
+<div class="prev-next-area">
+<a class="left-prev" href="model.html" title="previous page">
+<i class="fa-solid fa-angle-left"></i>
+<div class="prev-next-info">
+<p class="prev-next-subtitle">previous</p>
+<p class="prev-next-title">The model</p>
+</div>
+</a>
+<a class="right-next" href="forecasting.html" title="next page">
+<div class="prev-next-info">
+<p class="prev-next-subtitle">next</p>
+<p class="prev-next-title">Forecasting</p>
+</div>
+<i class="fa-solid fa-angle-right"></i>
+</a>
+</div>
+</footer>
+</div>
+<dialog id="pst-secondary-sidebar-modal"></dialog>
+<div class="bd-sidebar-secondary bd-toc" id="pst-secondary-sidebar"><div class="sidebar-secondary-items sidebar-secondary__inner">
+<div class="sidebar-secondary-item">
+<div class="page-toc tocsection onthispage" id="pst-page-navigation-heading-2">
+<i class="fa-solid fa-list"></i> On this page
+  </div>
+<nav aria-labelledby="pst-page-navigation-heading-2" class="page-toc" id="pst-page-toc-nav">
+<ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-paths">The paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-they-add-up">How they add up</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-scales">Two scales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-new-sample">A new sample</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#as-a-dataframe">As a dataframe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-figures">Reading the figures</a></li>
+</ul>
+</nav></div>
+<div class="sidebar-secondary-item">
+<div class="tocsection editthispage">
+<a href="https://github.com/nikhilxsunder/ns-sdn/edit/main/docs/source/user_guide/decomposition.rst">
+<i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+</div>
+</div>
+</div></div>
+</div>
+<footer class="bd-footer-content">
+</footer>
+</main>
+</div>
+</div>
+<!-- Scripts loaded after <body> so the DOM is not blocked -->
+<script defer="" src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer="" src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+<footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+<div class="footer-items__start">
+<div class="footer-item"><div class="ns-footer">
+<section aria-label="Documentation sections" class="ns-footer__band ns-footer__band--guide">
+<div class="ns-footer__inner ns-footer__columns">
+<div class="ns-footer__column">
+<h2>User guide</h2>
+<p>
+          The model in its equations, how to read the decomposition it
+          emits, and the spectral-state coordinates that summarize it.
+        </p>
+<a class="ns-footer__cta" href="index.html">Read the guide<span aria-hidden="true"> ›</span></a>
+</div>
+<div class="ns-footer__column">
+<h2>Examples</h2>
+<p>
+          A synthetic chirp with a known answer, then the 10-year Treasury
+          yield from FRED, as executed scripts with their figures.
+        </p>
+<a class="ns-footer__cta" href="../auto_examples/index.html">View the examples<span aria-hidden="true"> ›</span></a>
+</div>
+<div class="ns-footer__column">
+<h2>API reference</h2>
+<p>
+          The specification, the result and the spectral state, with every
+          path they carry and a runnable example on each.
+        </p>
+<a class="ns-footer__cta" href="../api/index.html">View the API<span aria-hidden="true"> ›</span></a>
+</div>
+</div>
+</section>
+<section aria-label="Project links" class="ns-footer__band ns-footer__band--site">
+<div class="ns-footer__inner">
+<div class="ns-footer__grid">
+<div class="ns-footer__install">
+<h2>Get ns-sdn</h2>
+<p>
+            Releases are published to PyPI and announced on GitHub Releases.
+            Pin the exact version in anything that must reproduce.
+          </p>
+<pre class="ns-footer__code"><code>pip install ns-sdn==1.0.0a1</code></pre>
+</div>
+<nav aria-label="Resources" class="ns-footer__links">
+<h2>Resources</h2>
+<ul>
+<li>
+<a href="https://github.com/nikhilxsunder/ns-sdn/releases">Releases</a>
+</li>
+<li>
+<a href="https://github.com/nikhilxsunder/ns-sdn/blob/main/CHANGELOG.md">Changelog</a>
+</li>
+<li>
+<a href="https://github.com/nikhilxsunder/ns-sdn/issues">Issues</a>
+</li>
+<li>
+<a href="../project/citing.html">Citing</a>
+</li>
+<li>
+<a href="https://github.com/nikhilxsunder/ns-sdn/blob/main/LICENSE">License</a>
+</li>
+</ul>
+</nav>
+<nav aria-label="Related projects" class="ns-footer__links">
+<h2>Related</h2>
+<ul>
+<li>
+<a href="https://nikhilxsunder.github.io/cultivars/">cultivars</a><span class="ns-footer__muted"> time series econometrics</span>
+</li>
+<li>
+<a href="https://nikhilxsunder.github.io/fedfred/">fedfred</a><span class="ns-footer__muted"> FRED client</span>
+</li>
+<li>
+<a href="https://nikhilxsunder.github.io/edgar-sec/">edgar-sec</a><span class="ns-footer__muted"> SEC EDGAR client</span>
+</li>
+</ul>
+</nav>
+</div>
+<ul aria-label="Project pages" class="ns-footer__social">
+<li>
+<a href="https://github.com/nikhilxsunder/ns-sdn" title="GitHub"><i aria-hidden="true" class="fa-brands fa-github"></i><span class="visually-hidden">GitHub</span></a>
+</li>
+<li>
+<a href="https://pypi.org/project/ns-sdn/" title="PyPI"><i aria-hidden="true" class="fa-brands fa-python"></i><span class="visually-hidden">PyPI</span></a>
+</li>
+<li>
+<a href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn" title="Codecov"><i aria-hidden="true" class="fa-solid fa-umbrella"></i><span class="visually-hidden">Codecov</span></a>
+</li>
+<li>
+<a href="../project/citing.html" title="Cite"><i aria-hidden="true" class="fa-solid fa-quote-left"></i><span class="visually-hidden">Cite</span></a>
+</li>
+</ul>
+<div class="ns-footer__legal">
+<p>
+          © 2026, Nikhil Sunder. Released under the
+          <a href="https://github.com/nikhilxsunder/ns-sdn/blob/main/LICENSE">MIT License</a>. ns-sdn is an independent open-source project and is not
+          affiliated with the Federal Reserve Bank of St. Louis; FRED® is a
+          registered trademark of the Federal Reserve Bank of St. Louis.
+        </p>
+<p class="ns-footer__build">
+          ns-sdn 1.0.0a1 · updated 2026-10-14 · built with
+          <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0
+          and the
+          <a href="https://pydata-sphinx-theme.readthedocs.io/">PyData Sphinx Theme</a>
+</p>
+</div>
+</div>
+</section>
+</div></div>
+</div>
+</div>
+</footer>
+</body>
+</html>

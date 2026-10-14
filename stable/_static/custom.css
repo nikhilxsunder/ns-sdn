@@ -1,0 +1,281 @@
+/* ns-sdn: keep autosummary tables readable at narrow widths */
+table.autosummary td:first-child {
+  white-space: nowrap;
+}
+
+/* ---- Full-width layout-------------------------------------------- */
+
+/* The theme caps header and body at 88rem and centres them. */
+.bd-page-width {
+  max-width: 100%;
+}
+
+/* Re-cap at 1800px on very wide displays so line lengths stay sane. */
+@media (min-width: 1800px) {
+  .bd-page-width {
+    max-width: 1800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* The theme caps the article at 60em. Keep this rule separate from the one
+   above: merging the selectors lowers specificity and the override fails. */
+.bd-main .bd-content .bd-article-container {
+  max-width: 100%;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.bd-main .bd-content .bd-article-container .bd-article {
+  padding-left: 0;
+  padding-right: 1rem;
+  padding-top: 1rem;
+}
+
+/* Sidebars: 15% each instead of 25%, with floors, pushed to the screen edges.
+   Scoped to the breakpoints at which the theme renders them in-flow, so the
+   off-canvas mobile drawers keep the theme's own 75% width. */
+@media (min-width: 960px) {
+  .bd-sidebar-primary {
+    width: 15%;
+    min-width: 200px;
+    padding: 1rem 1.5rem 1rem 3rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .bd-sidebar-secondary {
+    width: 15%;
+    min-width: 180px;
+    padding: 1rem 3rem 1rem 1rem;
+  }
+}
+
+/* Header gutters match the article so the brand lines up with the sidebar. */
+.bd-header .bd-header__inner {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* The wordmark is wide; cap its height so the navbar stays one line. */
+.navbar-brand img {
+  max-height: 2.25rem;
+  width: auto;
+}
+
+/* ns-sdn docs: purple accent for pydata-sphinx-theme, taken from the logo
+ * (#6040c0 mark, #a090e0 fill, #102030 navy). Contrast ratios: light primary
+ * 7.2:1 on white, dark primary 7.9:1 on #14181e.
+ */
+
+html:not([data-theme]),
+html[data-theme="light"] {
+  --pst-color-primary: #5b3fc0;
+  --pst-color-primary-bg: #e9e4f8;
+  --pst-color-secondary: #3f2a8f; /* hover: darker */
+  --pst-color-secondary-bg: #f1eefb;
+  --pst-color-accent: #7c5fe0; /* focus rings */
+  --pst-color-accent-bg: #f1eefb;
+  --pst-color-link: var(--pst-color-primary);
+  --pst-color-link-hover: var(--pst-color-secondary);
+  --pst-color-link-higher-contrast: #3f2a8f;
+  --pst-color-inline-code-links: var(--pst-color-link);
+  --pst-color-table-row-hover-bg: #f1eefb;
+}
+
+html[data-theme="dark"] {
+  --pst-color-primary: #b3a3ec;
+  --pst-color-primary-bg: #2a2150;
+  --pst-color-secondary: #d0c6f3; /* hover: lighter */
+  --pst-color-secondary-bg: #2a2150;
+  --pst-color-accent: #c4b7f1;
+  --pst-color-accent-bg: #2a2150;
+  --pst-color-link: var(--pst-color-primary);
+  --pst-color-link-hover: var(--pst-color-secondary);
+  --pst-color-link-higher-contrast: #c4b7f1;
+  --pst-color-inline-code-links: var(--pst-color-link);
+  --pst-color-table-row-hover-bg: #27213f;
+}
+
+/* ---- Footer ------------------------------------------------------------ */
+
+/* The theme renders footer_start inside a padded, width-capped flex row.
+   Let the template own the full width so its bands can bleed edge to edge. */
+.bd-footer {
+  padding: 0;
+  border-top: 0;
+  background: transparent;
+}
+.bd-footer .bd-footer__inner {
+  max-width: none;
+  padding: 0;
+  display: block;
+}
+.bd-footer .footer-items__start,
+.bd-footer .footer-item {
+  width: 100%;
+  margin: 0;
+}
+
+/* Band colours are fixed dark in both themes, like the header of a printed
+   report: the footer is a destination, not part of the reading surface.
+   The guide band is the logo's navy; links use the dark-theme purple so
+   contrast holds on both bands. */
+.ns-footer {
+  --ns-footer-guide-bg: #1c2a3c;
+  --ns-footer-site-bg: #102030;
+  --ns-footer-fg: #e8eaed;
+  --ns-footer-muted: #a8adb3;
+  --ns-footer-rule: #34455a;
+  --ns-footer-link: #c4b7f1;
+  --ns-footer-link-hover: #d0c6f3;
+  --ns-footer-code-bg: #0b1622;
+  color: var(--ns-footer-fg);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+html[data-theme="dark"] .ns-footer {
+  --ns-footer-guide-bg: #141e2b;
+  --ns-footer-site-bg: #0b1420;
+}
+
+.ns-footer__band--guide {
+  background: var(--ns-footer-guide-bg);
+}
+.ns-footer__band--site {
+  background: var(--ns-footer-site-bg);
+}
+
+.ns-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.ns-footer h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.75rem;
+  color: var(--ns-footer-fg);
+}
+.ns-footer p {
+  margin: 0 0 1rem;
+}
+.ns-footer a {
+  color: var(--ns-footer-link);
+  text-decoration: none;
+}
+.ns-footer a:hover,
+.ns-footer a:focus-visible {
+  color: var(--ns-footer-link-hover);
+  text-decoration: underline;
+}
+
+/* Band 1: three equal columns with a "View x ›" call to action. */
+.ns-footer__columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.5rem;
+}
+.ns-footer__column p {
+  color: var(--ns-footer-muted);
+}
+.ns-footer__cta {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+/* Band 2: install block, two link lists, icon row, legal. */
+.ns-footer__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2.5rem;
+}
+.ns-footer__install p {
+  color: var(--ns-footer-muted);
+  max-width: 48ch;
+}
+.ns-footer__code {
+  display: inline-block;
+  margin: 0;
+  padding: 0.6rem 0.9rem;
+  background: var(--ns-footer-code-bg);
+  border: 1px solid var(--ns-footer-rule);
+  border-radius: 0.25rem;
+  color: var(--ns-footer-fg);
+  font-size: 0.9rem;
+}
+.ns-footer__links h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.ns-footer__links ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ns-footer__links li {
+  margin: 0.25rem 0;
+}
+.ns-footer__links a {
+  color: var(--ns-footer-fg);
+}
+.ns-footer__links a:hover {
+  color: var(--ns-footer-link-hover);
+}
+.ns-footer__muted {
+  color: var(--ns-footer-muted);
+  font-size: 0.85rem;
+}
+
+.ns-footer__social {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 2.5rem 0 0;
+  padding: 0 0 1.5rem;
+  border-bottom: 1px solid var(--ns-footer-rule);
+}
+.ns-footer__social a {
+  color: var(--ns-footer-fg);
+  font-size: 1.4rem;
+}
+.ns-footer__social a:hover {
+  color: var(--ns-footer-link);
+  text-decoration: none;
+}
+
+.ns-footer__legal {
+  padding-top: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--ns-footer-muted);
+}
+.ns-footer__legal p {
+  margin: 0 0 0.4rem;
+  max-width: 100ch;
+}
+.ns-footer__legal a {
+  color: var(--ns-footer-fg);
+  text-decoration: underline;
+}
+.ns-footer__build {
+  color: var(--ns-footer-muted);
+}
+
+@media (max-width: 960px) {
+  .ns-footer__columns,
+  .ns-footer__grid {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+  .ns-footer__inner {
+    padding: 2.25rem 1.25rem;
+  }
+  .ns-footer__social {
+    gap: 1.5rem;
+  }
+}
