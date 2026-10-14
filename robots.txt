@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /ns-sdn/dev/
+Sitemap: https://nikhilxsunder.github.io/ns-sdn/stable/sitemap.xml
