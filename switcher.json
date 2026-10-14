@@ -5,9 +5,14 @@
     "url": "https://nikhilxsunder.github.io/ns-sdn/dev/"
   },
   {
-    "name": "1.0.0a1 (stable)",
+    "name": "1.0.0 (stable)",
     "version": "stable",
     "url": "https://nikhilxsunder.github.io/ns-sdn/stable/",
     "preferred": true
+  },
+  {
+    "name": "1.0.0a1",
+    "version": "1.0.0a1",
+    "url": "https://nikhilxsunder.github.io/ns-sdn/1.0.0a1/"
   }
 ]
