@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="ns_sdn.summary" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://nikhilxsunder.github.io/ns-sdn/stable/api/generated/ns_sdn.summary.html" />
+<meta property="og:site_name" content="ns-sdn" />
+<meta property="og:description" content="The reporting surface: the records every fitted result renders itself through. summary() on a result does not format anything; it returns a SummaryTable, a record that renders on demand as fixed-width text ( print, str, the bare repr), as HTML in a notebook (_repr_html_) or as a pandas.DataFrame(..." />
+<meta property="og:image" content="https://nikhilxsunder.github.io/ns-sdn/stable/_static/ns-sdn-mark.png" />
+<meta property="og:image:alt" content="ns-sdn" />
+<meta name="description" content="The reporting surface: the records every fitted result renders itself through. summary() on a result does not format anything; it returns a SummaryTable, a record that renders on demand as fixed-width text ( print, str, the bare repr), as HTML in a notebook (_repr_html_) or as a pandas.DataFrame(..." />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="ns-sdn Documentation" />
+<meta property="og:image:alt" content="ns-sdn Logo" />
+
+    <meta property="article:modified_time" content="2026-10-14T14:11:53+00:00" />
+    <title>ns_sdn.summary &#8212; ns-sdn</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-codeautolink.css?v=b2176991" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3724b800" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('consent', 'default', {
+                    'ad_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied',
+                    'analytics_storage': 'denied'
+                });
+            </script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T9HLR97XCS"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-T9HLR97XCS');
+            </script>
+    <script defer="defer" src="https://unpkg.com/@popperjs/core@2"></script>
+    <script defer="defer" src="https://unpkg.com/tippy.js@6"></script>
+    <script defer="defer" src="../../_static/tippy/api/generated/ns_sdn.summary.d6da492b-9bcd-49dd-99d3-8ecf17b7d0a1.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/ns_sdn.summary';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nikhilxsunder.github.io/ns-sdn/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://nikhilxsunder.github.io/ns-sdn/stable/api/generated/ns_sdn.summary.html" />
+    <link rel="icon" href="../../_static/ns-sdn-favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="InformationCriteria" href="ns_sdn.summary.InformationCriteria.html" />
+    <link rel="prev" title="SpectralState.to_pandas" href="ns_sdn.spectral_state.SpectralState.to_pandas.html" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.0" />
+    <meta name="docbuild:last-update" content="2026-10-14"/>
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://github.com/nikhilxsunder/ns-sdn#software",
+        "name": "ns-sdn",
+        "alternateName": "ns-sdn 1.0.0",
+        "description": "Non-Stationary Spectral Decomposition Network: a neural state-space model emitting an interpretable time-varying spectral decomposition of economic and financial time series, on numpy and torch.",
+        "codeRepository": "https://github.com/nikhilxsunder/ns-sdn",
+        "url": "https://nikhilxsunder.github.io/ns-sdn/",
+        "identifier": {"@type": "PropertyValue", "propertyID": "DOI", "value": "10.5281/zenodo.23368625"},
+        "sameAs": "https://doi.org/10.5281/zenodo.23368625",
+        "programmingLanguage": {"@type": "ComputerLanguage", "name": "Python"},
+        "runtimePlatform": "Python 3.12+",
+        "version": "1.0.0",
+        "license": "https://opensource.org/license/mit",
+        "isAccessibleForFree": true,
+        "applicationCategory": "Econometrics",
+        "keywords": "time series, spectral decomposition, state space, instantaneous frequency, econometrics, neural network, pytorch",
+        "author": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#author"},
+        "maintainer": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#author"},
+        "downloadUrl": "https://pypi.org/project/ns-sdn/",
+        "installUrl": "https://pypi.org/project/ns-sdn/",
+        "softwareHelp": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#website"},
+        "discussionUrl": "https://github.com/nikhilxsunder/ns-sdn/issues",
+        "targetProduct": {
+          "@type": "SoftwareApplication",
+          "name": "ns-sdn",
+          "operatingSystem": "Linux, macOS, Windows",
+          "applicationCategory": "DeveloperApplication",
+          "softwareVersion": "1.0.0",
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://nikhilxsunder.github.io/ns-sdn/#author",
+        "name": "Nikhil Sunder",
+        "url": "https://github.com/nikhilxsunder",
+        "sameAs": ["https://github.com/nikhilxsunder", "https://orcid.org/0009-0007-3323-1760"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://nikhilxsunder.github.io/ns-sdn/#website",
+        "name": "ns-sdn documentation",
+        "url": "https://nikhilxsunder.github.io/ns-sdn/",
+        "inLanguage": "en",
+        "about": {"@id": "https://github.com/nikhilxsunder/ns-sdn#software"},
+        "publisher": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#author"},
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://nikhilxsunder.github.io/ns-sdn/stable/search.html?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "TechArticle",
+        "@id": "https://nikhilxsunder.github.io/ns-sdn/stable/api/generated/ns_sdn.summary.html",
+        "url": "https://nikhilxsunder.github.io/ns-sdn/stable/api/generated/ns_sdn.summary.html",
+        "name": "ns_sdn.summary",
+        "headline": "ns_sdn.summary",
+        "inLanguage": "en",
+        "isPartOf": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#website"},
+        "about": {"@id": "https://github.com/nikhilxsunder/ns-sdn#software"},
+        "author": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#author"},
+        "license": "https://opensource.org/license/mit",
+        "version": "1.0.0",
+        "dateModified": "2026-10-14",
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ns-sdn", "item": "https://nikhilxsunder.github.io/ns-sdn/stable/"},
+            {"@type": "ListItem", "position": 2, "name": "API reference", "item": "https://nikhilxsunder.github.io/ns-sdn/stable/api/index.html"},
+            {"@type": "ListItem", "position": 3, "name": "ns_sdn.summary", "item": "https://nikhilxsunder.github.io/ns-sdn/stable/api/generated/ns_sdn.summary.html"}
+          ]
+        }
+      }
+    ]
+  }
+</script>
+
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/ns-sdn-logo.png" class="logo__image only-light" alt="ns-sdn - Home"/>
+    <img src="../../_static/ns-sdn-logo-dark.png" class="logo__image only-dark pst-js-only" alt="ns-sdn - Home"/>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../engine/index.html">
+    Engine reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../project/index.html">
+    Project
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nikhilxsunder/ns-sdn" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/ns-sdn/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-python fa-lg" aria-hidden="true"></i><span class="visually-hidden">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn" title="Codecov" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fas fa-umbrella fa-lg" aria-hidden="true"></i><span class="visually-hidden">Codecov</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../engine/index.html">
+    Engine reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../project/index.html">
+    Project
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nikhilxsunder/ns-sdn" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/ns-sdn/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-python fa-lg" aria-hidden="true"></i><span class="visually-hidden">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn" title="Codecov" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fas fa-umbrella fa-lg" aria-hidden="true"></i><span class="visually-hidden">Codecov</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="ns_sdn.spectral_decomposition.html">ns_sdn.spectral_decomposition</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.html">NSSDN</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.alignment.html">NSSDN.alignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.device.html">NSSDN.device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.endog.html">NSSDN.endog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.exog.html">NSSDN.exog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.exog_dim.html">NSSDN.exog_dim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.gating.html">NSSDN.gating</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.k.html">NSSDN.k</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.nobs_total.html">NSSDN.nobs_total</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.objective.html">NSSDN.objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.ordered_frequency.html">NSSDN.ordered_frequency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.penalties.html">NSSDN.penalties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.positive_frequency.html">NSSDN.positive_frequency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.scaling.html">NSSDN.scaling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.schedule.html">NSSDN.schedule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.seed.html">NSSDN.seed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.state_dim.html">NSSDN.state_dim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.time.html">NSSDN.time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.transition.html">NSSDN.transition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDN.fit.html">NSSDN.fit</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.html">NSSDNResult</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.endog.html">NSSDNResult.endog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.time.html">NSSDNResult.time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.exog.html">NSSDNResult.exog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.k.html">NSSDNResult.k</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.state_dim.html">NSSDNResult.state_dim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.alignment.html">NSSDNResult.alignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.transition.html">NSSDNResult.transition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.ordered_frequency.html">NSSDNResult.ordered_frequency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.gating.html">NSSDNResult.gating</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.objective.html">NSSDNResult.objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.scaling.html">NSSDNResult.scaling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.scale.html">NSSDNResult.scale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.emission.html">NSSDNResult.emission</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.fittedvalues.html">NSSDNResult.fittedvalues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.resid.html">NSSDNResult.resid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.llf.html">NSSDNResult.llf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.nobs.html">NSSDNResult.nobs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.n_params.html">NSSDNResult.n_params</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.sigma2.html">NSSDNResult.sigma2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.trend.html">NSSDNResult.trend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.amplitude_raw.html">NSSDNResult.amplitude_raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.amplitude.html">NSSDNResult.amplitude</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.frequency.html">NSSDNResult.frequency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.phase.html">NSSDNResult.phase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.phase_offset.html">NSSDNResult.phase_offset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.gate.html">NSSDNResult.gate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.state.html">NSSDNResult.state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.mix.html">NSSDNResult.mix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.history.html">NSSDNResult.history</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.predictor.html">NSSDNResult.predictor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.aic.html">NSSDNResult.aic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.bic.html">NSSDNResult.bic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.components.html">NSSDNResult.components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.effective_amplitude.html">NSSDNResult.effective_amplitude</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.hqic.html">NSSDNResult.hqic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.information_criteria.html">NSSDNResult.information_criteria</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.observed.html">NSSDNResult.observed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.oscillation.html">NSSDNResult.oscillation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.period.html">NSSDNResult.period</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.power_share.html">NSSDNResult.power_share</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.r_squared.html">NSSDNResult.r_squared</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.reconstruction_resid.html">NSSDNResult.reconstruction_resid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.compare.html">NSSDNResult.compare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.decompose.html">NSSDNResult.decompose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.forecast.html">NSSDNResult.forecast</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.predict.html">NSSDNResult.predict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.spectral_state.html">NSSDNResult.spectral_state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.summary.html">NSSDNResult.summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.to_dict.html">NSSDNResult.to_dict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.to_pandas.html">NSSDNResult.to_pandas</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ns_sdn.spectral_decomposition.Penalties.html">Penalties</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.Penalties.amplitude.html">Penalties.amplitude</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.Penalties.frequency.html">Penalties.frequency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.Penalties.phase_curvature.html">Penalties.phase_curvature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.Penalties.trend.html">Penalties.trend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.Penalties.sparsity.html">Penalties.sparsity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.Penalties.spectrum.html">Penalties.spectrum</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ns_sdn.spectral_decomposition.Stage.html">Stage</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.Stage.learning_rate.html">Stage.learning_rate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.Stage.steps.html">Stage.steps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_decomposition.Stage.penalties.html">Stage.penalties</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ns_sdn.spectral_state.html">ns_sdn.spectral_state</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.html">SpectralState</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.time.html">SpectralState.time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.frequency.html">SpectralState.frequency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.weight.html">SpectralState.weight</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.centroid.html">SpectralState.centroid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.dispersion.html">SpectralState.dispersion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.entropy.html">SpectralState.entropy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.effective_count.html">SpectralState.effective_count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.participation_ratio.html">SpectralState.participation_ratio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.velocity.html">SpectralState.velocity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.velocity_frequency.html">SpectralState.velocity_frequency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.velocity_mass.html">SpectralState.velocity_mass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.active.html">SpectralState.active</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.contribution_correlation.html">SpectralState.contribution_correlation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.disentanglement_score.html">SpectralState.disentanglement_score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.active_threshold.html">SpectralState.active_threshold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.k.html">SpectralState.k</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.nobs.html">SpectralState.nobs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.from_result.html">SpectralState.from_result</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.summary.html">SpectralState.summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.to_dict.html">SpectralState.to_dict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.spectral_state.SpectralState.to_pandas.html">SpectralState.to_pandas</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a aria-current="page" class="current reference internal" href="#">ns_sdn.summary</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ns_sdn.summary.InformationCriteria.html">InformationCriteria</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.InformationCriteria.aic.html">InformationCriteria.aic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.InformationCriteria.bic.html">InformationCriteria.bic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.InformationCriteria.hqic.html">InformationCriteria.hqic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.InformationCriteria.count.html">InformationCriteria.count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.InformationCriteria.from_likelihood.html">InformationCriteria.from_likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.InformationCriteria.index.html">InformationCriteria.index</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="ns_sdn.summary.SummaryTable.html">SummaryTable</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.SummaryTable.title.html">SummaryTable.title</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.SummaryTable.metadata.html">SummaryTable.metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.SummaryTable.columns.html">SummaryTable.columns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.SummaryTable.rows.html">SummaryTable.rows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.SummaryTable.notes.html">SummaryTable.notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.SummaryTable.to_pandas.html">SummaryTable.to_pandas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ns_sdn.summary.SummaryTable.to_text.html">SummaryTable.to_text</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ns_sdn.typing.html">ns_sdn.typing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="ns_sdn.typing.Alignment.html">Alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ns_sdn.typing.Objective.html">Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ns_sdn.typing.Scaling.html">Scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ns_sdn.typing.Transition.html">Transition</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ns_sdn.exceptions.html">ns_sdn.exceptions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="ns_sdn.exceptions.DimensionError.html">DimensionError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ns_sdn.exceptions.NSSDNError.html">NSSDNError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ns_sdn.exceptions.NumericalError.html">NumericalError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ns_sdn.exceptions.SpecificationError.html">SpecificationError</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">API reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">ns_sdn.summary</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-ns_sdn.summary">
+<span id="ns-sdn-summary"></span><h1>ns_sdn.summary<a class="headerlink" href="#module-ns_sdn.summary" title="Link to this heading">#</a></h1>
+<p>The reporting surface: the records every fitted result renders itself through.</p>
+<p><code class="docutils literal notranslate"><span class="pre">summary()</span></code> on a result does not format anything; it returns a
+<a class="reference internal" href="ns_sdn.summary.SummaryTable.html#ns_sdn.summary.SummaryTable" title="ns_sdn.summary.SummaryTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">SummaryTable</span></code></a>, a record that renders on demand as fixed-width
+text (<code class="docutils literal notranslate"><span class="pre">print</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code>, the bare repr), as HTML in a notebook
+(<code class="docutils literal notranslate"><span class="pre">_repr_html_</span></code>) or as a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (<code class="docutils literal notranslate"><span class="pre">to_pandas</span></code>).
+<a class="reference internal" href="ns_sdn.summary.InformationCriteria.html#ns_sdn.summary.InformationCriteria" title="ns_sdn.summary.InformationCriteria"><code class="xref py py-class docutils literal notranslate"><span class="pre">InformationCriteria</span></code></a> is the record behind every
+<code class="docutils literal notranslate"><span class="pre">information_criteria</span></code> property, the triple</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{AIC} = -2\ell + 2p,
+\qquad
+\mathrm{BIC} = -2\ell + p\log m,
+\qquad
+\mathrm{HQIC} = -2\ell + 2p\log\log m,\]</div>
+<p>for a log-likelihood <span class="math notranslate nohighlight">\(\ell\)</span>, <span class="math notranslate nohighlight">\(p\)</span> parameters and an effective
+sample of <span class="math notranslate nohighlight">\(m\)</span> observations. Both are defined once in <code class="docutils literal notranslate"><span class="pre">_core</span></code> and
+bound to this module so pickles, annotations, and the API reference name
+them here.</p>
+<p>Holding the structure rather than the string is what lets the same
+summary carry its notes into every rendering: a table that says
+“compare against a random walk before reading these as skill” says it in
+the notebook, in the terminal and in the frame’s <code class="docutils literal notranslate"><span class="pre">attrs</span></code> alike.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.summary.html#ns_sdn.spectral_decomposition.NSSDNResult.summary" title="ns_sdn.spectral_decomposition.NSSDNResult.summary"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ns_sdn.spectral_decomposition.NSSDNResult.summary()</span></code></a> and
+<a class="reference internal" href="ns_sdn.spectral_state.SpectralState.summary.html#ns_sdn.spectral_state.SpectralState.summary" title="ns_sdn.spectral_state.SpectralState.summary"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ns_sdn.spectral_state.SpectralState.summary()</span></code></a> – the two
+producers of a <a class="reference internal" href="ns_sdn.summary.SummaryTable.html#ns_sdn.summary.SummaryTable" title="ns_sdn.summary.SummaryTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">SummaryTable</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="ns_sdn.spectral_decomposition.NSSDNResult.compare.html#ns_sdn.spectral_decomposition.NSSDNResult.compare" title="ns_sdn.spectral_decomposition.NSSDNResult.compare"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ns_sdn.spectral_decomposition.NSSDNResult.compare()</span></code></a> – a
+comparison table across results by one criterion.</p></li>
+</ul>
+</div>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ns_sdn.summary</span><span class="w"> </span><span class="kn">import</span> <span class="n">SummaryTable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">SummaryTable</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"T"</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">((</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">),),</span> <span class="n">notes</span><span class="o">=</span><span class="p">(</span><span class="s2">"n"</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">to_text</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="nb">type</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="vm">__module__</span>
+<span class="go">('n', 'ns_sdn.summary')</span>
+</pre></div>
+</div>
+<p>The criteria record is a named tuple with a constructor from the
+likelihood:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ns_sdn.summary</span><span class="w"> </span><span class="kn">import</span> <span class="n">InformationCriteria</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">crit</span> <span class="o">=</span> <span class="n">InformationCriteria</span><span class="o">.</span><span class="n">from_likelihood</span><span class="p">(</span><span class="o">-</span><span class="mf">100.0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">crit</span><span class="o">.</span><span class="n">aic</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">crit</span><span class="o">.</span><span class="n">bic</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">crit</span><span class="o">.</span><span class="n">_fields</span>
+<span class="go">(206.0, 215.89, ('aic', 'bic', 'hqic'))</span>
+</pre></div>
+</div>
+</div>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="ns_sdn.summary.InformationCriteria.html#ns_sdn.summary.InformationCriteria" title="ns_sdn.summary.InformationCriteria"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InformationCriteria</span></code></a></p></td>
+<td><p>Model-selection criteria computed from a fitted log-likelihood.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ns_sdn.summary.SummaryTable.html#ns_sdn.summary.SummaryTable" title="ns_sdn.summary.SummaryTable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SummaryTable</span></code></a></p></td>
+<td><p>A rendered-on-demand estimation summary.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ns_sdn.spectral_state.SpectralState.to_pandas.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SpectralState.to_pandas</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ns_sdn.summary.InformationCriteria.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">InformationCriteria</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><div class="ns-footer">
+  <section
+    class="ns-footer__band ns-footer__band--guide"
+    aria-label="Documentation sections"
+  >
+    <div class="ns-footer__inner ns-footer__columns">
+      <div class="ns-footer__column">
+        <h2>User guide</h2>
+        <p>
+          The model in its equations, how to read the decomposition it emits,
+          and the spectral-state coordinates that summarize it.
+        </p>
+        <a class="ns-footer__cta" href="../../user_guide/index.html"
+          >Read the guide<span aria-hidden="true">&nbsp;&rsaquo;</span></a
+        >
+      </div>
+      <div class="ns-footer__column">
+        <h2>Examples</h2>
+        <p>
+          A synthetic chirp with a known answer, then the 10-year Treasury yield
+          from FRED, as executed scripts with their figures.
+        </p>
+        <a class="ns-footer__cta" href="../../auto_examples/index.html"
+          >View the examples<span aria-hidden="true">&nbsp;&rsaquo;</span></a
+        >
+      </div>
+      <div class="ns-footer__column">
+        <h2>API reference</h2>
+        <p>
+          The specification, the result and the spectral state, with every path
+          they carry and a runnable example on each.
+        </p>
+        <a class="ns-footer__cta" href="../index.html"
+          >View the API<span aria-hidden="true">&nbsp;&rsaquo;</span></a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="ns-footer__band ns-footer__band--site"
+    aria-label="Project links"
+  >
+    <div class="ns-footer__inner">
+      <div class="ns-footer__grid">
+        <div class="ns-footer__install">
+          <h2>Get ns-sdn</h2>
+          <p>
+            Releases are published to PyPI and announced on GitHub Releases. Pin
+            the exact version in anything that must reproduce.
+          </p>
+          <pre
+            class="ns-footer__code"
+          ><code>pip install ns-sdn==1.0.0</code></pre>
+        </div>
+
+        <nav class="ns-footer__links" aria-label="Resources">
+          <h2>Resources</h2>
+          <ul>
+            <li>
+              <a href="https://github.com/nikhilxsunder/ns-sdn/releases"
+                >Releases</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/nikhilxsunder/ns-sdn/blob/main/CHANGELOG.md"
+                >Changelog</a
+              >
+            </li>
+            <li>
+              <a href="https://github.com/nikhilxsunder/ns-sdn/issues"
+                >Issues</a
+              >
+            </li>
+            <li>
+              <a href="../../project/citing.html">Citing</a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/nikhilxsunder/ns-sdn/blob/main/LICENSE"
+                >License</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <nav class="ns-footer__links" aria-label="Related projects">
+          <h2>Related</h2>
+          <ul>
+            <li>
+              <a href="https://nikhilxsunder.github.io/cultivars/">cultivars</a
+              ><span class="ns-footer__muted"> time series econometrics</span>
+            </li>
+            <li>
+              <a href="https://nikhilxsunder.github.io/fedfred/">fedfred</a
+              ><span class="ns-footer__muted"> FRED client</span>
+            </li>
+            <li>
+              <a href="https://nikhilxsunder.github.io/edgar-sec/">edgar-sec</a
+              ><span class="ns-footer__muted"> SEC EDGAR client</span>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <ul class="ns-footer__social" aria-label="Project pages">
+        <li>
+          <a href="https://github.com/nikhilxsunder/ns-sdn" title="GitHub"
+            ><i class="fa-brands fa-github" aria-hidden="true"></i
+            ><span class="visually-hidden">GitHub</span></a
+          >
+        </li>
+        <li>
+          <a href="https://pypi.org/project/ns-sdn/" title="PyPI"
+            ><i class="fa-brands fa-python" aria-hidden="true"></i
+            ><span class="visually-hidden">PyPI</span></a
+          >
+        </li>
+        <li>
+          <a
+            href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn"
+            title="Codecov"
+            ><i class="fa-solid fa-umbrella" aria-hidden="true"></i
+            ><span class="visually-hidden">Codecov</span></a
+          >
+        </li>
+        <li>
+          <a href="../../project/citing.html" title="Cite"
+            ><i class="fa-solid fa-quote-left" aria-hidden="true"></i
+            ><span class="visually-hidden">Cite</span></a
+          >
+        </li>
+      </ul>
+
+      <div class="ns-footer__legal">
+        <p>
+          &copy; 2026, Nikhil Sunder. Released under the
+          <a href="https://github.com/nikhilxsunder/ns-sdn/blob/main/LICENSE"
+            >MIT License</a
+          >. ns-sdn is an independent open-source project and is not affiliated
+          with the Federal Reserve Bank of St. Louis; FRED&reg; is a registered
+          trademark of the Federal Reserve Bank of St. Louis.
+        </p>
+        <p class="ns-footer__build">
+          ns-sdn 1.0.0 &middot; updated 2026-10-14 &middot; built with
+          <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0
+          and the
+          <a href="https://pydata-sphinx-theme.readthedocs.io/"
+            >PyData Sphinx Theme</a
+          >
+        </p>
+      </div>
+    </div>
+  </section>
+</div></div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

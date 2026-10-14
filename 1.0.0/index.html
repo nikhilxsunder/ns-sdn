@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+
+<html data-content_root="./" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="ns-sdn is the Non-Stationary Spectral Decomposition Network for Python: a neural state-space model that emits an interpretable time-varying spectral decomposition of economic and financial time series, on numpy and torch." name="description"/>
+<meta content="ns-sdn" property="og:title"/>
+<meta content="website" property="og:type"/>
+<meta content="https://nikhilxsunder.github.io/ns-sdn/stable/index.html" property="og:url"/>
+<meta content="ns-sdn" property="og:site_name"/>
+<meta content="A neural state-space model that decomposes a non-stationary series into a trend and a few sinusoids whose amplitude, frequency and participation move with a latent state. Fit it to one series, read the decomposition back as arrays, forecast from it, and summarize the whole spectral picture in a h..." property="og:description"/>
+<meta content="https://nikhilxsunder.github.io/ns-sdn/stable/_static/ns-sdn-mark.png" property="og:image"/>
+<meta content="ns-sdn" property="og:image:alt"/>
+<meta content="en_US" property="og:locale"/>
+<meta content="ns-sdn Documentation" property="og:site_name"/>
+<meta content="ns-sdn Logo" property="og:image:alt"/>
+<meta content="2026-10-14T14:11:53+00:00" property="article:modified_time"/>
+<title>ns-sdn — ns-sdn</title>
+<script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+<!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+<noscript>
+<style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+</noscript>
+<!-- Loaded before other Sphinx assets -->
+<link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet"/>
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet"/>
+<link href="_static/pygments.css?v=8f2a1f02" rel="stylesheet" type="text/css"/>
+<link href="_static/sphinx-codeautolink.css?v=b2176991" rel="stylesheet" type="text/css"/>
+<link href="_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="_static/plot_directive.css" rel="stylesheet" type="text/css"/>
+<link href="_static/sg_gallery.css?v=c83e6b79" rel="stylesheet" type="text/css"/>
+<link href="_static/sg_gallery-binder.css?v=f4aeca0c" rel="stylesheet" type="text/css"/>
+<link href="_static/sg_gallery-dataframe.css?v=2082cf3c" rel="stylesheet" type="text/css"/>
+<link href="_static/sg_gallery-rendered-html.css?v=1277b6f3" rel="stylesheet" type="text/css"/>
+<link href="_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
+<link href="_static/custom.css?v=3724b800" rel="stylesheet" type="text/css"/>
+<!-- So that users can add custom icons -->
+<script defer="" src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+<!-- Pre-loaded scripts that we'll load fully later -->
+<link as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" rel="preload"/>
+<link as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" rel="preload"/>
+<script src="_static/documentation_options.js?v=8d563738"></script>
+<script src="_static/doctools.js?v=fd6eb6e6"></script>
+<script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+<script src="_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="_static/copybutton.js?v=f281be69"></script>
+<script src="_static/sg-tags.js?v=d80f6fa4"></script>
+<script src="_static/design-tabs.js?v=f930bc37"></script>
+<script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('consent', 'default', {
+                    'ad_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied',
+                    'analytics_storage': 'denied'
+                });
+            </script>
+<script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T9HLR97XCS"></script>
+<script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-T9HLR97XCS');
+            </script>
+<script defer="defer" src="https://unpkg.com/@popperjs/core@2"></script>
+<script defer="defer" src="https://unpkg.com/tippy.js@6"></script>
+<script defer="defer" src="_static/tippy/index.dba952c7-e478-40bb-914d-fb5d3aa766c1.js"></script>
+<script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+<script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+<script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nikhilxsunder.github.io/ns-sdn/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+<script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+<link href="https://nikhilxsunder.github.io/ns-sdn/stable/index.html" rel="canonical"/>
+<link href="_static/ns-sdn-favicon.ico" rel="icon"/>
+<link href="genindex.html" rel="index" title="Index"/>
+<link href="search.html" rel="search" title="Search"/>
+<link href="getting_started/index.html" rel="next" title="Getting started"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="light dark" name="color-scheme"/>
+<meta content="en" name="docsearch:language"/>
+<meta content="1.0" name="docsearch:version"/>
+<meta content="2026-10-14" name="docbuild:last-update"/>
+<script src="_static/searchtools.js"></script>
+<script src="_static/language_data.js"></script>
+<script src="searchindex.js"></script>
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://github.com/nikhilxsunder/ns-sdn#software",
+        "name": "ns-sdn",
+        "alternateName": "ns-sdn 1.0.0",
+        "description": "Non-Stationary Spectral Decomposition Network: a neural state-space model emitting an interpretable time-varying spectral decomposition of economic and financial time series, on numpy and torch.",
+        "codeRepository": "https://github.com/nikhilxsunder/ns-sdn",
+        "url": "https://nikhilxsunder.github.io/ns-sdn/",
+        "identifier": {"@type": "PropertyValue", "propertyID": "DOI", "value": "10.5281/zenodo.23368625"},
+        "sameAs": "https://doi.org/10.5281/zenodo.23368625",
+        "programmingLanguage": {"@type": "ComputerLanguage", "name": "Python"},
+        "runtimePlatform": "Python 3.12+",
+        "version": "1.0.0",
+        "license": "https://opensource.org/license/mit",
+        "isAccessibleForFree": true,
+        "applicationCategory": "Econometrics",
+        "keywords": "time series, spectral decomposition, state space, instantaneous frequency, econometrics, neural network, pytorch",
+        "author": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#author"},
+        "maintainer": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#author"},
+        "downloadUrl": "https://pypi.org/project/ns-sdn/",
+        "installUrl": "https://pypi.org/project/ns-sdn/",
+        "softwareHelp": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#website"},
+        "discussionUrl": "https://github.com/nikhilxsunder/ns-sdn/issues",
+        "targetProduct": {
+          "@type": "SoftwareApplication",
+          "name": "ns-sdn",
+          "operatingSystem": "Linux, macOS, Windows",
+          "applicationCategory": "DeveloperApplication",
+          "softwareVersion": "1.0.0",
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://nikhilxsunder.github.io/ns-sdn/#author",
+        "name": "Nikhil Sunder",
+        "url": "https://github.com/nikhilxsunder",
+        "sameAs": ["https://github.com/nikhilxsunder", "https://orcid.org/0009-0007-3323-1760"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://nikhilxsunder.github.io/ns-sdn/#website",
+        "name": "ns-sdn documentation",
+        "url": "https://nikhilxsunder.github.io/ns-sdn/",
+        "inLanguage": "en",
+        "about": {"@id": "https://github.com/nikhilxsunder/ns-sdn#software"},
+        "publisher": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#author"},
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://nikhilxsunder.github.io/ns-sdn/stable/search.html?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://nikhilxsunder.github.io/ns-sdn/stable/index.html",
+        "url": "https://nikhilxsunder.github.io/ns-sdn/stable/index.html",
+        "name": "ns-sdn",
+        "headline": "ns-sdn",
+        "inLanguage": "en",
+        "isPartOf": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#website"},
+        "about": {"@id": "https://github.com/nikhilxsunder/ns-sdn#software"},
+        "author": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#author"},
+        "license": "https://opensource.org/license/mit",
+        "version": "1.0.0",
+        "dateModified": "2026-10-14"
+      }
+    ]
+  }
+</script>
+</head>
+<body data-default-mode="">
+<div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
+<div id="pst-scroll-pixel-helper"></div>
+<button class="btn rounded-pill" id="pst-back-to-top" type="button">
+<i class="fa-solid fa-arrow-up"></i>Back to top</button>
+<dialog id="pst-search-dialog">
+<form action="search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search the docs ..." autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search the docs ..." spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</dialog>
+<div class="pst-async-banner-revealer d-none">
+<aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
+</div>
+<header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none" id="pst-header">
+<div class="bd-header__inner bd-page-width">
+<button aria-label="Site navigation" class="pst-navbar-icon sidebar-toggle primary-toggle" type="button">
+<span class="fa-solid fa-bars"></span>
+</button>
+<div class="navbar-header-items__start">
+<div class="navbar-item">
+<a class="navbar-brand logo" href="#">
+<img alt="ns-sdn - Home" class="logo__image only-light" src="_static/ns-sdn-logo.png"/>
+<img alt="ns-sdn - Home" class="logo__image only-dark pst-js-only" src="_static/ns-sdn-logo-dark.png"/>
+</a></div>
+<div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+<button aria-controls="pst-version-switcher-list-2" aria-haspopup="listbox" aria-label="Version switcher list" class="version-switcher__button btn btn-sm dropdown-toggle" data-bs-toggle="dropdown" id="pst-version-switcher-button-2" type="button">
+    Choose version  <!-- this text may get changed later by javascript -->
+<span class="caret"></span>
+</button>
+<div aria-labelledby="pst-version-switcher-button-2" class="version-switcher__menu dropdown-menu list-group-flush py-0" id="pst-version-switcher-list-2" role="listbox">
+<!-- dropdown will be populated by javascript on page load -->
+</div>
+</div></div>
+</div>
+<div class="navbar-header-items">
+<div class="me-auto navbar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="getting_started/index.html">
+    Getting started
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="user_guide/index.html">
+    User guide
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="auto_examples/index.html">
+    Examples
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="api/index.html">
+    API reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="engine/index.html">
+    Engine reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="project/index.html">
+    Project
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="navbar-header-items__end">
+<div class="navbar-item navbar-persistent--container">
+<button aria-label="Search" class="btn search-button-field search-button__button pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Search" type="button">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span class="search-button__default-text">Search</span>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+</div>
+<div class="navbar-item">
+<div class="theme-switch-container dropdown pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Color mode">
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" data-bs-toggle="dropdown" type="button">
+<i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+</button>
+<ul class="dropdown-menu dropdown-menu-end">
+<li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto" type="button"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+<li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light" type="button"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+<li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark" type="button"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+</ul>
+</div></div>
+<div class="navbar-item"><ul aria-label="Icon Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/nikhilxsunder/ns-sdn" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fab fa-github fa-lg"></i><span class="visually-hidden">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://pypi.org/project/ns-sdn/" rel="noopener" target="_blank" title="PyPI"><i aria-hidden="true" class="fab fa-python fa-lg"></i><span class="visually-hidden">PyPI</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn" rel="noopener" target="_blank" title="Codecov"><i aria-hidden="true" class="fas fa-umbrella fa-lg"></i><span class="visually-hidden">Codecov</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="navbar-persistent--mobile">
+<button aria-label="Search" class="btn search-button-field search-button__button pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Search" type="button">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span class="search-button__default-text">Search</span>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+</div>
+<button aria-label="On this page" class="pst-navbar-icon sidebar-toggle secondary-toggle" type="button">
+<span class="fa-solid fa-outdent"></span>
+</button>
+</div>
+</header>
+<div class="bd-container">
+<div class="bd-container__inner bd-page-width">
+<dialog id="pst-primary-sidebar-modal"></dialog>
+<div class="bd-sidebar-primary bd-sidebar hide-on-wide" id="pst-primary-sidebar">
+<div class="sidebar-header-items sidebar-primary__section">
+<div class="sidebar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="getting_started/index.html">
+    Getting started
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="user_guide/index.html">
+    User guide
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="auto_examples/index.html">
+    Examples
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="api/index.html">
+    API reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="engine/index.html">
+    Engine reference
+  </a>
+</li>
+<li class="nav-item">
+<a class="nav-link nav-internal" href="project/index.html">
+    Project
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="sidebar-header-items__end">
+<div class="navbar-item">
+<div class="theme-switch-container dropdown pst-js-only" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Color mode">
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" data-bs-toggle="dropdown" type="button">
+<i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+</button>
+<ul class="dropdown-menu dropdown-menu-end">
+<li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto" type="button"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+<li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light" type="button"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+<li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark" type="button"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+</ul>
+</div></div>
+<div class="navbar-item"><ul aria-label="Icon Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/nikhilxsunder/ns-sdn" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fab fa-github fa-lg"></i><span class="visually-hidden">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://pypi.org/project/ns-sdn/" rel="noopener" target="_blank" title="PyPI"><i aria-hidden="true" class="fab fa-python fa-lg"></i><span class="visually-hidden">PyPI</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn" rel="noopener" target="_blank" title="Codecov"><i aria-hidden="true" class="fas fa-umbrella fa-lg"></i><span class="visually-hidden">Codecov</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sidebar-primary-items__end sidebar-primary__section">
+<div class="sidebar-primary-item">
+<div class="flat" data-ea-manual="true" data-ea-publisher="readthedocs" data-ea-type="readthedocs-sidebar" id="ethical-ad-placement">
+</div></div>
+</div>
+</div>
+<main class="bd-main" id="main-content" role="main">
+<div class="bd-content">
+<div class="bd-article-container">
+<div class="bd-header-article d-print-none"></div>
+<div id="searchbox"></div>
+<article class="bd-article">
+<section id="ns-sdn">
+<h1>ns-sdn<a class="headerlink" href="#ns-sdn" title="Link to this heading">#</a></h1>
+<p><strong>A neural state-space model that decomposes a non-stationary series into
+a trend and a few sinusoids whose amplitude, frequency and participation
+move with a latent state.</strong> Fit it to one series, read the decomposition
+back as arrays, forecast from it, and summarize the whole spectral
+picture in a handful of coordinates. One model, one <code class="docutils literal notranslate"><span class="pre">fit()</span></code>, one frozen
+result, in the same shape as <code class="xref py py-mod docutils literal notranslate"><span class="pre">cultivars</span></code>.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-4 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover sd-text-center docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Getting started</div>
+<p class="sd-card-text">Install, fit a first decomposition, read its summary and its paths.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="getting_started/index.html"><span class="doc">Getting started</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover sd-text-center docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+User guide</div>
+<p class="sd-card-text">The model in its equations, the decomposition, forecasting, the
+spectral state, and what to be careful about.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="user_guide/index.html"><span class="doc">User guide</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover sd-text-center docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Examples</div>
+<p class="sd-card-text">A synthetic chirp with a known answer, then the 10-year Treasury
+yield from FRED.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="auto_examples/index.html"><span class="doc">Examples</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover sd-text-center docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+API reference</div>
+<p class="sd-card-text">The specification, the result, the spectral state and the schedule
+records, with their sources.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="api/index.html"><span class="doc">API reference</span></a></div>
+</div>
+</div>
+</div>
+<section id="release-status">
+<h2>Release status<a class="headerlink" href="#release-status" title="Link to this heading">#</a></h2>
+<div class="note admonition">
+<p class="admonition-title">ns-sdn 1.0.0 is a stable release</p>
+<p><span class="sd-sphinx-override sd-badge sd-bg-success sd-bg-text-success">API: frozen for 1.x</span> <span class="sd-sphinx-override sd-badge sd-bg-secondary sd-bg-text-secondary">numerics: match the published run</span></p>
+<p>The model-fit-result pattern, the names <code class="docutils literal notranslate"><span class="pre">NSSDN</span></code>, <code class="docutils literal notranslate"><span class="pre">NSSDNResult</span></code>,
+<code class="docutils literal notranslate"><span class="pre">SpectralState</span></code>, <code class="docutils literal notranslate"><span class="pre">Stage</span></code> and <code class="docutils literal notranslate"><span class="pre">Penalties</span></code>, their argument names,
+result fields and summary wording are the <code class="docutils literal notranslate"><span class="pre">1.x</span></code> contract under
+semantic versioning. A change that alters the output of the default
+configuration on the published data is a major version; every change
+to a public surface is listed in the
+<a class="reference internal" href="project/release_notes.html"><span class="doc">release notes</span></a>. The default configuration
+reproduces the IEEE-ORSS DGS10 run to the parameter count. Pin the exact
+version in anything that must reproduce:</p>
+<pre class="literal-block">pip install "ns-sdn==1.0.0"</pre>
+</div>
+</section>
+<section id="install">
+<h2>Install<a class="headerlink" href="#install" title="Link to this heading">#</a></h2>
+<p>Python 3.12 or newer. The core depends on <a class="reference external" href="https://numpy.org/doc/stable/reference/index.html#module-numpy" title="(in NumPy v2.5)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code></a> and <a class="reference external" href="https://docs.pytorch.org/docs/stable/torch.html#module-torch" title="(in PyTorch v2.14)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code></a>;
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v3.0.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a> is optional and switches on <code class="docutils literal notranslate"><span class="pre">to_pandas()</span></code> on every
+result, and <code class="xref py py-mod docutils literal notranslate"><span class="pre">fedfred</span></code> is optional and fetches the FRED series the
+examples use.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio"/>
+<label class="sd-tab-label" for="sd-tab-item-0">
+pip</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ns-sdn
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"ns-sdn[pandas,data]"</span><span class="w">     </span><span class="c1"># dataframes and FRED access</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio"/>
+<label class="sd-tab-label" for="sd-tab-item-1">
+uv</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>add<span class="w"> </span>ns-sdn
+uv<span class="w"> </span>add<span class="w"> </span><span class="s2">"ns-sdn[pandas,data]"</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio"/>
+<label class="sd-tab-label" for="sd-tab-item-2">
+From source</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/nikhilxsunder/ns-sdn.git
+<span class="nb">cd</span><span class="w"> </span>ns-sdn
+uv<span class="w"> </span>sync<span class="w"> </span>--group<span class="w"> </span>dev
+</pre></div>
+</div>
+</div>
+</div>
+<p>On Linux, PyPI’s <code class="docutils literal notranslate"><span class="pre">torch</span></code> wheel pulls the CUDA stack; the
+<a class="reference internal" href="getting_started/installation.html"><span class="doc">installation page</span></a> shows the
+CPU-only install, which is all the model needs.</p>
+</section>
+<section id="in-sixty-seconds">
+<h2>In sixty seconds<a class="headerlink" href="#in-sixty-seconds" title="Link to this heading">#</a></h2>
+<p>A series with two oscillations and a drift, a three-component model with
+a short schedule, and the three things every result gives you: the
+decomposition, a forecast, and a summary that says what it assumes. The
+example is synthetic so it runs without a network connection; the
+<a class="reference internal" href="auto_examples/index.html"><span class="doc">examples</span></a> do the same on FRED data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/index.html#module-numpy"><span class="nn">numpy</span></a><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.html#module-ns_sdn.spectral_decomposition"><span class="nn">ns_sdn.spectral_decomposition</span></a><span class="w"> </span><span class="kn">import</span> <a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.NSSDN.html#ns_sdn.spectral_decomposition.NSSDN" title="ns_sdn.spectral_decomposition.NSSDN"><span class="n">NSSDN</span></a><span class="p">,</span> <a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.Stage.html#ns_sdn.spectral_decomposition.Stage" title="ns_sdn.spectral_decomposition.Stage"><span class="n">Stage</span></a>
+
+<span class="n">t</span> <span class="o">=</span> <a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mf">300.0</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="mf">0.003</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="mf">0.12</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.4</span> <span class="o">*</span> <a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="mf">0.55</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">+=</span> <span class="mf">0.05</span> <span class="o">*</span> <a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/random/generator.html#numpy.random.default_rng" title="numpy.random.default_rng"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span></a><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
+
+<a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.NSSDNResult.html#ns_sdn.spectral_decomposition.NSSDNResult" title="ns_sdn.spectral_decomposition.NSSDNResult"><span class="n">res</span></a> <span class="o">=</span> <a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.NSSDN.html#ns_sdn.spectral_decomposition.NSSDN" title="ns_sdn.spectral_decomposition.NSSDN"><span class="n">NSSDN</span></a><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">state_dim</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">schedule</span><span class="o">=</span><span class="p">(</span><a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.Stage.html#ns_sdn.spectral_decomposition.Stage" title="ns_sdn.spectral_decomposition.Stage"><span class="n">Stage</span></a><span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mi">80</span><span class="p">),),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.NSSDN.fit.html#ns_sdn.spectral_decomposition.NSSDN.fit" title="ns_sdn.spectral_decomposition.NSSDN.fit"><span class="n">fit</span></a><span class="p">()</span>
+
+<a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#print"><span class="nb">print</span></a><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">trend</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">frequency</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>   <span class="c1"># the decomposition</span>
+<a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#print"><span class="nb">print</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="https://numpy.org/doc/stable/reference/generated/numpy.allclose.html#numpy.allclose" title="numpy.allclose"><span class="n">np</span><span class="o">.</span><span class="n">allclose</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.NSSDNResult.trend.html#ns_sdn.spectral_decomposition.NSSDNResult.trend" title="ns_sdn.spectral_decomposition.NSSDNResult.trend"><span class="n">res</span><span class="o">.</span><span class="n">trend</span></a> <span class="o">+</span> <span class="n">res</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.NSSDNResult.emission.html#ns_sdn.spectral_decomposition.NSSDNResult.emission" title="ns_sdn.spectral_decomposition.NSSDNResult.emission"><span class="n">res</span><span class="o">.</span><span class="n">emission</span></a><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">))</span>
+<a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#print"><span class="nb">print</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.NSSDNResult.forecast.html#ns_sdn.spectral_decomposition.NSSDNResult.forecast" title="ns_sdn.spectral_decomposition.NSSDNResult.forecast"><span class="n">res</span><span class="o">.</span><span class="n">forecast</span></a><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>                                        <span class="c1"># a forecast</span>
+<a class="sphinx-codeautolink-a" href="https://docs.python.org/3/builtins/functions.html#print"><span class="nb">print</span></a><span class="p">(</span><a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.NSSDNResult.summary.html#ns_sdn.spectral_decomposition.NSSDNResult.summary" title="ns_sdn.spectral_decomposition.NSSDNResult.summary"><span class="n">res</span><span class="o">.</span><span class="n">summary</span></a><span class="p">()</span><span class="o">.</span><a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.summary.SummaryTable.title.html#ns_sdn.summary.SummaryTable.title" title="ns_sdn.summary.SummaryTable.title"><span class="n">title</span></a><span class="p">,</span> <a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.NSSDNResult.nobs.html#ns_sdn.spectral_decomposition.NSSDNResult.nobs" title="ns_sdn.spectral_decomposition.NSSDNResult.nobs"><span class="n">res</span><span class="o">.</span><span class="n">nobs</span></a><span class="p">,</span> <a class="sphinx-codeautolink-a" href="api/generated/ns_sdn.spectral_decomposition.NSSDNResult.n_params.html#ns_sdn.spectral_decomposition.NSSDNResult.n_params" title="ns_sdn.spectral_decomposition.NSSDNResult.n_params"><span class="n">res</span><span class="o">.</span><span class="n">n_params</span></a><span class="p">)</span>                  <span class="c1"># a summary</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(300,) (300, 3) (300, 3)
+True
+(5,)
+NSSDN(k=3) Results 299 1155
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">print(res)</span></code> renders the summary table: one row per component with its
+mean amplitude, frequency, period, gate, mixing weight and share of
+power, the fit statistics above it, and under it the notes that qualify
+the numbers. A result is a frozen dataclass, so everything in the table is
+also an attribute, and <code class="docutils literal notranslate"><span class="pre">to_pandas()</span></code> returns every path as a column when
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v3.0.6)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a> is installed.</p>
+</section>
+<section id="the-model">
+<h2>The model<a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
+<p>At each step the network reads a latent state and emits a trend plus
+<span class="math notranslate nohighlight">\(K\)</span> sinusoids,</p>
+<div class="math notranslate nohighlight">
+\[\hat y_t = B_t + \sum_{k=1}^{K} w_k\, g_{t,k}\, A_{t,k}\,
+\sin\!\bigl(\theta_{t,k} + \phi_{t,k}\bigr),
+\qquad
+\theta_{t,k} = \theta_{t-1,k} + \omega_{t,k}\,\Delta t,
+\qquad
+h_t = F_\psi(h_{t-1}, y_t),\]</div>
+<p>where <span class="math notranslate nohighlight">\(B_t\)</span> is the trend, <span class="math notranslate nohighlight">\(A_{t,k}\)</span> the amplitude,
+<span class="math notranslate nohighlight">\(\omega_{t,k}\)</span> the instantaneous frequency, <span class="math notranslate nohighlight">\(\phi_{t,k}\)</span> the
+phase offset and <span class="math notranslate nohighlight">\(g_{t,k}\)</span> the gate of component <span class="math notranslate nohighlight">\(k\)</span>, each a
+linear head on the state <span class="math notranslate nohighlight">\(h_t\)</span> of a GRU, and <span class="math notranslate nohighlight">\(w\)</span> a learned
+mixing vector. The phase integrates the frequency, so each component is a
+chirp whose frequency the state can move. Everything to the right of the
+first equals sign is returned to you as an array; the
+<a class="reference internal" href="user_guide/model.html"><span class="doc">user guide</span></a> derives the model and the
+<a class="reference internal" href="user_guide/decomposition.html"><span class="doc">decomposition page</span></a> says how to read
+each path.</p>
+</section>
+<section id="what-is-inside">
+<h2>What is inside<a class="headerlink" href="#what-is-inside" title="Link to this heading">#</a></h2>
+<p>Five public modules. The top-level <code class="docutils literal notranslate"><span class="pre">ns_sdn</span></code> namespace holds modules
+only; every public name is imported from the module that defines it, and
+the <a class="reference internal" href="api/index.html"><span class="doc">API reference</span></a> is organised the same way.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-3 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<a class="reference internal" href="api/generated/ns_sdn.spectral_decomposition.html#module-ns_sdn.spectral_decomposition" title="ns_sdn.spectral_decomposition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ns_sdn.spectral_decomposition</span></code></a></div>
+<p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">NSSDN</span></code>, the specification; <code class="docutils literal notranslate"><span class="pre">NSSDNResult</span></code>, the fitted record
+with every path of the decomposition, one-step and recursive
+forecasts; <code class="docutils literal notranslate"><span class="pre">Stage</span></code> and <code class="docutils literal notranslate"><span class="pre">Penalties</span></code>, the training schedule.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="api/generated/ns_sdn.spectral_decomposition.html"><span class="doc">ns_sdn.spectral_decomposition</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<a class="reference internal" href="api/generated/ns_sdn.spectral_state.html#module-ns_sdn.spectral_state" title="ns_sdn.spectral_state"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ns_sdn.spectral_state</span></code></a></div>
+<p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">SpectralState</span></code>: the decomposition read as a time-local measure
+on the frequency axis, with its centroid, dispersion, effective
+count, Wasserstein velocity and disentanglement score.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="api/generated/ns_sdn.spectral_state.html"><span class="doc">ns_sdn.spectral_state</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<a class="reference internal" href="api/generated/ns_sdn.summary.html#module-ns_sdn.summary" title="ns_sdn.summary"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ns_sdn.summary</span></code></a></div>
+<p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">SummaryTable</span></code> and <code class="docutils literal notranslate"><span class="pre">InformationCriteria</span></code>, the records every
+result renders itself through, as text, HTML or a dataframe.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="api/generated/ns_sdn.summary.html"><span class="doc">ns_sdn.summary</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<a class="reference internal" href="api/generated/ns_sdn.typing.html#module-ns_sdn.typing" title="ns_sdn.typing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ns_sdn.typing</span></code></a></div>
+<p class="sd-card-text">The categorical option aliases: <code class="docutils literal notranslate"><span class="pre">Alignment</span></code>, <code class="docutils literal notranslate"><span class="pre">Transition</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Objective</span></code>, <code class="docutils literal notranslate"><span class="pre">Scaling</span></code>.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="api/generated/ns_sdn.typing.html"><span class="doc">ns_sdn.typing</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<a class="reference internal" href="api/generated/ns_sdn.exceptions.html#module-ns_sdn.exceptions" title="ns_sdn.exceptions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ns_sdn.exceptions</span></code></a></div>
+<p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">DimensionError</span></code>, <code class="docutils literal notranslate"><span class="pre">SpecificationError</span></code> and <code class="docutils literal notranslate"><span class="pre">NumericalError</span></code>,
+one per kind of fix, under a common <code class="docutils literal notranslate"><span class="pre">NSSDNError</span></code>.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="api/generated/ns_sdn.exceptions.html"><span class="doc">ns_sdn.exceptions</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Engine</div>
+<p class="sd-card-text">The private <code class="docutils literal notranslate"><span class="pre">_core</span></code> and <code class="docutils literal notranslate"><span class="pre">_internals</span></code> layers: validators,
+containers, the torch module, the objective, the trainer and the
+predictor.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="engine/index.html"><span class="doc">Engine reference</span></a></div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-the-library-is-designed">
+<h2>How the library is designed<a class="headerlink" href="#how-the-library-is-designed" title="Link to this heading">#</a></h2>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+One pattern</div>
+<p class="sd-card-text">A model is a validated specification; <code class="docutils literal notranslate"><span class="pre">fit()</span></code> returns a frozen
+result. Results carry integer positions and leave your index alone;
+inputs are anything <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" title="(in NumPy v2.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.asarray()</span></code></a> accepts. The pattern is
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">cultivars</span></code>’s, so a workflow written against one library reads
+the other.</p>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Refusals, not silent failure</div>
+<p class="sd-card-text">Malformed shapes raise <a class="reference internal" href="api/generated/ns_sdn.exceptions.DimensionError.html#ns_sdn.exceptions.DimensionError" title="ns_sdn.exceptions.DimensionError"><code class="xref py py-class docutils literal notranslate"><span class="pre">DimensionError</span></code></a>,
+inconsistent specifications
+<a class="reference internal" href="api/generated/ns_sdn.exceptions.SpecificationError.html#ns_sdn.exceptions.SpecificationError" title="ns_sdn.exceptions.SpecificationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpecificationError</span></code></a>, and non-finite data
+or a diverged fit <a class="reference internal" href="api/generated/ns_sdn.exceptions.NumericalError.html#ns_sdn.exceptions.NumericalError" title="ns_sdn.exceptions.NumericalError"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumericalError</span></code></a>, each
+with the numbers that triggered it.</p>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Summaries that argue</div>
+<p class="sd-card-text">Every summary says which alignment it was fitted under and what that
+makes of its one-step numbers, that its likelihood is concentrated at
+a penalized fit, and that components without an ordering constraint
+are identified only up to permutation.</p>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+The decomposition is the product</div>
+<p class="sd-card-text">The result carries every path the paper’s figures are drawn from,
+on the original scale by default and in training units on request,
+and a <code class="docutils literal notranslate"><span class="pre">SpectralState</span></code> that reduces them to coordinates a
+regime-change claim can be tested against.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="citing">
+<h2>Citing<a class="headerlink" href="#citing" title="Link to this heading">#</a></h2>
+<p>If ns-sdn contributes to published work, cite the IEEE-ORSS paper the
+package implements <span class="bibtex-citation" id="id1">[<a class="reference internal" href="project/citing.html#id2" title="Nikhil Sunder and Maikel Leon. Non-stationary spectral decomposition network: adaptive spectral emission heads and frequency modulation. In 2026 IEEE Opportunity Research Scholars Symposium (ORSS), 1–5. Atlanta, GA, USA, 2026. IEEE. URL: https://ieeexplore.ieee.org/document/11684282, doi:10.1109/ORSS71174.2026.11684282.">Sunder and Leon, 2026</a>]</span>, the FLAIRS paper that
+introduced the architecture <span class="bibtex-citation" id="id2">[<a class="reference internal" href="project/citing.html#id3" title="Nikhil Sunder. Non-stationary spectral decomposition network for econometric time series forecasting. The International FLAIRS Conference Proceedings, 2026. URL: https://journals.flvc.org/FLAIRS/article/view/141588, doi:10.32473/flairs.39.1.141588.">Sunder, 2026</a>]</span>, and the software;
+the <a class="reference internal" href="project/citing.html"><span class="doc">citing page</span></a> has the entries.</p>
+<pre class="literal-block">@software{sunder_nssdn,
+  author    = {Sunder, Nikhil},
+  title     = {ns-sdn: the Non-Stationary Spectral Decomposition Network},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.23368625},
+  url       = {<a class="github reference external" href="https://github.com/nikhilxsunder/ns-sdn">nikhilxsunder/ns-sdn</a>},
+  license   = {MIT}
+}</pre>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+</article>
+<footer class="prev-next-footer d-print-none">
+<div class="prev-next-area">
+<a class="right-next" href="getting_started/index.html" title="next page">
+<div class="prev-next-info">
+<p class="prev-next-subtitle">next</p>
+<p class="prev-next-title">Getting started</p>
+</div>
+<i class="fa-solid fa-angle-right"></i>
+</a>
+</div>
+</footer>
+</div>
+<dialog id="pst-secondary-sidebar-modal"></dialog>
+<div class="bd-sidebar-secondary bd-toc" id="pst-secondary-sidebar"><div class="sidebar-secondary-items sidebar-secondary__inner">
+<div class="sidebar-secondary-item">
+<div class="page-toc tocsection onthispage" id="pst-page-navigation-heading-2">
+<i class="fa-solid fa-list"></i> On this page
+  </div>
+<nav aria-labelledby="pst-page-navigation-heading-2" class="page-toc" id="pst-page-toc-nav">
+<ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#release-status">Release status</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install">Install</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#in-sixty-seconds">In sixty seconds</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">The model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-inside">What is inside</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-library-is-designed">How the library is designed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citing">Citing</a></li>
+</ul>
+</nav></div>
+<div class="sidebar-secondary-item">
+<div class="tocsection editthispage">
+<a href="https://github.com/nikhilxsunder/ns-sdn/edit/v1.0.0/docs/source/index.rst">
+<i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+</div>
+</div>
+</div></div>
+</div>
+<footer class="bd-footer-content">
+</footer>
+</main>
+</div>
+</div>
+<!-- Scripts loaded after <body> so the DOM is not blocked -->
+<script defer="" src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer="" src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+<footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+<div class="footer-items__start">
+<div class="footer-item"><div class="ns-footer">
+<section aria-label="Documentation sections" class="ns-footer__band ns-footer__band--guide">
+<div class="ns-footer__inner ns-footer__columns">
+<div class="ns-footer__column">
+<h2>User guide</h2>
+<p>
+          The model in its equations, how to read the decomposition it emits,
+          and the spectral-state coordinates that summarize it.
+        </p>
+<a class="ns-footer__cta" href="user_guide/index.html">Read the guide<span aria-hidden="true"> ›</span></a>
+</div>
+<div class="ns-footer__column">
+<h2>Examples</h2>
+<p>
+          A synthetic chirp with a known answer, then the 10-year Treasury yield
+          from FRED, as executed scripts with their figures.
+        </p>
+<a class="ns-footer__cta" href="auto_examples/index.html">View the examples<span aria-hidden="true"> ›</span></a>
+</div>
+<div class="ns-footer__column">
+<h2>API reference</h2>
+<p>
+          The specification, the result and the spectral state, with every path
+          they carry and a runnable example on each.
+        </p>
+<a class="ns-footer__cta" href="api/index.html">View the API<span aria-hidden="true"> ›</span></a>
+</div>
+</div>
+</section>
+<section aria-label="Project links" class="ns-footer__band ns-footer__band--site">
+<div class="ns-footer__inner">
+<div class="ns-footer__grid">
+<div class="ns-footer__install">
+<h2>Get ns-sdn</h2>
+<p>
+            Releases are published to PyPI and announced on GitHub Releases. Pin
+            the exact version in anything that must reproduce.
+          </p>
+<pre class="ns-footer__code"><code>pip install ns-sdn==1.0.0</code></pre>
+</div>
+<nav aria-label="Resources" class="ns-footer__links">
+<h2>Resources</h2>
+<ul>
+<li>
+<a href="https://github.com/nikhilxsunder/ns-sdn/releases">Releases</a>
+</li>
+<li>
+<a href="https://github.com/nikhilxsunder/ns-sdn/blob/main/CHANGELOG.md">Changelog</a>
+</li>
+<li>
+<a href="https://github.com/nikhilxsunder/ns-sdn/issues">Issues</a>
+</li>
+<li>
+<a href="project/citing.html">Citing</a>
+</li>
+<li>
+<a href="https://github.com/nikhilxsunder/ns-sdn/blob/main/LICENSE">License</a>
+</li>
+</ul>
+</nav>
+<nav aria-label="Related projects" class="ns-footer__links">
+<h2>Related</h2>
+<ul>
+<li>
+<a href="https://nikhilxsunder.github.io/cultivars/">cultivars</a><span class="ns-footer__muted"> time series econometrics</span>
+</li>
+<li>
+<a href="https://nikhilxsunder.github.io/fedfred/">fedfred</a><span class="ns-footer__muted"> FRED client</span>
+</li>
+<li>
+<a href="https://nikhilxsunder.github.io/edgar-sec/">edgar-sec</a><span class="ns-footer__muted"> SEC EDGAR client</span>
+</li>
+</ul>
+</nav>
+</div>
+<ul aria-label="Project pages" class="ns-footer__social">
+<li>
+<a href="https://github.com/nikhilxsunder/ns-sdn" title="GitHub"><i aria-hidden="true" class="fa-brands fa-github"></i><span class="visually-hidden">GitHub</span></a>
+</li>
+<li>
+<a href="https://pypi.org/project/ns-sdn/" title="PyPI"><i aria-hidden="true" class="fa-brands fa-python"></i><span class="visually-hidden">PyPI</span></a>
+</li>
+<li>
+<a href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn" title="Codecov"><i aria-hidden="true" class="fa-solid fa-umbrella"></i><span class="visually-hidden">Codecov</span></a>
+</li>
+<li>
+<a href="project/citing.html" title="Cite"><i aria-hidden="true" class="fa-solid fa-quote-left"></i><span class="visually-hidden">Cite</span></a>
+</li>
+</ul>
+<div class="ns-footer__legal">
+<p>
+          © 2026, Nikhil Sunder. Released under the
+          <a href="https://github.com/nikhilxsunder/ns-sdn/blob/main/LICENSE">MIT License</a>. ns-sdn is an independent open-source project and is not affiliated
+          with the Federal Reserve Bank of St. Louis; FRED® is a registered
+          trademark of the Federal Reserve Bank of St. Louis.
+        </p>
+<p class="ns-footer__build">
+          ns-sdn 1.0.0 · updated 2026-10-14 · built with
+          <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0
+          and the
+          <a href="https://pydata-sphinx-theme.readthedocs.io/">PyData Sphinx Theme</a>
+</p>
+</div>
+</div>
+</section>
+</div></div>
+</div>
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Reproducing the IEEE-ORSS DGS10 run" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://nikhilxsunder.github.io/ns-sdn/stable/auto_examples/plot_03_reproduce_orss.html" />
+<meta property="og:site_name" content="ns-sdn" />
+<meta property="og:description" content="The published experiment of Sunder and Leon (2026), 2026 IEEE Opportunity Research Scholars Symposium (ORSS), pp. 1-5, doi:10.1109/ORSS71174.2026.11684282, step for step, through the package: the 10-year Treasury constant-maturity yield ( FRED: DGS10) in logs from February 2000 on a calendar-day ..." />
+<meta property="og:image" content="https://nikhilxsunder.github.io/ns-sdn/stable/_static/ns-sdn-mark.png" />
+<meta property="og:image:alt" content="ns-sdn" />
+<meta name="description" content="The published experiment of Sunder and Leon (2026), 2026 IEEE Opportunity Research Scholars Symposium (ORSS), pp. 1-5, doi:10.1109/ORSS71174.2026.11684282, step for step, through the package: the 10-year Treasury constant-maturity yield ( FRED: DGS10) in logs from February 2000 on a calendar-day ..." />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="ns-sdn Documentation" />
+<meta property="og:image:alt" content="ns-sdn Logo" />
+
+    <title>Reproducing the IEEE-ORSS DGS10 run &#8212; ns-sdn</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-codeautolink.css?v=b2176991" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3724b800" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('consent', 'default', {
+                    'ad_storage': 'denied',
+                    'ad_user_data': 'denied',
+                    'ad_personalization': 'denied',
+                    'analytics_storage': 'denied'
+                });
+            </script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-T9HLR97XCS"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-T9HLR97XCS');
+            </script>
+    <script defer="defer" src="https://unpkg.com/@popperjs/core@2"></script>
+    <script defer="defer" src="https://unpkg.com/tippy.js@6"></script>
+    <script defer="defer" src="../_static/tippy/auto_examples/plot_03_reproduce_orss.10d5230c-1b4b-47c4-817d-85ed9286783f.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/plot_03_reproduce_orss';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nikhilxsunder.github.io/ns-sdn/switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://nikhilxsunder.github.io/ns-sdn/stable/auto_examples/plot_03_reproduce_orss.html" />
+    <link rel="icon" href="../_static/ns-sdn-favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The 10-year Treasury yield and its spectral state" href="plot_02_dgs10_spectral_state.html" />
+    <link rel="prev" title="A series with a known decomposition" href="plot_01_synthetic_decomposition.html" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.0" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": "https://github.com/nikhilxsunder/ns-sdn#software",
+        "name": "ns-sdn",
+        "alternateName": "ns-sdn 1.0.0",
+        "description": "Non-Stationary Spectral Decomposition Network: a neural state-space model emitting an interpretable time-varying spectral decomposition of economic and financial time series, on numpy and torch.",
+        "codeRepository": "https://github.com/nikhilxsunder/ns-sdn",
+        "url": "https://nikhilxsunder.github.io/ns-sdn/",
+        "identifier": {"@type": "PropertyValue", "propertyID": "DOI", "value": "10.5281/zenodo.23368625"},
+        "sameAs": "https://doi.org/10.5281/zenodo.23368625",
+        "programmingLanguage": {"@type": "ComputerLanguage", "name": "Python"},
+        "runtimePlatform": "Python 3.12+",
+        "version": "1.0.0",
+        "license": "https://opensource.org/license/mit",
+        "isAccessibleForFree": true,
+        "applicationCategory": "Econometrics",
+        "keywords": "time series, spectral decomposition, state space, instantaneous frequency, econometrics, neural network, pytorch",
+        "author": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#author"},
+        "maintainer": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#author"},
+        "downloadUrl": "https://pypi.org/project/ns-sdn/",
+        "installUrl": "https://pypi.org/project/ns-sdn/",
+        "softwareHelp": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#website"},
+        "discussionUrl": "https://github.com/nikhilxsunder/ns-sdn/issues",
+        "targetProduct": {
+          "@type": "SoftwareApplication",
+          "name": "ns-sdn",
+          "operatingSystem": "Linux, macOS, Windows",
+          "applicationCategory": "DeveloperApplication",
+          "softwareVersion": "1.0.0",
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://nikhilxsunder.github.io/ns-sdn/#author",
+        "name": "Nikhil Sunder",
+        "url": "https://github.com/nikhilxsunder",
+        "sameAs": ["https://github.com/nikhilxsunder", "https://orcid.org/0009-0007-3323-1760"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://nikhilxsunder.github.io/ns-sdn/#website",
+        "name": "ns-sdn documentation",
+        "url": "https://nikhilxsunder.github.io/ns-sdn/",
+        "inLanguage": "en",
+        "about": {"@id": "https://github.com/nikhilxsunder/ns-sdn#software"},
+        "publisher": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#author"},
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://nikhilxsunder.github.io/ns-sdn/stable/search.html?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "TechArticle",
+        "@id": "https://nikhilxsunder.github.io/ns-sdn/stable/auto_examples/plot_03_reproduce_orss.html",
+        "url": "https://nikhilxsunder.github.io/ns-sdn/stable/auto_examples/plot_03_reproduce_orss.html",
+        "name": "Reproducing the IEEE-ORSS DGS10 run",
+        "headline": "Reproducing the IEEE-ORSS DGS10 run",
+        "inLanguage": "en",
+        "isPartOf": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#website"},
+        "about": {"@id": "https://github.com/nikhilxsunder/ns-sdn#software"},
+        "author": {"@id": "https://nikhilxsunder.github.io/ns-sdn/#author"},
+        "license": "https://opensource.org/license/mit",
+        "version": "1.0.0",
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ns-sdn", "item": "https://nikhilxsunder.github.io/ns-sdn/stable/"},
+            {"@type": "ListItem", "position": 2, "name": "Examples", "item": "https://nikhilxsunder.github.io/ns-sdn/stable/auto_examples/index.html"},
+            {"@type": "ListItem", "position": 3, "name": "Reproducing the IEEE-ORSS DGS10 run", "item": "https://nikhilxsunder.github.io/ns-sdn/stable/auto_examples/plot_03_reproduce_orss.html"}
+          ]
+        }
+      }
+    ]
+  }
+</script>
+
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/ns-sdn-logo.png" class="logo__image only-light" alt="ns-sdn - Home"/>
+    <img src="../_static/ns-sdn-logo-dark.png" class="logo__image only-dark pst-js-only" alt="ns-sdn - Home"/>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../engine/index.html">
+    Engine reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../project/index.html">
+    Project
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nikhilxsunder/ns-sdn" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/ns-sdn/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-python fa-lg" aria-hidden="true"></i><span class="visually-hidden">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn" title="Codecov" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fas fa-umbrella fa-lg" aria-hidden="true"></i><span class="visually-hidden">Codecov</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/index.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api/index.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../engine/index.html">
+    Engine reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../project/index.html">
+    Project
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/nikhilxsunder/ns-sdn" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/ns-sdn/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-python fa-lg" aria-hidden="true"></i><span class="visually-hidden">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn" title="Codecov" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fas fa-umbrella fa-lg" aria-hidden="true"></i><span class="visually-hidden">Codecov</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="plot_01_synthetic_decomposition.html">A series with a known decomposition</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Reproducing the IEEE-ORSS DGS10 run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot_02_dgs10_spectral_state.html">The 10-year Treasury yield and its spectral state</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Examples</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Reproducing the IEEE-ORSS DGS10 run</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-03-reproduce-orss-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="reproducing-the-ieee-orss-dgs10-run">
+<span id="sphx-glr-auto-examples-plot-03-reproduce-orss-py"></span><h1>Reproducing the IEEE-ORSS DGS10 run<a class="headerlink" href="#reproducing-the-ieee-orss-dgs10-run" title="Link to this heading">#</a></h1>
+<p>The published experiment of Sunder and Leon (2026), <em>2026 IEEE Opportunity
+Research Scholars Symposium (ORSS)</em>, pp. 1-5,
+<a class="reference external" href="https://doi.org/10.1109/ORSS71174.2026.11684282">doi:10.1109/ORSS71174.2026.11684282</a>,
+step for step, through the package: the 10-year
+Treasury constant-maturity yield (<a class="extlink-fred reference external" href="https://fred.stlouisfed.org/series/DGS10">FRED: DGS10</a>) in logs from February
+2000 on a calendar-day grid with gaps of up to a week filled forward, the
+last 365 observations held out, the default <a class="reference internal" href="../api/generated/ns_sdn.spectral_decomposition.NSSDN.html#ns_sdn.spectral_decomposition.NSSDN" title="ns_sdn.spectral_decomposition.NSSDN"><code class="xref py py-class docutils literal notranslate"><span class="pre">NSSDN</span></code></a>
+configuration (sixteen components, a 128-dimensional GRU state, the
+filtered alignment, the two-stage schedule with its amplitude and
+frequency drift penalties) with seed 1337, then the in-sample
+reconstruction, the conditional one-step holdout, the recursive holdout,
+the metrics table with the random-walk row the paper did not include, and
+the trend, amplitude, frequency and gating paths on the training scale.
+The spectral state of the fit, which the paper did not compute, closes the
+script.</p>
+<p>This is the only example the documentation build does not execute by
+default. The published fit is three thousand full-sequence gradient steps
+over 9,186 observations, which takes tens of minutes to an hour on a
+recent laptop and hours on a CI runner. Run it directly,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">FRED_API_KEY</span><span class="o">=</span>...<span class="w"> </span>python<span class="w"> </span>examples/plot_03_reproduce_orss.py
+</pre></div>
+</div>
+<p>which writes <code class="docutils literal notranslate"><span class="pre">metrics.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">spectral_state.csv</span></code> and every figure to
+<code class="docutils literal notranslate"><span class="pre">orss_reproduction/</span></code> (or the directory named by <code class="docutils literal notranslate"><span class="pre">NSSDN_ORSS_OUTPUT</span></code>),
+or build the documentation with <code class="docutils literal notranslate"><span class="pre">DOCS_RUN_ORSS=1</span></code> to execute it in the
+gallery. The shorter <a class="reference internal" href="plot_02_dgs10_spectral_state.html#sphx-glr-auto-examples-plot-02-dgs10-spectral-state-py"><span class="std std-ref">DGS10 example</span></a> runs the same
+protocol at a size a build can afford.</p>
+<section id="data">
+<h2>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">fetch_series</span></code> reproduces the paper’s preparation: <code class="docutils literal notranslate"><span class="pre">asfreq(&quot;D&quot;)</span></code> and a
+forward fill limited to seven days, so weekends and holidays carry the
+last quote and longer outages are dropped. The key is read from
+<code class="docutils literal notranslate"><span class="pre">FRED_API_KEY</span></code> and never written anywhere.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <a class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="pathlib.Path"><span class="n">Path</span></a><span class="w">
+</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="nn">.</span><span class="nn">pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="w">
+</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">ns_sdn</span><span class="nn">.</span><span class="nn">spectral_decomposition</span><span class="w"> </span><span class="kn">import</span> <a class="sphx-glr-backref-module-ns_sdn-spectral_decomposition sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../api/generated/ns_sdn.spectral_decomposition.NSSDN.html#ns_sdn.spectral_decomposition.NSSDN" title="ns_sdn.spectral_decomposition.NSSDN"><span class="n">NSSDN</span></a><span class="w">
+</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">_fred</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_series</span><span class="w">
+</span><span class="w">
+</span><span class="n">SERIES_ID</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s2">DGS10</span><span class="s2">&quot;</span><span class="w">
+</span><span class="n">START_DATE</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s2">2000-02-01</span><span class="s2">&quot;</span><span class="w">
+</span><span class="n">HOLDOUT</span> <span class="o">=</span> <span class="mi">365</span><span class="w">
+</span><span class="n">SEED</span> <span class="o">=</span> <span class="mi">1337</span><span class="w">
+</span><span class="n">SHOWN</span> <span class="o">=</span> <span class="mi">4</span><span class="w">
+</span><span class="n">OUTPUT</span> <span class="o">=</span> <a class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="pathlib.Path"><span class="n">Path</span></a><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">NSSDN_ORSS_OUTPUT</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">orss_reproduction</span><span class="s2">&quot;</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="n">OUTPUT</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">log_yield_series</span> <span class="o">=</span> <span class="n">fetch_series</span><span class="p">(</span><span class="n">SERIES_ID</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">START_DATE</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">log</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">dates</span> <span class="o">=</span> <span class="n">log_yield_series</span><span class="o">.</span><span class="n">index</span><span class="w">
+</span><span class="n">log_yield</span> <span class="o">=</span> <span class="n">log_yield_series</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">split</span> <span class="o">=</span> <span class="n">log_yield</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">HOLDOUT</span><span class="w">
+</span><span class="n">train</span><span class="p">,</span> <span class="n">holdout</span> <span class="o">=</span> <span class="n">log_yield</span><span class="p">[</span><span class="p">:</span><span class="n">split</span><span class="p">]</span><span class="p">,</span> <span class="n">log_yield</span><span class="p">[</span><span class="n">split</span><span class="p">:</span><span class="p">]</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">N=</span><span class="si">{</span><span class="n">log_yield</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">  train=</span><span class="si">{</span><span class="n">split</span><span class="si">}</span><span class="s2">  holdout=</span><span class="si">{</span><span class="n">HOLDOUT</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="p">)</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">dates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="p">)</span><span class="si">}</span><span class="s2">; holdout from </span><span class="si">{</span><span class="n">dates</span><span class="p">[</span><span class="n">split</span><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="fit">
+<h2>Fit<a class="headerlink" href="#fit" title="Link to this heading">#</a></h2>
+<p>Every default is the published configuration, so the call is the shortest
+one in the library. The parameter count of the published run is 58,849.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">result</span> <span class="o">=</span> <a class="sphx-glr-backref-module-ns_sdn-spectral_decomposition sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../api/generated/ns_sdn.spectral_decomposition.NSSDN.html#ns_sdn.spectral_decomposition.NSSDN" title="ns_sdn.spectral_decomposition.NSSDN"><span class="n">NSSDN</span></a><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">trainable parameters: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">n_params</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="metrics">
+<h2>Metrics<a class="headerlink" href="#metrics" title="Link to this heading">#</a></h2>
+<p>RMSE, MAE and MAPE as the validation notebook defines them, on the
+training reconstruction, on the conditional one-step holdout in scaled,
+log and level units, on the recursive holdout, and for the random walk on
+the same holdout.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="k">def</span><span class="w"> </span><span class="nf">metrics</span><span class="p">(</span><span class="n">actual</span><span class="p">:</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span></a><span class="p">,</span> <span class="n">predicted</span><span class="p">:</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span></a><span class="p">)</span> <span class="o">-</span><span class="o">&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;RMSE, MAE and MAPE in percent, as the validation notebook defines them.&quot;&quot;&quot;</span><span class="w">
+</span>    <span class="n">error</span> <span class="o">=</span> <span class="n">predicted</span> <span class="o">-</span> <span class="n">actual</span><span class="w">
+</span>    <span class="n">denominator</span> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.where.html#numpy.where" title="numpy.where"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/constants.html#numpy.nan" title="numpy.nan"><span class="n">np</span><span class="o">.</span><span class="n">nan</span></a><span class="p">,</span> <span class="n">actual</span><span class="p">)</span><span class="w">
+</span>    <span class="k">return</span> <span class="p">{</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">rmse</span><span class="s2">&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sqrt.html#numpy.sqrt" title="numpy.sqrt"><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span></a><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><span class="n">error</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="p">)</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">mae</span><span class="s2">&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="p">)</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">mape_pct</span><span class="s2">&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.nanmean.html#numpy.nanmean" title="numpy.nanmean"><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span></a><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">error</span> <span class="o">/</span> <span class="n">denominator</span><span class="p">)</span><span class="p">)</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>    <span class="p">}</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="n">fit_log</span><span class="p">,</span> <span class="n">fit_level</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">emission</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">emission</span><span class="p">)</span><span class="w">
+</span><span class="n">one_log</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">log_yield</span><span class="p">)</span><span class="p">[</span><span class="o">-</span><span class="n">HOLDOUT</span><span class="p">:</span><span class="p">]</span><span class="w">
+</span><span class="n">one_level</span> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="n">one_log</span><span class="p">)</span><span class="w">
+</span><span class="n">recursive_log</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">forecast</span><span class="p">(</span><span class="n">HOLDOUT</span><span class="p">)</span><span class="w">
+</span><span class="n">naive_log</span> <span class="o">=</span> <span class="n">log_yield</span><span class="p">[</span><span class="n">split</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="w">
+</span><span class="n">scaled</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">scale</span><span class="o">.</span><span class="n">transform</span><span class="w">
+</span><span class="w">
+</span><span class="n">table</span> <span class="o">=</span> <a class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame"><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span></a><span class="p">(</span><span class="w">
+</span>    <span class="p">{</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">train_log_scale</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">fit_log</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">train_level_scale</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="n">train</span><span class="p">)</span><span class="p">,</span> <span class="n">fit_level</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">holdout_1step_scaled</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="p">(</span><span class="n">scaled</span><span class="p">(</span><span class="n">holdout</span><span class="p">)</span><span class="p">,</span> <span class="n">scaled</span><span class="p">(</span><span class="n">one_log</span><span class="p">)</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">holdout_1step_log</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="p">(</span><span class="n">holdout</span><span class="p">,</span> <span class="n">one_log</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">holdout_1step_level</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="n">holdout</span><span class="p">)</span><span class="p">,</span> <span class="n">one_level</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">holdout_recursive_log</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="p">(</span><span class="n">holdout</span><span class="p">,</span> <span class="n">recursive_log</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">holdout_recursive_level</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="n">holdout</span><span class="p">)</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="n">recursive_log</span><span class="p">)</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">holdout_random_walk_log</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="p">(</span><span class="n">holdout</span><span class="p">,</span> <span class="n">naive_log</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">holdout_random_walk_level</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="n">holdout</span><span class="p">)</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="n">naive_log</span><span class="p">)</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>    <span class="p">}</span><span class="w">
+</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="n">table</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">OUTPUT</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">metrics.csv</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="figure-1-in-sample-fit-on-the-training-segment">
+<h2>Figure 1: in-sample fit on the training segment<a class="headerlink" href="#figure-1-in-sample-fit-on-the-training-segment" title="Link to this heading">#</a></h2>
+<p>The emission under the filtered alignment reconstructs the observed
+series; the figure is in levels.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">holdout_start</span> <span class="o">=</span> <span class="n">dates</span><span class="p">[</span><span class="n">split</span><span class="p">]</span><span class="w">
+</span><span class="w">
+</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="p">:</span><span class="n">split</span><span class="p">]</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="n">train</span><span class="p">)</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">historical actual</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="p">:</span><span class="n">split</span><span class="p">]</span><span class="p">,</span> <span class="n">fit_level</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">historical fitted</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">percent</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">In-sample fit on training segment</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">upper right</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">OUTPUT</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">in_sample_fit.png</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="figure-2-the-holdout-conditional-one-step-against-recursive">
+<h2>Figure 2: the holdout, conditional one-step against recursive<a class="headerlink" href="#figure-2-the-holdout-conditional-one-step-against-recursive" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">split</span><span class="p">:</span><span class="p">]</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="n">holdout</span><span class="p">)</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">actual (holdout)</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">split</span><span class="p">:</span><span class="p">]</span><span class="p">,</span> <span class="n">one_level</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">conditional 1-step</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">split</span><span class="p">:</span><span class="p">]</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="numpy.exp"><span class="n">np</span><span class="o">.</span><span class="n">exp</span></a><span class="p">(</span><span class="n">recursive_log</span><span class="p">)</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">recursive multi-step</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">percent</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Holdout: conditional 1-step vs recursive forecast</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">upper right</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">OUTPUT</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">holdout_forecasts.png</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="figures-3-to-6-the-paths-on-the-training-scale">
+<h2>Figures 3 to 6: the paths on the training scale<a class="headerlink" href="#figures-3-to-6-the-paths-on-the-training-scale" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">decompose(log_yield,</span> <span class="pre">scaled=True)</span></code> runs the trained network over the
+full sample, training and holdout together, and returns the paths in
+training units, which is how the paper draws them. The dashed line is
+the holdout boundary. Four of the sixteen components are shown, as in
+the paper, by index.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">paths</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">decompose</span><span class="p">(</span><span class="n">log_yield</span><span class="p">,</span> <span class="n">scaled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="w">
+</span><span class="n">shown</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">SHOWN</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">k</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">def</span><span class="w"> </span><span class="nf">figure</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">series</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span></a><span class="p">]</span><span class="p">)</span> <span class="o">-</span><span class="o">&gt;</span> <span class="kc">None</span><span class="p">:</span><span class="w">
+</span>    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span>    <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">series</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span><span class="w">
+</span>    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">holdout_start</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">k</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">--</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span><span class="w">
+</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span><span class="w">
+</span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">series</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span><span class="w">
+</span>        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">upper right</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">(</span><span class="p">)</span><span class="w">
+</span>    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">OUTPUT</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.png</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="n">figure</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">learned_trend</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Learned trend component $B_t$</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;</span><span class="s2">$B_t$</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">paths</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">trend</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">}</span><span class="p">)</span><span class="w">
+</span><span class="n">figure</span><span class="p">(</span><span class="w">
+</span>    <span class="s2">&quot;</span><span class="s2">amplitude_paths</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="s2">&quot;</span><span class="s2">Selected amplitude paths</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">amplitude[</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">]</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">paths</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">amplitude</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">shown</span><span class="p">}</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">figure</span><span class="p">(</span><span class="w">
+</span>    <span class="s2">&quot;</span><span class="s2">frequency_paths</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="s2">&quot;</span><span class="s2">Selected instantaneous frequency paths (radians per day)</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">frequency[</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">]</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">paths</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">frequency</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">shown</span><span class="p">}</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">figure</span><span class="p">(</span><span class="w">
+</span>    <span class="s2">&quot;</span><span class="s2">gating_paths</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="s2">&quot;</span><span class="s2">Selected gating paths</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">gate[</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">]</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">paths</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">gate</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">shown</span><span class="p">}</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="the-spectral-state">
+<h2>The spectral state<a class="headerlink" href="#the-spectral-state" title="Link to this heading">#</a></h2>
+<p>Not in the paper: the decomposition of the training segment read as a
+time-local measure on the frequency axis, with the 2020 window shaded.
+A joint contraction of dispersion and effective count across the window
+is the compression reading; the disentanglement score says how far the
+per-component paths behind it can be trusted.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">state</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">spectral_state</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">coords</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">dates</span><span class="p">[</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">nobs</span><span class="p">]</span><span class="p">)</span><span class="w">
+</span><span class="n">coords</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">OUTPUT</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">spectral_state.csv</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">window</span> <span class="o">=</span> <span class="p">(</span><a class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Timestamp.html#pandas.Timestamp" title="pandas.Timestamp"><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span></a><span class="p">(</span><span class="s2">&quot;</span><span class="s2">2020-03-01</span><span class="s2">&quot;</span><span class="p">)</span><span class="p">,</span> <a class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Timestamp.html#pandas.Timestamp" title="pandas.Timestamp"><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span></a><span class="p">(</span><span class="s2">&quot;</span><span class="s2">2020-08-31</span><span class="s2">&quot;</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="n">before</span> <span class="o">=</span> <span class="n">coords</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">2019-09-01</span><span class="s2">&quot;</span><span class="p">:</span><span class="s2">&quot;</span><span class="s2">2020-02-29</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">after</span> <span class="o">=</span> <span class="n">coords</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">window</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="n">window</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">comparison</span> <span class="o">=</span> <a class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame"><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span></a><span class="p">(</span><span class="p">{</span><span class="s2">&quot;</span><span class="s2">before</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">before</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">after</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">after</span><span class="p">}</span><span class="p">)</span><span class="w">
+</span><span class="n">comparison</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">change</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comparison</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">after</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">comparison</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">before</span><span class="s2">&quot;</span><span class="p">]</span><span class="w">
+</span><span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="s2">centroid</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">dispersion</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">effective_count</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">velocity</span><span class="s2">&quot;</span><span class="p">]</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="n">comparison</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rows</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <a class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="w">
+</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">centroid</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">centroid</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="w">
+</span>    <span class="n">coords</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="w">
+</span>    <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">centroid</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">dispersion</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">centroid</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">dispersion</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span><span class="w">
+</span>    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">centroid $</span><span class="se">\\</span><span class="s2">pm$ dispersion</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">rad/day</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">effective_count</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">effective count</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">participation_ratio</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">participation ratio</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">components</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">velocity</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">velocity</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">velocity_frequency</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">frequency part</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">velocity_mass</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">mass part</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">$W_1$ per day</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span><span class="w">
+</span>    <span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="o">*</span><span class="n">window</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">0.85</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span>    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">upper left</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="w">
+</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Spectral state of the training segment, 2020 window shaded</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">OUTPUT</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">spectral_state.png</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">wrote metrics.csv, spectral_state.csv and the figures to </span><span class="si">{</span><span class="n">OUTPUT</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-03-reproduce-orss-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/dd97a3f8bb3ad4f9d08a76d2a5b0a6fe/plot_03_reproduce_orss.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_03_reproduce_orss.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/e0734e0cf2bc503417ff1a7ec835a13d/plot_03_reproduce_orss.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_03_reproduce_orss.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/dd99e3c66a6f19386aa2d1fde3e6988e/plot_03_reproduce_orss.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_03_reproduce_orss.zip</span></code></a></p>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="plot_01_synthetic_decomposition.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">A series with a known decomposition</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="plot_02_dgs10_spectral_state.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">The 10-year Treasury yield and its spectral state</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit">Fit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics">Metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-1-in-sample-fit-on-the-training-segment">Figure 1: in-sample fit on the training segment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-2-the-holdout-conditional-one-step-against-recursive">Figure 2: the holdout, conditional one-step against recursive</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figures-3-to-6-the-paths-on-the-training-scale">Figures 3 to 6: the paths on the training scale</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spectral-state">The spectral state</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><div class="ns-footer">
+  <section
+    class="ns-footer__band ns-footer__band--guide"
+    aria-label="Documentation sections"
+  >
+    <div class="ns-footer__inner ns-footer__columns">
+      <div class="ns-footer__column">
+        <h2>User guide</h2>
+        <p>
+          The model in its equations, how to read the decomposition it emits,
+          and the spectral-state coordinates that summarize it.
+        </p>
+        <a class="ns-footer__cta" href="../user_guide/index.html"
+          >Read the guide<span aria-hidden="true">&nbsp;&rsaquo;</span></a
+        >
+      </div>
+      <div class="ns-footer__column">
+        <h2>Examples</h2>
+        <p>
+          A synthetic chirp with a known answer, then the 10-year Treasury yield
+          from FRED, as executed scripts with their figures.
+        </p>
+        <a class="ns-footer__cta" href="index.html"
+          >View the examples<span aria-hidden="true">&nbsp;&rsaquo;</span></a
+        >
+      </div>
+      <div class="ns-footer__column">
+        <h2>API reference</h2>
+        <p>
+          The specification, the result and the spectral state, with every path
+          they carry and a runnable example on each.
+        </p>
+        <a class="ns-footer__cta" href="../api/index.html"
+          >View the API<span aria-hidden="true">&nbsp;&rsaquo;</span></a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="ns-footer__band ns-footer__band--site"
+    aria-label="Project links"
+  >
+    <div class="ns-footer__inner">
+      <div class="ns-footer__grid">
+        <div class="ns-footer__install">
+          <h2>Get ns-sdn</h2>
+          <p>
+            Releases are published to PyPI and announced on GitHub Releases. Pin
+            the exact version in anything that must reproduce.
+          </p>
+          <pre
+            class="ns-footer__code"
+          ><code>pip install ns-sdn==1.0.0</code></pre>
+        </div>
+
+        <nav class="ns-footer__links" aria-label="Resources">
+          <h2>Resources</h2>
+          <ul>
+            <li>
+              <a href="https://github.com/nikhilxsunder/ns-sdn/releases"
+                >Releases</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/nikhilxsunder/ns-sdn/blob/main/CHANGELOG.md"
+                >Changelog</a
+              >
+            </li>
+            <li>
+              <a href="https://github.com/nikhilxsunder/ns-sdn/issues"
+                >Issues</a
+              >
+            </li>
+            <li>
+              <a href="../project/citing.html">Citing</a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/nikhilxsunder/ns-sdn/blob/main/LICENSE"
+                >License</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <nav class="ns-footer__links" aria-label="Related projects">
+          <h2>Related</h2>
+          <ul>
+            <li>
+              <a href="https://nikhilxsunder.github.io/cultivars/">cultivars</a
+              ><span class="ns-footer__muted"> time series econometrics</span>
+            </li>
+            <li>
+              <a href="https://nikhilxsunder.github.io/fedfred/">fedfred</a
+              ><span class="ns-footer__muted"> FRED client</span>
+            </li>
+            <li>
+              <a href="https://nikhilxsunder.github.io/edgar-sec/">edgar-sec</a
+              ><span class="ns-footer__muted"> SEC EDGAR client</span>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <ul class="ns-footer__social" aria-label="Project pages">
+        <li>
+          <a href="https://github.com/nikhilxsunder/ns-sdn" title="GitHub"
+            ><i class="fa-brands fa-github" aria-hidden="true"></i
+            ><span class="visually-hidden">GitHub</span></a
+          >
+        </li>
+        <li>
+          <a href="https://pypi.org/project/ns-sdn/" title="PyPI"
+            ><i class="fa-brands fa-python" aria-hidden="true"></i
+            ><span class="visually-hidden">PyPI</span></a
+          >
+        </li>
+        <li>
+          <a
+            href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn"
+            title="Codecov"
+            ><i class="fa-solid fa-umbrella" aria-hidden="true"></i
+            ><span class="visually-hidden">Codecov</span></a
+          >
+        </li>
+        <li>
+          <a href="../project/citing.html" title="Cite"
+            ><i class="fa-solid fa-quote-left" aria-hidden="true"></i
+            ><span class="visually-hidden">Cite</span></a
+          >
+        </li>
+      </ul>
+
+      <div class="ns-footer__legal">
+        <p>
+          &copy; 2026, Nikhil Sunder. Released under the
+          <a href="https://github.com/nikhilxsunder/ns-sdn/blob/main/LICENSE"
+            >MIT License</a
+          >. ns-sdn is an independent open-source project and is not affiliated
+          with the Federal Reserve Bank of St. Louis; FRED&reg; is a registered
+          trademark of the Federal Reserve Bank of St. Louis.
+        </p>
+        <p class="ns-footer__build">
+          ns-sdn 1.0.0 &middot; built with
+          <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0
+          and the
+          <a href="https://pydata-sphinx-theme.readthedocs.io/"
+            >PyData Sphinx Theme</a
+          >
+        </p>
+      </div>
+    </div>
+  </section>
+</div></div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>
