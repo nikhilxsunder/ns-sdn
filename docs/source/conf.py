@@ -207,7 +207,12 @@ html_static_path: list[str] = ["_static"]
 # robots.txt and the IndexNow key live at the site root and are written by
 # the deploy workflow's ``root`` job from docs/root/ and a secret.
 html_extra_path: list[str] = []
-html_css_files: list[str] = ["custom.css"]
+html_css_files: list[str] = ["custom.css", "consent.css"]
+# Storage-preferences drawer: gates Google Analytics through Consent Mode. The
+# theme's ``analytics`` option loads gtag.js with every signal denied; the
+# script grants analytics_storage on the visitor's choice (on by default) and
+# persists it in localStorage under ``ns-sdn.consent``.
+html_js_files: list[tuple[str, dict[str, str]]] = [("consent.js", {"defer": "defer"})]
 html_show_sourcelink: bool = False
 
 html_theme_options: dict[str, object] = {
