@@ -85,7 +85,17 @@ docs = [
     "linkify-it-py",
     "sphinx-sitemap",
     "sphinxext-opengraph",
+    "sphinx-codeautolink",
+    "sphinx-copybutton",
+    "sphinx-remove-toctrees",
+    "sphinx-last-updated-by-git",
+    "sphinxcontrib-bibtex",
+    "sphinx-gallery",
+    "sphinx-tippy",
+    "packaging",
     "matplotlib",
+    "pandas",
+    "fedfred",
 ]
 notebooks = [
     "ipykernel",
@@ -169,6 +179,10 @@ ignore = ["D203", "D213", "D105", "D107"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.ruff.lint.isort]
+known-first-party = ["ns_sdn"]
+known-local-folder = ["_fred"]
 
 [tool.bandit]
 exclude_dirs = ["tests", "docs", "notebooks"]

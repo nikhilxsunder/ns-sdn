@@ -1,0 +1,72 @@
+# Local and Anaconda-channel build of ns-sdn with conda-build:
+#
+#   conda build conda-recipe/ -c conda-forge
+#
+# The release workflow's publish-to-anaconda job rewrites the three lines
+# marked below (the version, a file:// url to the sdist it just built, and
+# that sdist's sha256) before building; conda-forge/meta.yaml is the same
+# recipe pointed at PyPI, for the feedstock.
+
+{% set name = "ns-sdn" %}
+{% set version = "1.0.0a1" %}
+{% set python_min = "3.12" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name|replace("-", "_") }}-{{ version }}.tar.gz
+  sha256: bc63c23160282756bb891f941b5bcc65e8e32a689006de618f4a3c613e0b88a0
+
+build:
+  noarch: python
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python {{ python_min }}
+    - hatchling
+    - pip
+  run:
+    - python >={{ python_min }}
+    - numpy >=1.26
+    - pytorch >=2.2
+
+test:
+  imports:
+    - ns_sdn
+    - ns_sdn.spectral_decomposition
+    - ns_sdn.spectral_state
+    - ns_sdn.summary
+    - ns_sdn.exceptions
+    - ns_sdn.typing
+  commands:
+    - pip check
+    # A two-step fit: proves the torch module builds, trains and emits the paths.
+    - python -c "import numpy as np; from ns_sdn.spectral_decomposition import NSSDN, Stage; r = NSSDN(np.sin(0.2 * np.arange(60.0)), k=2, state_dim=4, schedule=(Stage(1e-2, 2),), seed=0).fit(); assert r.components.shape == (60, 2)"
+  requires:
+    - pip
+    - python {{ python_min }}
+
+about:
+  home: https://github.com/nikhilxsunder/ns-sdn
+  summary: Non-Stationary Spectral Decomposition Network, a neural state-space model emitting an interpretable time-varying spectral decomposition of economic and financial time series
+  description: |
+    ns-sdn represents a scalar time series as a trend plus a small number of
+    sinusoids whose amplitude, instantaneous frequency, phase offset and
+    participation evolve with a GRU latent state. A fit returns a frozen
+    result carrying every path of the decomposition on the original scale,
+    one-step and recursive forecasts, and a spectral state that reads the
+    decomposition as a time-local measure on the frequency axis. It follows
+    the model-fit-result conventions of cultivars.
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  doc_url: https://nikhilxsunder.github.io/ns-sdn/
+  dev_url: https://github.com/nikhilxsunder/ns-sdn
+
+extra:
+  recipe-maintainers:
+    - nikhilxsunder

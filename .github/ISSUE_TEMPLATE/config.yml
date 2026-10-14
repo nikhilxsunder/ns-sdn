@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ns-sdn documentation
+    url: https://nikhilxsunder.github.io/ns-sdn/
+    about: The user guide covers the model, the decomposition, forecasting protocols and the known nuances; check it before opening an issue.
+  - name: Questions and discussion
+    url: https://github.com/nikhilxsunder/ns-sdn/discussions
+    about: Ask how to use the model, interpret a fit, or discuss the papers.
+  - name: Security vulnerabilities
+    url: https://github.com/nikhilxsunder/ns-sdn/security/advisories/new
+    about: Report a vulnerability privately; please do not open a public issue for it.

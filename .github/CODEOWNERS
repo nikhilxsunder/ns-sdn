@@ -1,0 +1,22 @@
+# Code owners for ns-sdn. Reviews are requested automatically from the owners
+# of any file a pull request touches; the last matching pattern wins.
+
+# Everything, unless a later line says otherwise.
+*                                   @nikhilxsunder
+
+# The model, its engine, and the tests that pin the published configuration.
+/src/ns_sdn/                        @nikhilxsunder
+/tests/                             @nikhilxsunder
+
+# Release machinery, packaging and dependency policy.
+/.github/                           @nikhilxsunder
+/pyproject.toml                     @nikhilxsunder
+/uv.lock                            @nikhilxsunder
+/conda-recipe/                      @nikhilxsunder
+/conda-forge/                       @nikhilxsunder
+
+# Documentation, examples and the papers they cite.
+/docs/                              @nikhilxsunder
+/examples/                          @nikhilxsunder
+/papers/                            @nikhilxsunder
+/CITATION.cff                       @nikhilxsunder

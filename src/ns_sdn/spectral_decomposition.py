@@ -1,5 +1,24 @@
+# filepath: /src/ns_sdn/spectral_decomposition.py
+#
 # Copyright (c) 2026 Nikhil Sunder
-# SPDX-License-Identifier: MIT
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 r"""The Non-Stationary Spectral Decomposition Network: specification and result.
 
 The model is a neural state-space representation of a scalar series as a
@@ -57,10 +76,13 @@ read the decomposition as a time-local spectral measure live in
 References:
     Sunder, N. & Leon, M. (2026). Non-Stationary Spectral Decomposition
     Network: Adaptive Spectral Emission Heads and Frequency Modulation.
-    *IEEE ORSS*.
+    *2026 IEEE Opportunity Research Scholars Symposium (ORSS)*, Atlanta,
+    GA, USA, pp. 1-5. https://doi.org/10.1109/ORSS71174.2026.11684282
 
     Sunder, N. (2026). Non-Stationary Spectral Decomposition Network for
-    Econometric Time Series Forecasting. *FLAIRS-39*.
+    Econometric Time Series Forecasting. *The International FLAIRS
+    Conference Proceedings*, 39(1).
+    https://doi.org/10.32473/flairs.39.1.141588
 
     Huang, N. E. et al. (1998). The empirical mode decomposition and the
     Hilbert spectrum for nonlinear and non-stationary time series

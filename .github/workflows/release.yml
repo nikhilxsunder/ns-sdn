@@ -98,11 +98,13 @@ jobs:
           name: python-package-distributions
           path: dist/
 
-      - name: Store conda recipe
+      - name: Store conda recipes
         uses: actions/upload-artifact@v4
         with:
           name: conda-recipe
-          path: conda-recipe/
+          path: |
+            conda-recipe/
+            conda-forge/
 
   publish-to-pypi:
     name: Publish Python distribution to PyPI
@@ -147,11 +149,11 @@ jobs:
           name: python-package-distributions
           path: dist/
 
-      - name: Download conda recipe
+      - name: Download conda recipes
         uses: actions/download-artifact@v4
         with:
           name: conda-recipe
-          path: conda-recipe/
+          path: .
 
       - name: Verify the recipe exists
         shell: bash
@@ -170,16 +172,19 @@ jobs:
         shell: bash -el {0}
         run: conda install -y conda-build anaconda-client conda-verify
 
+      # The recipe is Jinja-templated: bump the version in its set statement,
+      # point the source at the sdist just built, and pin that file's hash.
       - name: Build conda package from the sdist
         shell: bash -el {0}
         run: |
           set -euo pipefail
           TARBALL_PATH=$(realpath "dist/ns_sdn-${VERSION}.tar.gz")
           SHA256=$(sha256sum "$TARBALL_PATH" | cut -d ' ' -f 1)
-          sed -i "s/version:.*/version: ${VERSION}/" conda-recipe/meta.yaml
-          sed -i "s|url:.*|url: \"file://${TARBALL_PATH}\"|" conda-recipe/meta.yaml
-          sed -i "s/sha256:.*/sha256: \"${SHA256}\"/" conda-recipe/meta.yaml
-          conda build conda-recipe/
+          sed -i -E "s/^\{% set version = \"[^\"]*\" %\}/{% set version = \"${VERSION}\" %}/" conda-recipe/meta.yaml
+          sed -i -E "s|^  url: .*|  url: file://${TARBALL_PATH}|" conda-recipe/meta.yaml
+          sed -i -E "s/^  sha256: .*/  sha256: ${SHA256}/" conda-recipe/meta.yaml
+          grep -E "set version|^  url:|^  sha256:" conda-recipe/meta.yaml
+          conda build conda-recipe/ -c conda-forge
 
       - name: Publish to Anaconda
         shell: bash -el {0}
@@ -212,17 +217,17 @@ jobs:
           name: python-package-distributions
           path: dist/
 
-      - name: Download conda recipe
+      - name: Download conda recipes
         uses: actions/download-artifact@v4
         with:
           name: conda-recipe
-          path: conda-recipe/
+          path: .
 
       - name: Verify the recipe exists
         shell: bash
         run: |
-          test -s conda-recipe/meta.yaml \
-            || { echo "::error::conda-recipe/meta.yaml is empty; write the recipe before updating the feedstock"; exit 1; }
+          test -s conda-forge/meta.yaml \
+            || { echo "::error::conda-forge/meta.yaml is empty; write the recipe before updating the feedstock"; exit 1; }
 
       - name: Set up Miniconda
         uses: conda-incubator/setup-miniconda@v3
@@ -244,15 +249,17 @@ jobs:
           git -C feedstock fetch upstream main
           git -C feedstock checkout -b "update-${TAG}" upstream/main
 
+      # conda-forge/meta.yaml already sources from PyPI through its Jinja
+      # template; only the version and the hash change per release.
       - name: Point the recipe at the PyPI sdist
         shell: bash
         run: |
           set -euo pipefail
           SHA256=$(sha256sum "dist/ns_sdn-${VERSION}.tar.gz" | cut -d ' ' -f 1)
-          sed -i "s/version:.*/version: ${VERSION}/" conda-recipe/meta.yaml
-          sed -i "s|url:.*|url: \"https://pypi.io/packages/source/n/ns-sdn/ns_sdn-${VERSION}.tar.gz\"|" conda-recipe/meta.yaml
-          sed -i "s/sha256:.*/sha256: \"${SHA256}\"/" conda-recipe/meta.yaml
-          cp conda-recipe/meta.yaml feedstock/recipe/meta.yaml
+          sed -i -E "s/^\{% set version = \"[^\"]*\" %\}/{% set version = \"${VERSION}\" %}/" conda-forge/meta.yaml
+          sed -i -E "s/^  sha256: .*/  sha256: ${SHA256}/" conda-forge/meta.yaml
+          grep -E "set version|^  sha256:" conda-forge/meta.yaml
+          cp conda-forge/meta.yaml feedstock/recipe/meta.yaml
 
       - name: Rerender and push
         shell: bash -el {0}

@@ -1,0 +1,64 @@
+cff-version: 1.2.0
+message: "If ns-sdn contributes to published work, cite the IEEE-ORSS paper the package implements (preferred-citation), the FLAIRS paper that introduced the architecture (references), and the software itself."
+type: software
+title: "ns-sdn: the Non-Stationary Spectral Decomposition Network"
+abstract: "A neural state-space model that represents a scalar time series as a trend plus a small number of sinusoids whose amplitude, instantaneous frequency, phase offset and participation evolve with a latent state, fitted as a one-step forecaster and read as an interpretable time-varying spectral decomposition with spectral-state coordinates."
+version: 1.0.0a1
+date-released: 2026-10-14
+license: MIT
+repository-code: "https://github.com/nikhilxsunder/ns-sdn"
+url: "https://nikhilxsunder.github.io/ns-sdn/"
+authors:
+  - family-names: Sunder
+    given-names: Nikhil
+    email: nsunder724@gmail.com
+    orcid: "https://orcid.org/0009-0007-3323-1760"
+    affiliation: "Intelligent Computer Systems Research Institute, Miami Herbert Business School, University of Miami"
+  - family-names: Leon
+    given-names: Maikel
+    orcid: "https://orcid.org/0000-0002-8849-4521"
+    affiliation: "Department of Business Technology, Miami Herbert Business School, University of Miami"
+keywords:
+  - time series
+  - spectral decomposition
+  - state space
+  - instantaneous frequency
+  - econometrics
+  - neural network
+  - pytorch
+preferred-citation:
+  type: conference-paper
+  title: "Non-Stationary Spectral Decomposition Network: Adaptive Spectral Emission Heads and Frequency Modulation"
+  authors:
+    - family-names: Sunder
+      given-names: Nikhil
+      orcid: "https://orcid.org/0009-0007-3323-1760"
+    - family-names: Leon
+      given-names: Maikel
+      orcid: "https://orcid.org/0000-0002-8849-4521"
+  collection-title: "2026 IEEE Opportunity Research Scholars Symposium (ORSS)"
+  conference:
+    name: "2026 IEEE Opportunity Research Scholars Symposium (ORSS)"
+    city: Atlanta
+    region: GA
+    country: US
+  publisher:
+    name: IEEE
+  start: 1
+  end: 5
+  year: 2026
+  doi: 10.1109/ORSS71174.2026.11684282
+  url: "https://ieeexplore.ieee.org/document/11684282"
+references:
+  - type: article
+    title: "Non-Stationary Spectral Decomposition Network for Econometric Time Series Forecasting"
+    authors:
+      - family-names: Sunder
+        given-names: Nikhil
+        orcid: "https://orcid.org/0009-0007-3323-1760"
+    journal: "The International FLAIRS Conference Proceedings"
+    volume: 39
+    issue: 1
+    year: 2026
+    doi: 10.32473/flairs.39.1.141588
+    url: "https://journals.flvc.org/FLAIRS/article/view/141588"

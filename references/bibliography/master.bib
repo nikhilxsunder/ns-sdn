@@ -1,0 +1,587 @@
+% ============================================================================
+% NS-SDN master bibliography
+% ============================================================================
+%
+% One entry per work, under one canonical key, for everything the project
+% cites: the published papers, the documentation, the proposal, the journal
+% manuscript, and the PDFs kept in references/papers/.  This file is the
+% source of truth.  docs/source/references.bib is a verbatim subset of it
+% under the same keys.  The bibliographies shipped with the FLAIRS and IEEE
+% ORSS papers and with the ICSRI proposal are frozen as submitted and keep
+% their own keys; references/README.md maps those keys onto these.
+%
+% Key convention: first author's surname, year, one-word slug, all ASCII,
+% all lower case (sitzmann2020siren).  The year is the year of the version
+% cited, which is the published version where one exists; the version on
+% disk, when it differs, is named in the comment above the entry.
+%
+% Comment lines above an entry:
+%   PDF:       the file in references/papers/ that holds the work, if any,
+%              and which version of the work that file is.
+%   Cited by:  FLAIRS, ORSS, ICSRI, docs, journal, src (module docstrings).
+%
+% Encoding: plain ASCII with TeX accents ({\"u}, {\'e}) so the file works
+% under both BibTeX and biber.
+%
+% ----------------------------------------------------------------------------
+% 1. NS-SDN: the papers and the software
+% ----------------------------------------------------------------------------
+
+% Cited by: docs, src, README, CITATION.cff (preferred citation)
+@inproceedings{sunder2026orss,
+  title     = {Non-Stationary Spectral Decomposition Network: Adaptive Spectral Emission Heads and Frequency Modulation},
+  author    = {Sunder, Nikhil and Leon, Maikel},
+  booktitle = {2026 IEEE Opportunity Research Scholars Symposium (ORSS)},
+  address   = {Atlanta, GA, USA},
+  publisher = {IEEE},
+  pages     = {1--5},
+  year      = {2026},
+  doi       = {10.1109/ORSS71174.2026.11684282},
+  url       = {https://ieeexplore.ieee.org/document/11684282}
+}
+
+% Cited by: ORSS (sunder2026nssdn), docs, src, README, CITATION.cff
+@article{sunder2026flairs,
+  title   = {Non-Stationary Spectral Decomposition Network for Econometric Time Series Forecasting},
+  author  = {Sunder, Nikhil},
+  journal = {The International FLAIRS Conference Proceedings},
+  volume  = {39},
+  number  = {1},
+  year    = {2026},
+  doi     = {10.32473/flairs.39.1.141588},
+  url     = {https://journals.flvc.org/FLAIRS/article/view/141588}
+}
+
+% The package itself.  Bump version at each release; add the Zenodo DOI once
+% the first stable release is archived.
+@software{sunder2026nssdn,
+  title     = {ns-sdn: the Non-Stationary Spectral Decomposition Network},
+  author    = {Sunder, Nikhil},
+  year      = {2026},
+  version   = {1.0.0a1},
+  license   = {MIT},
+  url       = {https://github.com/nikhilxsunder/ns-sdn}
+}
+
+% Cited by: ORSS (sunderfedfred).  The FRED client the examples use.
+@software{sunder2025fedfred,
+  title     = {fedfred: A {Python} client for the Federal Reserve Economic Database ({FRED}) {API}},
+  author    = {Sunder, Nikhil},
+  year      = {2025},
+  version   = {3.0.0},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.17635942},
+  url       = {https://github.com/nikhilxsunder/fedfred}
+}
+
+% ----------------------------------------------------------------------------
+% 2. Sinusoidal representations and spectral synthesis
+%    (the emission heads' lineage)
+% ----------------------------------------------------------------------------
+
+% PDF: Sinusoidal-Networks.pdf (arXiv:2006.09661v1)
+% Cited by: FLAIRS (sitzmann2020siren), ORSS (sitzmann2020implicit), ICSRI (sitzmann2020), docs, src
+@inproceedings{sitzmann2020siren,
+  title         = {Implicit Neural Representations with Periodic Activation Functions},
+  author        = {Sitzmann, Vincent and Martel, Julien N. P. and Bergman, Alexander W. and Lindell, David B. and Wetzstein, Gordon},
+  booktitle     = {Advances in Neural Information Processing Systems},
+  volume        = {33},
+  year          = {2020},
+  eprint        = {2006.09661},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV},
+  doi           = {10.48550/arXiv.2006.09661},
+  url           = {https://arxiv.org/abs/2006.09661}
+}
+
+% PDF: Fourier-Feature-Networks.pdf (arXiv:2006.10739v1)
+% Cited by: journal
+@inproceedings{tancik2020fourier,
+  title         = {{Fourier} Features Let Networks Learn High Frequency Functions in Low Dimensional Domains},
+  author        = {Tancik, Matthew and Srinivasan, Pratul P. and Mildenhall, Ben and Fridovich-Keil, Sara and Raghavan, Nithin and Singhal, Utkarsh and Ramamoorthi, Ravi and Barron, Jonathan T. and Ng, Ren},
+  booktitle     = {Advances in Neural Information Processing Systems},
+  volume        = {33},
+  year          = {2020},
+  eprint        = {2006.10739},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV},
+  doi           = {10.48550/arXiv.2006.10739},
+  url           = {https://arxiv.org/abs/2006.10739}
+}
+
+% PDF: Frequency-Modulation.pdf (the Computer Music Journal 1(2), 1977,
+%      pp. 46-54 reprint; the entry cites the original JAES article)
+% Cited by: ICSRI (chowning1973), journal
+@article{chowning1973fm,
+  title   = {The Synthesis of Complex Audio Spectra by Means of Frequency Modulation},
+  author  = {Chowning, John M.},
+  journal = {Journal of the Audio Engineering Society},
+  volume  = {21},
+  number  = {7},
+  pages   = {526--534},
+  year    = {1973},
+  note    = {Reprinted in \emph{Computer Music Journal} 1(2):46--54, 1977}
+}
+
+% PDF: Wavelet-Networks.pdf (scanned; text layer unusable)
+% Cited by: journal
+@article{zhang1992wavelet,
+  title   = {Wavelet Networks},
+  author  = {Zhang, Qinghua and Benveniste, Albert},
+  journal = {IEEE Transactions on Neural Networks},
+  volume  = {3},
+  number  = {6},
+  pages   = {889--898},
+  year    = {1992},
+  doi     = {10.1109/72.165591}
+}
+
+% ----------------------------------------------------------------------------
+% 3. Adaptive and learned spectral decomposition
+% ----------------------------------------------------------------------------
+
+% PDF: Hilbert-Huang-Transforms.pdf (HAL open-archive copy, hal-04014501)
+% Cited by: FLAIRS (huang1998hht), ORSS (huang1998empirical), ICSRI (huang1998), docs, src
+@article{huang1998emd,
+  title   = {The Empirical Mode Decomposition and the {Hilbert} Spectrum for Nonlinear and Non-Stationary Time Series Analysis},
+  author  = {Huang, Norden E. and Shen, Zheng and Long, Steven R. and Wu, Manli C. and Shih, Hsing H. and Zheng, Quanan and Yen, Nai-Chyuan and Tung, Chi Chao and Liu, Henry H.},
+  journal = {Proceedings of the Royal Society of London. Series A: Mathematical, Physical and Engineering Sciences},
+  volume  = {454},
+  number  = {1971},
+  pages   = {903--995},
+  year    = {1998},
+  doi     = {10.1098/rspa.1998.0193}
+}
+
+% Cited by: ORSS (wu2009emd)
+@article{wu2009eemd,
+  title   = {Ensemble Empirical Mode Decomposition: A Noise-Assisted Data Analysis Method},
+  author  = {Wu, Zhaohua and Huang, Norden E.},
+  journal = {Advances in Adaptive Data Analysis},
+  volume  = {1},
+  number  = {1},
+  pages   = {1--41},
+  year    = {2009},
+  doi     = {10.1142/S1793536909000047}
+}
+
+% PDF: Oscillatory-Components.pdf (METR 2016-8 technical report, University
+%      of Tokyo; the entry cites the Neural Computation version)
+% Cited by: ORSS (matsuda2016oscillation)
+@article{matsuda2017oscillation,
+  title   = {Time Series Decomposition into Oscillation Components and Phase Estimation},
+  author  = {Matsuda, Takeru and Komaki, Fumiyasu},
+  journal = {Neural Computation},
+  volume  = {29},
+  number  = {2},
+  pages   = {332--367},
+  year    = {2017},
+  doi     = {10.1162/NECO_a_00916}
+}
+
+% PDF: Spectral-Density.pdf (arXiv:2601.00284v1)
+% Cited by: ORSS (mohammadi2026spectral)
+@misc{mohammadi2026spectral,
+  title         = {Deep Learning Estimation of the Spectral Density of Functional Time Series on Large Domains},
+  author        = {Mohammadi, Neda and Sarkar, Soham and Kokoszka, Piotr},
+  year          = {2026},
+  eprint        = {2601.00284},
+  archiveprefix = {arXiv},
+  primaryclass  = {stat.ME},
+  doi           = {10.48550/arXiv.2601.00284},
+  url           = {https://arxiv.org/abs/2601.00284}
+}
+
+% PDF: Spectral-Disentanglement.pdf (arXiv:2511.11817v2)
+% Cited by: ORSS (an2026fredn)
+@misc{an2026fredn,
+  title         = {{FreDN}: Spectral Disentanglement for Time Series Forecasting via Learnable Frequency Decomposition},
+  author        = {An, Zhongde and You, Jinhong and Li, Jiyanglin and Tang, Yiming and Li, Wen and Du, Heming and Du, Shouguo},
+  year          = {2026},
+  eprint        = {2511.11817},
+  archiveprefix = {arXiv},
+  primaryclass  = {stat.ML},
+  doi           = {10.48550/arXiv.2511.11817},
+  url           = {https://arxiv.org/abs/2511.11817}
+}
+
+% ----------------------------------------------------------------------------
+% 4. State-space and structural time-series models
+% ----------------------------------------------------------------------------
+
+% Cited by: FLAIRS (durbin2012statespace), ORSS (durbin2012time), ICSRI (durbin2012), docs, src
+@book{durbin2012ssm,
+  title     = {Time Series Analysis by State Space Methods},
+  author    = {Durbin, James and Koopman, Siem Jan},
+  edition   = {2},
+  publisher = {Oxford University Press},
+  address   = {Oxford},
+  year      = {2012},
+  doi       = {10.1093/acprof:oso/9780199641178.001.0001}
+}
+
+% Cited by: FLAIRS (harvey1989structural), ICSRI (harvey1989)
+@book{harvey1989structural,
+  title     = {Forecasting, Structural Time Series Models and the {Kalman} Filter},
+  author    = {Harvey, Andrew C.},
+  publisher = {Cambridge University Press},
+  address   = {Cambridge},
+  year      = {1989},
+  doi       = {10.1017/CBO9781107049994}
+}
+
+% PDF: Time-Series-Decomposition.pdf (publisher PDF)
+% Cited by: ICSRI (beveridge1981)
+@article{beveridge1981decomposition,
+  title   = {A New Approach to Decomposition of Economic Time Series into Permanent and Transitory Components with Particular Attention to Measurement of the `Business Cycle'},
+  author  = {Beveridge, Stephen and Nelson, Charles R.},
+  journal = {Journal of Monetary Economics},
+  volume  = {7},
+  number  = {2},
+  pages   = {151--174},
+  year    = {1981},
+  doi     = {10.1016/0304-3932(81)90040-4}
+}
+
+% Cited by: ORSS (rangapuramdeep)
+@inproceedings{rangapuram2018dssm,
+  title     = {Deep State Space Models for Time Series Forecasting},
+  author    = {Rangapuram, Syama Sundar and Seeger, Matthias W. and Gasthaus, Jan and Stella, Lorenzo and Wang, Yuyang and Januschowski, Tim},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {31},
+  publisher = {Curran Associates, Inc.},
+  year      = {2018},
+  url       = {https://proceedings.neurips.cc/paper_files/paper/2018/file/5cf68969fb67aa6082363a6d4e6468e2-Paper.pdf}
+}
+
+% ----------------------------------------------------------------------------
+% 5. Econometrics: regimes, vector autoregressions, time variation
+% ----------------------------------------------------------------------------
+
+% Cited by: FLAIRS (hamilton1989regime), ORSS (hamilton1989), ICSRI (hamilton1989)
+@article{hamilton1989regime,
+  title   = {A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle},
+  author  = {Hamilton, James D.},
+  journal = {Econometrica},
+  volume  = {57},
+  number  = {2},
+  pages   = {357--384},
+  year    = {1989},
+  doi     = {10.2307/1912559}
+}
+
+% Cited by: ORSS (hamilton1994)
+@book{hamilton1994tsa,
+  title     = {Time Series Analysis},
+  author    = {Hamilton, James D.},
+  publisher = {Princeton University Press},
+  address   = {Princeton, NJ},
+  year      = {1994},
+  isbn      = {978-0-691-04289-3},
+  doi       = {10.2307/j.ctv14jx6sm}
+}
+
+% Cited by: ORSS (sims1980)
+@article{sims1980macro,
+  title   = {Macroeconomics and Reality},
+  author  = {Sims, Christopher A.},
+  journal = {Econometrica},
+  volume  = {48},
+  number  = {1},
+  pages   = {1--48},
+  year    = {1980},
+  doi     = {10.2307/1912017}
+}
+
+% Cited by: ORSS (lutkepohl2005)
+@book{lutkepohl2005multiple,
+  title     = {New Introduction to Multiple Time Series Analysis},
+  author    = {L{\"u}tkepohl, Helmut},
+  publisher = {Springer},
+  address   = {Berlin, Heidelberg},
+  year      = {2005},
+  isbn      = {978-3-540-27752-1},
+  doi       = {10.1007/978-3-540-27752-1}
+}
+
+% Cited by: ORSS (primiceritvp)
+@article{primiceri2005tvpvar,
+  title   = {Time Varying Structural Vector Autoregressions and Monetary Policy},
+  author  = {Primiceri, Giorgio E.},
+  journal = {The Review of Economic Studies},
+  volume  = {72},
+  number  = {3},
+  pages   = {821--852},
+  year    = {2005},
+  doi     = {10.1111/j.1467-937X.2005.00353.x}
+}
+
+% PDF: Time-Varying-Parameters-VAR.pdf (publisher PDF, open access)
+% Cited by: FLAIRS (lubik2015tvpvar), ICSRI (lubik2015)
+@article{lubik2015tvpvar,
+  title   = {Time-Varying Parameter Vector Autoregressions: Specification, Estimation, and an Application},
+  author  = {Lubik, Thomas A. and Matthes, Christian},
+  journal = {Federal Reserve Bank of Richmond Economic Quarterly},
+  volume  = {101},
+  number  = {4},
+  pages   = {323--352},
+  year    = {2015},
+  doi     = {10.21144/eq1010403}
+}
+
+% ----------------------------------------------------------------------------
+% 6. Forecast evaluation and multi-step strategies
+% ----------------------------------------------------------------------------
+
+% PDF: Predictive-Accuracy.pdf (scanned working-paper version, "Comparing
+%      Predictive Accuracy I: An Asymptotic Test"; the entry cites the
+%      JBES article)
+% Cited by: FLAIRS (diebold1995accuracy), ICSRI (diebold1995)
+@article{diebold1995accuracy,
+  title   = {Comparing Predictive Accuracy},
+  author  = {Diebold, Francis X. and Mariano, Roberto S.},
+  journal = {Journal of Business \& Economic Statistics},
+  volume  = {13},
+  number  = {3},
+  pages   = {253--263},
+  year    = {1995},
+  doi     = {10.1080/07350015.1995.10524599}
+}
+
+% PDF: Asymptotic-Inference.pdf (scanned publisher PDF)
+% Cited by: FLAIRS (west1996predictive), ICSRI (west1996)
+@article{west1996predictive,
+  title   = {Asymptotic Inference about Predictive Ability},
+  author  = {West, Kenneth D.},
+  journal = {Econometrica},
+  volume  = {64},
+  number  = {5},
+  pages   = {1067--1084},
+  year    = {1996},
+  doi     = {10.2307/2171956}
+}
+
+% PDF: Recursive-And-Direct-Multi-Step.pdf (the working paper itself)
+% Cited by: journal (recursive versus conditional one-step holdout)
+@techreport{bentaieb2012recursive,
+  title       = {Recursive and Direct Multi-Step Forecasting: The Best of Both Worlds},
+  author      = {Ben Taieb, Souhaib and Hyndman, Rob J.},
+  institution = {Monash University, Department of Econometrics and Business Statistics},
+  type        = {Working Paper},
+  number      = {19/12},
+  month       = sep,
+  year        = {2012}
+}
+
+% ----------------------------------------------------------------------------
+% 7. Recurrent networks, training regimes and optimization
+%    (the transition F_psi and the alignment modes)
+% ----------------------------------------------------------------------------
+
+% PDF: LSTM.pdf (scanned; text layer unusable)
+% Cited by: ICSRI (hochreiter1997)
+@article{hochreiter1997lstm,
+  title   = {Long Short-Term Memory},
+  author  = {Hochreiter, Sepp and Schmidhuber, J{\"u}rgen},
+  journal = {Neural Computation},
+  volume  = {9},
+  number  = {8},
+  pages   = {1735--1780},
+  year    = {1997},
+  doi     = {10.1162/neco.1997.9.8.1735}
+}
+
+% PDF: RNN-Encoder-Decoder.pdf (arXiv:1406.1078; the entry cites the EMNLP
+%      version)
+% Cited by: ORSS (cho2014learningphrase), ICSRI (cho2014), docs, src
+@inproceedings{cho2014gru,
+  title         = {Learning Phrase Representations using {RNN} Encoder--Decoder for Statistical Machine Translation},
+  author        = {Cho, Kyunghyun and van Merri{\"e}nboer, Bart and Gulcehre, Caglar and Bahdanau, Dzmitry and Bougares, Fethi and Schwenk, Holger and Bengio, Yoshua},
+  booktitle     = {Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  address       = {Doha, Qatar},
+  publisher     = {Association for Computational Linguistics},
+  pages         = {1724--1734},
+  year          = {2014},
+  eprint        = {1406.1078},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CL},
+  doi           = {10.3115/v1/D14-1179}
+}
+
+% Cited by: ORSS (williams1989ala).  Teacher forcing in its original form.
+@article{williams1989rtrl,
+  title   = {A Learning Algorithm for Continually Running Fully Recurrent Neural Networks},
+  author  = {Williams, Ronald J. and Zipser, David},
+  journal = {Neural Computation},
+  volume  = {1},
+  number  = {2},
+  pages   = {270--280},
+  year    = {1989},
+  doi     = {10.1162/neco.1989.1.2.270}
+}
+
+% PDF: Scheduled-Sampling.pdf
+% Cited by: journal (exposure bias; the filtered versus recursive gap)
+@inproceedings{bengio2015scheduled,
+  title         = {Scheduled Sampling for Sequence Prediction with Recurrent Neural Networks},
+  author        = {Bengio, Samy and Vinyals, Oriol and Jaitly, Navdeep and Shazeer, Noam},
+  booktitle     = {Advances in Neural Information Processing Systems},
+  volume        = {28},
+  year          = {2015},
+  eprint        = {1506.03099},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG},
+  doi           = {10.48550/arXiv.1506.03099}
+}
+
+% PDF: Professor-Forcing.pdf (lists Goyal before Lamb; the two share first
+%      authorship and the NeurIPS proceedings list Lamb first, as here)
+% Cited by: journal (exposure bias; the filtered versus recursive gap)
+@inproceedings{lamb2016professor,
+  title         = {Professor Forcing: A New Algorithm for Training Recurrent Networks},
+  author        = {Lamb, Alex and Goyal, Anirudh and Zhang, Ying and Zhang, Saizheng and Courville, Aaron and Bengio, Yoshua},
+  booktitle     = {Advances in Neural Information Processing Systems},
+  volume        = {29},
+  year          = {2016},
+  eprint        = {1610.09038},
+  archiveprefix = {arXiv},
+  primaryclass  = {stat.ML},
+  doi           = {10.48550/arXiv.1610.09038}
+}
+
+% Cited by: ORSS (adamoptim), docs, src
+@inproceedings{kingma2015adam,
+  title         = {Adam: A Method for Stochastic Optimization},
+  author        = {Kingma, Diederik P. and Ba, Jimmy},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  address       = {San Diego, CA, USA},
+  year          = {2015},
+  eprint        = {1412.6980},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG},
+  doi           = {10.48550/arXiv.1412.6980}
+}
+
+% PDF: Neural-ODEs.pdf (arXiv:1806.07366)
+% Cited by: ORSS (neuralodes), ICSRI (chen2018)
+@inproceedings{chen2018neuralode,
+  title         = {Neural Ordinary Differential Equations},
+  author        = {Chen, Ricky T. Q. and Rubanova, Yulia and Bettencourt, Jesse and Duvenaud, David},
+  booktitle     = {Advances in Neural Information Processing Systems},
+  volume        = {31},
+  year          = {2018},
+  eprint        = {1806.07366},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG},
+  doi           = {10.48550/arXiv.1806.07366}
+}
+
+% ----------------------------------------------------------------------------
+% 8. Deep forecasting baselines
+% ----------------------------------------------------------------------------
+
+% PDF: DeepAR.pdf (arXiv:1704.04110, Flunkert, Salinas and Gasthaus, 2017;
+%      the entry cites the journal version, whose author list differs)
+% Cited by: FLAIRS (flunkert2020deepar), ORSS (flunkertdeepar), ICSRI (salinas2020)
+@article{salinas2020deepar,
+  title         = {{DeepAR}: Probabilistic Forecasting with Autoregressive Recurrent Networks},
+  author        = {Salinas, David and Flunkert, Valentin and Gasthaus, Jan and Januschowski, Tim},
+  journal       = {International Journal of Forecasting},
+  volume        = {36},
+  number        = {3},
+  pages         = {1181--1191},
+  year          = {2020},
+  eprint        = {1704.04110},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.AI},
+  doi           = {10.1016/j.ijforecast.2019.07.001}
+}
+
+% PDF: N-BEATS.pdf (arXiv:1905.10437)
+% Cited by: ICSRI (oreshkin2020)
+@inproceedings{oreshkin2020nbeats,
+  title         = {{N-BEATS}: Neural Basis Expansion Analysis for Interpretable Time Series Forecasting},
+  author        = {Oreshkin, Boris N. and Carpov, Dmitri and Chapados, Nicolas and Bengio, Yoshua},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2020},
+  eprint        = {1905.10437},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG},
+  doi           = {10.48550/arXiv.1905.10437}
+}
+
+% PDF: Temporal-Fusion-Transformers.pdf (arXiv:1912.09363; the entry cites
+%      the journal version)
+% Cited by: ORSS (lim2020temporalfusion), ICSRI (lim2021)
+@article{lim2021tft,
+  title         = {Temporal Fusion Transformers for Interpretable Multi-Horizon Time Series Forecasting},
+  author        = {Lim, Bryan and Ar{\i}k, Sercan {\"O}. and Loeff, Nicolas and Pfister, Tomas},
+  journal       = {International Journal of Forecasting},
+  volume        = {37},
+  number        = {4},
+  pages         = {1748--1764},
+  year          = {2021},
+  eprint        = {1912.09363},
+  archiveprefix = {arXiv},
+  primaryclass  = {stat.ML},
+  doi           = {10.1016/j.ijforecast.2021.03.012}
+}
+
+% ----------------------------------------------------------------------------
+% 9. Learned dynamics and the stability of autoregressive rollout
+%    (background for the recursive-forecast drift diagnostics)
+% ----------------------------------------------------------------------------
+
+% PDF: Spatiotemporal-Forecasts.pdf (publisher PDF, CC BY)
+% Cited by: journal
+@article{vlachas2024learning,
+  title   = {Learning on Predictions: Fusing Training and Autoregressive Inference for Long-Term Spatiotemporal Forecasts},
+  author  = {Vlachas, Pantelis R. and Koumoutsakos, Petros},
+  journal = {Physica D: Nonlinear Phenomena},
+  volume  = {470},
+  pages   = {134371},
+  year    = {2024},
+  doi     = {10.1016/j.physd.2024.134371}
+}
+
+% PDF: Multi-Scale-Dynamics.pdf (arXiv:2304.07029v2, December 2024)
+% Cited by: journal
+@misc{chattopadhyay2023multiscale,
+  title         = {Challenges of Learning Multi-Scale Dynamics with {AI} Weather Models: Implications for Stability and Physics},
+  author        = {Chattopadhyay, Ashesh and Sun, Y. Qiang and Hassanzadeh, Pedram},
+  year          = {2023},
+  eprint        = {2304.07029},
+  archiveprefix = {arXiv},
+  primaryclass  = {physics.flu-dyn},
+  doi           = {10.48550/arXiv.2304.07029},
+  url           = {https://arxiv.org/abs/2304.07029}
+}
+
+% PDF: Neural-PDE-Solver.pdf (arXiv:2202.03376v3)
+% Cited by: journal (pushforward trick for rollout stability)
+@inproceedings{brandstetter2022mppde,
+  title         = {Message Passing Neural {PDE} Solvers},
+  author        = {Brandstetter, Johannes and Worrall, Daniel E. and Welling, Max},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2022},
+  eprint        = {2202.03376},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG},
+  doi           = {10.48550/arXiv.2202.03376}
+}
+
+% ----------------------------------------------------------------------------
+% 10. Mathematical background
+% ----------------------------------------------------------------------------
+
+% Cited by: docs, src (the W_1 velocity of the spectral state)
+@book{villani2009ot,
+  title     = {Optimal Transport: Old and New},
+  author    = {Villani, C{\'e}dric},
+  series    = {Grundlehren der mathematischen Wissenschaften},
+  volume    = {338},
+  publisher = {Springer},
+  address   = {Berlin, Heidelberg},
+  year      = {2009},
+  doi       = {10.1007/978-3-540-71050-9}
+}

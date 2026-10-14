@@ -1,0 +1,161 @@
+{#- ns-sdn site footer: a three-column "where next" band, then a dark band
+with install, resources, links and the legal line. Registered in conf.py as
+footer_start = ["ns-sdn-footer"] with footer_center and footer_end empty, so
+this template owns the whole footer. -#}
+<div class="ns-footer">
+  <section
+    class="ns-footer__band ns-footer__band--guide"
+    aria-label="Documentation sections"
+  >
+    <div class="ns-footer__inner ns-footer__columns">
+      <div class="ns-footer__column">
+        <h2>User guide</h2>
+        <p>
+          The model in its equations, how to read the decomposition it
+          emits, and the spectral-state coordinates that summarize it.
+        </p>
+        <a class="ns-footer__cta" href="{{ pathto('user_guide/index') }}"
+          >Read the guide<span aria-hidden="true">&nbsp;&rsaquo;</span></a
+        >
+      </div>
+      <div class="ns-footer__column">
+        <h2>Examples</h2>
+        <p>
+          A synthetic chirp with a known answer, then the 10-year Treasury
+          yield from FRED, as executed scripts with their figures.
+        </p>
+        <a class="ns-footer__cta" href="{{ pathto('auto_examples/index') }}"
+          >View the examples<span aria-hidden="true">&nbsp;&rsaquo;</span></a
+        >
+      </div>
+      <div class="ns-footer__column">
+        <h2>API reference</h2>
+        <p>
+          The specification, the result and the spectral state, with every
+          path they carry and a runnable example on each.
+        </p>
+        <a class="ns-footer__cta" href="{{ pathto('api/index') }}"
+          >View the API<span aria-hidden="true">&nbsp;&rsaquo;</span></a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="ns-footer__band ns-footer__band--site"
+    aria-label="Project links"
+  >
+    <div class="ns-footer__inner">
+      <div class="ns-footer__grid">
+        <div class="ns-footer__install">
+          <h2>Get ns-sdn</h2>
+          <p>
+            Releases are published to PyPI and announced on GitHub Releases.
+            Pin the exact version in anything that must reproduce.
+          </p>
+          <pre
+            class="ns-footer__code"
+          ><code>pip install ns-sdn=={{ release }}</code></pre>
+        </div>
+
+        <nav class="ns-footer__links" aria-label="Resources">
+          <h2>Resources</h2>
+          <ul>
+            <li>
+              <a href="https://github.com/nikhilxsunder/ns-sdn/releases"
+                >Releases</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/nikhilxsunder/ns-sdn/blob/main/CHANGELOG.md"
+                >Changelog</a
+              >
+            </li>
+            <li>
+              <a href="https://github.com/nikhilxsunder/ns-sdn/issues"
+                >Issues</a
+              >
+            </li>
+            <li>
+              <a href="{{ pathto('project/citing') }}">Citing</a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/nikhilxsunder/ns-sdn/blob/main/LICENSE"
+                >License</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <nav class="ns-footer__links" aria-label="Related projects">
+          <h2>Related</h2>
+          <ul>
+            <li>
+              <a href="https://nikhilxsunder.github.io/cultivars/">cultivars</a
+              ><span class="ns-footer__muted"> time series econometrics</span>
+            </li>
+            <li>
+              <a href="https://nikhilxsunder.github.io/fedfred/">fedfred</a
+              ><span class="ns-footer__muted"> FRED client</span>
+            </li>
+            <li>
+              <a href="https://nikhilxsunder.github.io/edgar-sec/">edgar-sec</a
+              ><span class="ns-footer__muted"> SEC EDGAR client</span>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <ul class="ns-footer__social" aria-label="Project pages">
+        <li>
+          <a href="https://github.com/nikhilxsunder/ns-sdn" title="GitHub"
+            ><i class="fa-brands fa-github" aria-hidden="true"></i
+            ><span class="visually-hidden">GitHub</span></a
+          >
+        </li>
+        <li>
+          <a href="https://pypi.org/project/ns-sdn/" title="PyPI"
+            ><i class="fa-brands fa-python" aria-hidden="true"></i
+            ><span class="visually-hidden">PyPI</span></a
+          >
+        </li>
+        <li>
+          <a
+            href="https://app.codecov.io/gh/nikhilxsunder/ns-sdn"
+            title="Codecov"
+            ><i class="fa-solid fa-umbrella" aria-hidden="true"></i
+            ><span class="visually-hidden">Codecov</span></a
+          >
+        </li>
+        <li>
+          <a href="{{ pathto('project/citing') }}" title="Cite"
+            ><i class="fa-solid fa-quote-left" aria-hidden="true"></i
+            ><span class="visually-hidden">Cite</span></a
+          >
+        </li>
+      </ul>
+
+      <div class="ns-footer__legal">
+        <p>
+          &copy; {{ copyright }}. Released under the
+          <a href="https://github.com/nikhilxsunder/ns-sdn/blob/main/LICENSE"
+            >MIT License</a
+          >. ns-sdn is an independent open-source project and is not
+          affiliated with the Federal Reserve Bank of St. Louis; FRED&reg; is a
+          registered trademark of the Federal Reserve Bank of St. Louis.
+        </p>
+        <p class="ns-footer__build">
+          ns-sdn {{ release }} {%- if last_updated %} &middot; updated {{
+          last_updated }}{% endif %} &middot; built with
+          <a href="https://www.sphinx-doc.org/">Sphinx</a> {{ sphinx_version }}
+          and the
+          <a href="https://pydata-sphinx-theme.readthedocs.io/"
+            >PyData Sphinx Theme</a
+          >
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
