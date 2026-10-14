@@ -23,6 +23,23 @@
 
 Torch is confined to ``_modules``, ``_objectives``, ``_trainers`` and
 ``_predictors``; the fit record and the public result see numpy only.
+Read in dependency order:
+
+* ``_modules`` -- the ``nn.Module``: transition, heads, synthesis, the
+  teacher-forced and recursive passes.
+* ``_objectives`` -- the criterion: prediction loss plus penalties.
+* ``_trainers`` -- the staged Adam loop and the history record.
+* ``_predictors`` -- the trained network behind a numpy interface, the
+  alignment's input layout, pickling.
+* ``_fits`` -- the raw fit record.
+* ``_models`` -- the model bases that validate a specification and run
+  the pipeline.
+* ``_mixins`` -- rendering, frame interop and comparison for results.
+
+Example:
+    >>> from ns_sdn.engine import _internals
+    >>> _internals.__all__
+    ['_fits', '_mixins', '_models', '_modules', '_objectives', '_predictors', '_trainers']
 """
 
 from __future__ import annotations

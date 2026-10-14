@@ -61,9 +61,11 @@ Install
          pip install "ns-sdn==\ |release|\ "
 
 Pin the exact version in anything that must reproduce: a paper's
-replication package, a CI job, a lockfile. Before ``1.0.0`` argument
-names, result fields and summary wording can still change, and every
-such change is listed in the
+replication package, a CI job, a lockfile. From ``1.0.0`` the public
+names, argument names, result fields and summary wording are frozen for
+the ``1.x`` line; a release that changes the output of the default
+configuration on the published data is a major version, and every change
+to a public surface is listed in the
 :doc:`release notes <../project/release_notes>`.
 
 torch on Linux

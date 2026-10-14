@@ -3,8 +3,14 @@ message: "If ns-sdn contributes to published work, cite the IEEE-ORSS paper the 
 type: software
 title: "ns-sdn: the Non-Stationary Spectral Decomposition Network"
 abstract: "A neural state-space model that represents a scalar time series as a trend plus a small number of sinusoids whose amplitude, instantaneous frequency, phase offset and participation evolve with a latent state, fitted as a one-step forecaster and read as an interpretable time-varying spectral decomposition with spectral-state coordinates."
-version: 1.0.0a1
+version: 1.0.0
 date-released: 2026-10-14
+doi: 10.5281/zenodo.23368625
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23368625
+    description: "Concept DOI for all versions of ns-sdn on Zenodo; resolves to the latest release."
+  # Add the 1.0.0 version DOI here once Zenodo archives the v1.0.0 release.
 license: MIT
 repository-code: "https://github.com/nikhilxsunder/ns-sdn"
 url: "https://nikhilxsunder.github.io/ns-sdn/"

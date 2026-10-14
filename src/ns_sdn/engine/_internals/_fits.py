@@ -19,11 +19,18 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-"""Fit records: the raw output of an estimator, before result assembly.
+r"""Fit records: the raw output of an estimator, before result assembly.
 
-A fit carries what training produced and nothing about how; the model that
-owns the specification produces it, and the public result is assembled
-from the fit and the specification together.
+A fit carries what training produced and nothing about how; the model
+that owns the specification produces it (``_models._fit_family``), and
+the public result is assembled from the fit and the specification
+together (``NSSDNResult._from_fit``). Keeping the two apart is what lets
+the result be a frozen record of plain arrays while the mechanism that
+produced it stays private.
+
+Example:
+    >>> _SpectralFit.__dataclass_params__.frozen, len(_SpectralFit.__slots__)
+    (True, 9)
 """
 
 from __future__ import annotations
@@ -41,19 +48,33 @@ __all__ = ["_SpectralFit"]
 
 @dataclass(frozen=True, kw_only=True, slots=True)
 class _SpectralFit:
-    """What one training run produced.
+    r"""What one training run produced.
+
+    Every array is on the original scale and the likelihood is the
+    concentrated Gaussian one,
+
+    .. math::
+
+       \hat\sigma^2 = \frac{1}{m}\sum_{t=1}^{n-1} e_t^2,
+       \qquad
+       \ell = -\frac{m}{2}\bigl(\log 2\pi + \log\hat\sigma^2 + 1\bigr),
+       \qquad m = n - 1,
+
+    with :math:`e_t` the one-step residuals.
 
     Attributes:
-        paths: The teacher-forced pass over the sample: ``n`` rows under the
-            filtered alignment, ``n - 1`` under the predicted one.
-        fittedvalues: One-step conditional predictions aligned with
-            ``endog[1:]``: the emission rows under the predicted alignment,
-            the emissions through ``n - 2`` under the filtered one.
-        resid: ``endog[1:] - fittedvalues``.
-        llf: Concentrated Gaussian log-likelihood of ``resid``.
-        nobs: ``n - 1``.
+        paths: The teacher-forced pass over the sample: :math:`n` rows
+            under the filtered alignment, :math:`n - 1` under the
+            predicted one.
+        fittedvalues: ``(n - 1,)`` one-step conditional predictions
+            aligned with ``endog[1:]``: the emission rows under the
+            predicted alignment, the emissions through :math:`n - 2` under
+            the filtered one.
+        resid: ``(n - 1,)`` ``endog[1:] - fittedvalues``.
+        llf: Concentrated Gaussian log-likelihood :math:`\ell` of ``resid``.
+        nobs: The effective sample size :math:`m = n - 1`.
         n_params: Trainable parameter count.
-        sigma2: ``resid @ resid / nobs``.
+        sigma2: :math:`\hat\sigma^2`, floored at :math:`10^{-12}`.
         history: Recorded losses by stage and step.
         predictor: The trained network, callable on new data.
     """

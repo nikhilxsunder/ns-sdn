@@ -223,7 +223,7 @@ html_theme_options: dict[str, object] = {
         "version_match": _DOCS_VERSION,
     },
     "check_switcher": False,
-    "show_version_warning_banner": False,
+    "show_version_warning_banner": True,
     "navbar_center": ["navbar-nav"],
     "navbar_end": ["theme-switcher", "navbar-icon-links"],
     "navbar_align": "left",

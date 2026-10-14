@@ -23,7 +23,7 @@
 
 ## Current Vulnerability Status
 
-ns-sdn is a prerelease (1.0.0aN) research compute library. As of October
+ns-sdn is a 1.x research compute library. As of October
 2026 there are no known unpatched vulnerabilities of medium or higher
 severity in the ns-sdn code base.
 
@@ -43,7 +43,7 @@ Vulnerabilities are monitored through:
 Report them through one of:
 
 - **GitHub Security Advisories**: the "Report a vulnerability" button under
-  the repository's *Security* tab, which opens a private advisory
+  the repository's _Security_ tab, which opens a private advisory
   (preferred).
 - **Email**: nsunder724@gmail.com.
 
@@ -73,15 +73,15 @@ Include what you can of:
 
 ## Supported Versions
 
-ns-sdn is pre-1.0. Only the latest prerelease receives security updates;
-there are no maintenance branches before 1.0.0.
+Only the latest release of the newest major line receives security
+updates; there are no maintenance branches. A fix ships as a patch release
+on that line.
 
-| Version             | Supported |
-| ------------------- | --------- |
-| Latest 1.0.0 prerelease | Yes   |
-| 0.0.x               | No (name reservation, no functionality) |
-
-Once 1.0.0 ships, this table will track supported major lines.
+| Version                | Supported                               |
+| ---------------------- | --------------------------------------- |
+| 1.x (latest release)   | Yes                                     |
+| 1.0.0 prereleases (aN) | No; upgrade to the latest 1.x           |
+| 0.0.x                  | No (name reservation, no functionality) |
 
 ## Threat Model
 
@@ -207,7 +207,7 @@ after producing them.
 **The signed tag.**
 
 ```sh
-git verify-tag v1.0.0a1
+git verify-tag v1.0.0
 ```
 
 **The GPG signature on an artifact.** The maintainer's public key is on the
@@ -216,7 +216,7 @@ GitHub profile (`https://github.com/nikhilxsunder.gpg`) and on
 
 ```sh
 curl -fsSL https://github.com/nikhilxsunder.gpg | gpg --import
-gpg --verify ns_sdn-1.0.0a1.tar.gz.asc ns_sdn-1.0.0a1.tar.gz
+gpg --verify ns_sdn-1.0.0.tar.gz.asc ns_sdn-1.0.0.tar.gz
 ```
 
 **The Sigstore bundle**, which ties the artifact to the workflow that built
@@ -224,8 +224,8 @@ it:
 
 ```sh
 pip install sigstore
-sigstore verify github ns_sdn-1.0.0a1.tar.gz \
-  --bundle ns_sdn-1.0.0a1.tar.gz.sigstore.json \
+sigstore verify github ns_sdn-1.0.0.tar.gz \
+  --bundle ns_sdn-1.0.0.tar.gz.sigstore.json \
   --repository nikhilxsunder/ns-sdn
 ```
 

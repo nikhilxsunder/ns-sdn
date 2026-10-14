@@ -10,12 +10,12 @@ Last updated: 2026-10-14
 
 ## Status
 
-| Release | Theme                                                                     | State               |
-| ------- | ------------------------------------------------------------------------- | ------------------- |
-| 0.0.1   | Name reservation on PyPI                                                  | Released            |
-| 1.0.0a1 | The IEEE-ORSS model through the cultivars model-fit-result pattern        | Released 2026-10-14 |
-| 1.0.0b1 | Validated package: reproduction fixtures, documentation site, conda-forge | In progress         |
-| 1.0.0   | Stable: API guarantee on the published model and its result               | Planned             |
+| Release | Theme                                                                      | State               |
+| ------- | -------------------------------------------------------------------------- | ------------------- |
+| 0.0.1   | Name reservation on PyPI                                                   | Released            |
+| 1.0.0a1 | The IEEE-ORSS model through the cultivars model-fit-result pattern         | Released 2026-10-14 |
+| 1.0.0   | Stable: API guarantee on the published model and its result                | Released 2026-10-14 |
+| 1.0.x   | Validation evidence: reproduction fixture, business-day refit, conda-forge | In progress         |
 | 1.1.0   | The journal paper's instruments: corrected spectral coordinates, ablations | Planned             |
 | 1.2.0   | Applications: term structure, business cycles, cultivars integration       | Planned             |
 
@@ -37,10 +37,25 @@ Last updated: 2026-10-14
    library can read the other.
 6. **Criteria, not dates.** A release ships when its exit criteria are met.
 
-## 1.0.0b1: validated package
+## 1.0.0: stable
 
-The alpha shipped the model. The beta is the evidence that it reproduces
-the papers and that the surrounding machinery works end to end.
+The alpha shipped the model; 1.0.0 freezes it. The public names, argument
+names, result fields and summary wording of `NSSDN`, `NSSDNResult`,
+`SpectralState`, `Stage` and `Penalties` are the 1.x contract under semantic
+versioning, with `Development Status :: 5 - Production/Stable`, the
+documentation version banner on, the signed release pipeline exercised on
+the prerelease tag, Codecov reporting, the documentation site live, and the
+release archived on Zenodo (concept DOI 10.5281/zenodo.23368625, one version
+DOI per release, `CITATION.cff` carrying both).
+
+From 1.0.0 onward, a change that alters the output of the default
+configuration on the published data requires a major version.
+
+## 1.0.x: validation evidence
+
+Patch releases that add evidence without touching the API: the proof that
+the package reproduces the papers and that the surrounding machinery works
+end to end.
 
 **Work**
 
@@ -59,23 +74,11 @@ the papers and that the surrounding machinery works end to end.
 - Documentation: the site live at `nikhilxsunder.github.io/ns-sdn/` with
   the gallery executing in CI, every `testcode` block passing under the
   doctest builder, and `make strict` clean.
-- Distribution: the conda-forge feedstock accepted, Codecov reporting, the
-  signed release pipeline exercised on a prerelease tag.
-- Coverage at or above 90%, with the spectral-state module fully covered.
+- Distribution: the conda-forge feedstock accepted.
+- Coverage at or above 95%, with the spectral-state module fully covered.
 
-**Exit criteria.** All of the above, and a prerelease cut by `prerelease.yml`
-with no manual steps.
-
-## 1.0.0: stable
-
-- A beta period with no change to the public names, argument names or result
-  fields.
-- `Development Status :: 5 - Production/Stable`; documentation version
-  banner enabled.
-- Zenodo DOI minted for the release and added to `CITATION.cff`.
-
-From 1.0.0 onward, a change that alters the output of the default
-configuration on the published data requires a major version.
+**Exit criteria.** All of the above, each landing in the patch release that
+carries it, with no change to a public surface.
 
 ## 1.1.0: the journal paper's instruments
 

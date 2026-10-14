@@ -231,7 +231,7 @@ runs only with `DOCS_RUN_ORSS=1`. The deploy workflow publishes `main` as
 Versions follow Semantic Versioning with PEP 440 prerelease segments. The
 version lives in `src/ns_sdn/__about__.py` and nowhere else.
 
-1. Update `CHANGELOG.md`: move the *Unreleased* entries under the new
+1. Update `CHANGELOG.md`: move the _Unreleased_ entries under the new
    version with its date.
 2. Bump `__version__`, run the full suite and `uv lock`, commit.
 3. Tag: `git tag -s vX.Y.Z` (or `vX.Y.ZaN` for a prerelease) and push the

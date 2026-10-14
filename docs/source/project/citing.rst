@@ -38,17 +38,21 @@ The software
 .. parsed-literal::
 
    @software{sunder_nssdn,
-     author  = {Sunder, Nikhil},
-     title   = {ns-sdn: the Non-Stationary Spectral Decomposition Network},
-     year    = {2026},
-     version = {\ |release|\ },
-     url     = {https://github.com/nikhilxsunder/ns-sdn},
-     license = {MIT}
+     author    = {Sunder, Nikhil},
+     title     = {ns-sdn: the Non-Stationary Spectral Decomposition Network},
+     year      = {2026},
+     publisher = {Zenodo},
+     doi       = {10.5281/zenodo.23368625},
+     url       = {https://github.com/nikhilxsunder/ns-sdn},
+     license   = {MIT}
    }
 
-A Zenodo DOI will be attached at the first stable release, and the
-:github:`CITATION.cff` file in the repository carries the same entry in
-a form GitHub and Zenodo read directly.
+The DOI is the Zenodo concept DOI, which resolves to the latest release;
+every release is archived under its own DOI, listed on the
+`Zenodo record <https://doi.org/10.5281/zenodo.23368625>`_. To pin a
+version in a citation, add ``version = {\ |release|\ }`` and cite that
+release's DOI. The :github:`CITATION.cff` file in the repository carries
+the same entries in a form GitHub and Zenodo read directly.
 
 Bibliography
 ------------

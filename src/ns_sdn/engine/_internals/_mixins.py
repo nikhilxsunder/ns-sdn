@@ -21,11 +21,28 @@
 # SOFTWARE.
 """Behavior mixins: capabilities a frozen result opts into.
 
-Every class declares ``__slots__ = ()`` and no fields. A mixin annotates the
-attributes it reads and the concrete result declares them, which is what
-lets several compose onto one slotted dataclass. The surface and the names
-match ``cultivars``' mixins so a result from this package reads the same
-way to a user of that one.
+Every class declares ``__slots__ = ()`` and no fields. A mixin annotates
+the attributes it reads and the concrete result declares them, which is
+what lets several compose onto one slotted dataclass. The surface and the
+names match ``cultivars``' mixins so a result from this package reads the
+same way to a user of that one.
+
+Three capabilities: rendering (:class:`_SummaryMixin`, which turns a
+``_summary_table`` into ``summary()``, ``repr``, ``str`` and the notebook
+display), frame interop (:class:`_SeriesMixin`, ``to_dict`` and
+``to_pandas`` over the aligned per-observation outputs), and
+criterion-named comparison (:class:`_ComparisonMixin`, the information
+criteria and ``compare``).
+
+Example:
+    >>> import numpy as np
+    >>> from ns_sdn.spectral_decomposition import NSSDN, Stage
+    >>> y = np.sin(0.3 * np.arange(80.0))
+    >>> res = NSSDN(y, k=1, state_dim=4, schedule=(Stage(1e-2, 5),), seed=0).fit()
+    >>> [m.__name__ for m in type(res).__mro__ if m.__name__.endswith("Mixin")]
+    ['_SummaryMixin', '_SeriesMixin', '_ComparisonMixin']
+    >>> res.summary().title, res.to_dict()["observed"].shape, res.aic > res.llf
+    ('NSSDN(k=1) Results', (80,), True)
 """
 
 from __future__ import annotations
@@ -48,31 +65,60 @@ class _SummaryMixin:
     """Text, notebook, and dataframe rendering for a fitted result.
 
     The concrete result supplies :meth:`_summary_table`; everything a user
-    touches derives from it. Results mixing this in must be declared
-    ``@dataclass(..., repr=False)`` or the generated field dump shadows it.
+    touches derives from it: ``summary()`` returns the table, ``repr`` and
+    ``str`` render it as text, and ``_repr_html_`` renders it in a
+    notebook. Results mixing this in must be declared
+    ``@dataclass(..., repr=False)`` or the generated field dump shadows
+    the summary.
     """
 
     __slots__ = ()
 
     def _summary_table(self) -> _SummaryTable:
+        """Build the structured summary; every concrete result overrides this.
+
+        Returns:
+            The table.
+
+        Raises:
+            NotImplementedError: Always, on the mixin itself.
+        """
         raise NotImplementedError(f"{type(self).__name__} must implement _summary_table().")
 
     def summary(self) -> _SummaryTable:
-        """The estimation summary, renderable as text, HTML, or a dataframe."""
+        """The estimation summary, renderable as text, HTML, or a dataframe.
+
+        Returns:
+            The :class:`~ns_sdn.summary.SummaryTable`; ``print`` it,
+            display it in a notebook, or call ``to_pandas()`` on it.
+        """
         return self._summary_table()
 
     def __repr__(self) -> str:
+        """Render the summary as text, so a bare result shows its table."""
         return self._summary_table().to_text()
 
     def __str__(self) -> str:
+        """Render the summary as text."""
         return self._summary_table().to_text()
 
     def _repr_html_(self) -> str:
+        """Render the summary as HTML for Jupyter.
+
+        Returns:
+            The fragment :meth:`~ns_sdn.summary.SummaryTable._repr_html_`
+            produces.
+        """
         return self._summary_table()._repr_html_()
 
 
 class _SeriesMixin:
-    """Dataframe interop for the aligned per-observation outputs of a fit."""
+    """Dataframe interop for the aligned per-observation outputs of a fit.
+
+    Reads ``endog``, ``fittedvalues`` and ``resid``; a result with more
+    per-observation paths overrides :meth:`_series` to add them as
+    columns, and ``to_dict`` and ``to_pandas`` follow.
+    """
 
     __slots__ = ()
 
@@ -81,7 +127,12 @@ class _SeriesMixin:
     resid: npt.NDArray[np.float64]
 
     def _series(self) -> dict[str, npt.NDArray[np.float64]]:
-        """The aligned per-observation outputs, keyed by column name."""
+        """The aligned per-observation outputs, keyed by column name.
+
+        Returns:
+            ``observed`` (the slice of ``endog`` the fitted values align
+            with), ``fitted`` and ``resid``, each of ``nobs`` rows.
+        """
         fitted = self.fittedvalues
         return {
             "observed": self.endog[self.endog.shape[0] - fitted.shape[0] :],
@@ -90,17 +141,26 @@ class _SeriesMixin:
         }
 
     def to_dict(self) -> dict[str, npt.NDArray[np.float64]]:
-        """The aligned outputs as plain arrays."""
+        """The aligned outputs as plain arrays.
+
+        Returns:
+            What :meth:`_series` produces, with no pandas involved.
+        """
         return self._series()
 
     def to_pandas(self, *, index: npt.ArrayLike | None = None) -> pd.DataFrame:
         """The aligned outputs as a :class:`pandas.DataFrame`, one column per series.
 
         Args:
-            index: Optional row index, typically the dates of the effective sample.
+            index: Optional row index of the right length, typically the
+                dates of the rows; the index is named ``obs`` either way.
+
+        Returns:
+            The frame.
 
         Raises:
-            ImportError: If pandas is not installed.
+            ImportError: If pandas is not installed; install
+                ``ns-sdn[pandas]``.
         """
         try:
             import pandas as pd
@@ -114,10 +174,14 @@ class _SeriesMixin:
 
 
 class _ComparisonMixin:
-    """Criterion-named comparison between fitted results.
+    r"""Criterion-named comparison between fitted results.
 
-    No ordering dunders: AIC and BIC routinely disagree, so a comparison
-    always names its criterion.
+    Reads ``llf``, ``nobs`` and ``n_params`` and exposes the criteria
+    :math:`\mathrm{AIC} = -2\ell + 2p`,
+    :math:`\mathrm{BIC} = -2\ell + p\log m` and
+    :math:`\mathrm{HQIC} = -2\ell + 2p\log\log m`. No ordering dunders:
+    AIC and BIC routinely disagree, so a comparison always names its
+    criterion.
     """
 
     __slots__ = ()
@@ -127,42 +191,64 @@ class _ComparisonMixin:
     n_params: float
 
     def _comparison_label(self) -> str:
+        """The row label a comparison table prints; results override it.
+
+        Returns:
+            The class name by default.
+        """
         return type(self).__name__
 
     @property
     def information_criteria(self) -> _InformationCriteria:
-        """AIC, BIC, and HQIC from ``llf``, ``nobs``, ``n_params``."""
+        """AIC, BIC, and HQIC from ``llf``, ``nobs``, ``n_params``, as one record."""
         return _InformationCriteria.from_likelihood(self.llf, self.nobs, self.n_params)
 
     @property
     def aic(self) -> float:
-        """Akaike information criterion."""
+        r"""Akaike information criterion, :math:`-2\ell + 2p`."""
         return self.information_criteria.aic
 
     @property
     def bic(self) -> float:
-        """Bayesian information criterion."""
+        r"""Bayesian information criterion, :math:`-2\ell + p\log m`."""
         return self.information_criteria.bic
 
     @property
     def hqic(self) -> float:
-        """Hannan-Quinn information criterion."""
+        r"""Hannan-Quinn information criterion, :math:`-2\ell + 2p\log\log m`."""
         return self.information_criteria.hqic
 
     def compare(self, *others: _ComparisonMixin, criterion: str = "aic") -> _SummaryTable:
         """Rank this result and ``others`` by one criterion, best first.
 
         Args:
-            others: Results fitted on the same effective sample.
+            others: Results fitted on the same effective sample (the same
+                ``nobs``); any mixture of result types that carry the
+                three attributes.
             criterion: ``"aic"``, ``"bic"`` or ``"hqic"``.
 
         Returns:
-            A table with the label, ``llf``, parameter count, the criterion
-            and its difference from the best.
+            A table with one row per result: the label, ``llf``, the
+            parameter count under ``k``, the criterion and its difference
+            from the best (zero for the first row).
 
         Raises:
             SpecificationError: If the criterion is unknown or the results
                 do not share ``nobs``.
+
+        Example:
+            >>> import numpy as np
+            >>> from ns_sdn.spectral_decomposition import NSSDN, Stage
+            >>> y = np.sin(0.3 * np.arange(80.0))
+            >>> one = NSSDN(y, k=1, state_dim=4, schedule=(Stage(1e-2, 5),), seed=0).fit()
+            >>> two = NSSDN(y, k=2, state_dim=4, schedule=(Stage(1e-2, 5),), seed=0).fit()
+            >>> table = one.compare(two, criterion="bic")
+            >>> table.columns, table.rows[0][-1]
+            (('model', 'llf', 'k', 'BIC', 'dBIC'), '0.000')
+            >>> one.compare(two, criterion="r2")  # doctest: +ELLIPSIS
+            Traceback (most recent call last):
+                ...
+            ns_sdn.exceptions.SpecificationError: criterion must be 'aic', 'bic' or 'hqic'; got ...
         """
         if criterion not in ("aic", "bic", "hqic"):
             raise SpecificationError(

@@ -19,17 +19,47 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-"""Categorical option aliases for the public constructors.
+r"""Categorical option aliases for the public constructors.
 
 Each name is a PEP 695 alias over a ``Literal``: an annotation for the
-static checker and the argument the runtime validator reads. A name here is
-a specification choice with modeling content, never a display option.
+static checker and the argument the runtime validator reads, so the type
+and the check cannot drift apart. A name here is a specification choice
+with modeling content, never a display option:
+
+* :data:`Alignment` -- what the emission at :math:`t` conditions on
+  (``"filtered"`` on :math:`y_t`, ``"predicted"`` on :math:`y_{t-1}`).
+* :data:`Transition` -- the latent update :math:`F_\psi`
+  (``"gru"`` or ``"timeaware"``).
+* :data:`Objective` -- the prediction term of the loss
+  (``"mse"`` or ``"huber"``).
+* :data:`Scaling` -- how the sample is mapped before training
+  (``"minmax"`` or ``"none"``).
+
+The aliases are defined in ``engine._core._types`` and re-exported here
+so that user code imports them from a public module; the docstring of
+each alias says what every value does to the fit.
+
+See Also:
+    * :class:`ns_sdn.spectral_decomposition.NSSDN` -- the constructor
+      these annotate.
+    * :class:`ns_sdn.exceptions.SpecificationError` -- what a value
+      outside an alias raises.
 
 Example:
-    >>> from ns_sdn.typing import Alignment
+    >>> from ns_sdn.typing import Alignment, Transition
     >>> from typing import get_args
-    >>> get_args(Alignment.__value__)
-    ('filtered', 'predicted')
+    >>> get_args(Alignment.__value__), get_args(Transition.__value__)
+    (('filtered', 'predicted'), ('gru', 'timeaware'))
+
+    A misspelled option is refused at construction with the admissible
+    set in the message:
+
+    >>> import numpy as np
+    >>> from ns_sdn.spectral_decomposition import NSSDN
+    >>> NSSDN(np.arange(10.0), scaling="standard")
+    Traceback (most recent call last):
+        ...
+    ns_sdn.exceptions.SpecificationError: scaling must be one of 'minmax', 'none'; got 'standard'.
 """
 
 from __future__ import annotations

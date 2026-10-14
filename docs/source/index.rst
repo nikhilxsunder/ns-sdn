@@ -48,15 +48,17 @@ result, in the same shape as :mod:`cultivars`.
 Release status
 --------------
 
-.. admonition:: ns-sdn |release| is an alpha release
-   :class: warning
+.. admonition:: ns-sdn |release| is a stable release
+   :class: note
 
-   :bdg-warning:`API: settling` :bdg-secondary:`numerics: match the published run`
+   :bdg-success:`API: frozen for 1.x` :bdg-secondary:`numerics: match the published run`
 
-   The model-fit-result pattern and the names ``NSSDN``, ``NSSDNResult``,
-   ``SpectralState``, ``Stage`` and ``Penalties`` will not change. Argument
-   names, result fields and summary wording may still be renamed before
-   ``1.0.0``; each rename is listed in the
+   The model-fit-result pattern, the names ``NSSDN``, ``NSSDNResult``,
+   ``SpectralState``, ``Stage`` and ``Penalties``, their argument names,
+   result fields and summary wording are the ``1.x`` contract under
+   semantic versioning. A change that alters the output of the default
+   configuration on the published data is a major version; every change
+   to a public surface is listed in the
    :doc:`release notes <project/release_notes>`. The default configuration
    reproduces the IEEE-ORSS DGS10 run to the parameter count. Pin the exact
    version in anything that must reproduce:
@@ -268,12 +270,13 @@ the :doc:`citing page <project/citing>` has the entries.
 .. parsed-literal::
 
    @software{sunder_nssdn,
-     author  = {Sunder, Nikhil},
-     title   = {ns-sdn: the Non-Stationary Spectral Decomposition Network},
-     year    = {2026},
-     version = {\ |release|\ },
-     url     = {https://github.com/nikhilxsunder/ns-sdn},
-     license = {MIT}
+     author    = {Sunder, Nikhil},
+     title     = {ns-sdn: the Non-Stationary Spectral Decomposition Network},
+     year      = {2026},
+     publisher = {Zenodo},
+     doi       = {10.5281/zenodo.23368625},
+     url       = {https://github.com/nikhilxsunder/ns-sdn},
+     license   = {MIT}
    }
 
 .. toctree::

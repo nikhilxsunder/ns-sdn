@@ -24,6 +24,7 @@ What you tried with the current API, and why it falls short. Note if `decompose(
 If the idea comes from a paper or an existing implementation, cite it (title, authors, year, DOI or URL) so the design can be checked against it.
 
 **Scope**
+
 - [ ] Changes the published model (the IEEE-ORSS defaults must keep reproducing the 58,849-parameter run)
 - [ ] Adds a new option that is off by default
 - [ ] Only touches the result, the spectral state, or the reporting surface

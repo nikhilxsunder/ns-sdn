@@ -19,14 +19,28 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-"""Protected base classes for model specifications.
+r"""Protected base classes for model specifications.
 
 ``_BaseModel`` owns ``endog`` validation and the abstract ``fit``.
 ``_SpectralDecompositionModel`` is the family base: it validates every
 specification argument at construction, builds the network, runs the
 schedule, and packs the raw outputs into a ``_SpectralFit``. The public
-``NSSDN`` class adds nothing but ``fit``, which assembles the public result
-from that record and the specification.
+:class:`~ns_sdn.spectral_decomposition.NSSDN` class adds nothing but
+``fit``, which assembles the public result from that record and the
+specification.
+
+Both bases are generic in the result type ``R`` so that a subclass's
+``fit`` is typed with its own result, and both use ``__slots__`` so a
+specification cannot grow attributes after validation.
+
+Example:
+    >>> import numpy as np
+    >>> from ns_sdn.spectral_decomposition import NSSDN
+    >>> model = NSSDN(np.arange(10.0), time=np.arange(10.0) * 2.0)
+    >>> isinstance(model, _SpectralDecompositionModel), isinstance(model, _BaseModel)
+    (True, True)
+    >>> model.nobs_total, model.exog_dim, model.positive_frequency
+    (10, 0, True)
 """
 
 from __future__ import annotations
@@ -71,11 +85,29 @@ _DEFAULT_SCHEDULE: tuple[_Stage, ...] = (
     _Stage(_STAGE_A[0], _STAGE_A[1], _Penalties(amplitude=_STAGE_A[2], frequency=_STAGE_A[3])),
     _Stage(_STAGE_B[0], _STAGE_B[1], _Penalties(amplitude=_STAGE_B[2], frequency=_STAGE_B[3])),
 )
-"""The published two-stage schedule."""
+r"""The published two-stage schedule.
+
+Stage A: :math:`\eta = 10^{-3}`, 1,200 steps,
+:math:`\lambda_A = 2 \times 10^{-4}`, :math:`\lambda_\omega = 8 \times 10^{-4}`.
+Stage B: :math:`\eta = 4 \times 10^{-4}`, 1,800 steps,
+:math:`\lambda_A = 3 \times 10^{-4}`, :math:`\lambda_\omega = 1.5 \times 10^{-3}`.
+Every other penalty weight is zero in both.
+"""
 
 
 class _BaseModel[R](ABC):
-    """Root of every model specification, fitting to a result of type ``R``."""
+    """Root of every model specification, fitting to a result of type ``R``.
+
+    Validates the series once, exposes it read-only, and declares the
+    abstract :meth:`fit`. Nothing else is shared across families.
+
+    Args:
+        endog: The series, one-dimensional, at least three observations.
+
+    Raises:
+        DimensionError: If the series is mis-shaped or too short.
+        NumericalError: If it contains non-finite values.
+    """
 
     __slots__ = ("_endog",)
 
@@ -84,47 +116,66 @@ class _BaseModel[R](ABC):
 
     @property
     def endog(self) -> npt.NDArray[np.float64]:
-        """The validated series."""
+        """The validated series, a ``(n,)`` float64 copy of what was given."""
         return self._endog
 
     @property
     def nobs_total(self) -> int:
-        """Observations in the sample, before the one-step shift."""
+        r"""Observations :math:`n` in the sample, before the one-step shift to :math:`n - 1`."""
         return int(self._endog.shape[0])
 
     @abstractmethod
     def fit(self) -> R:
-        """Estimate the model and return its result object."""
+        """Estimate the model and return its result object.
+
+        Returns:
+            A frozen result of type ``R``.
+        """
 
 
 class _SpectralDecompositionModel[R](_BaseModel[R]):
-    """Specification surface for the spectral decomposition family.
+    r"""Specification surface for the spectral decomposition family.
+
+    Every argument is validated and frozen at construction; the
+    properties expose the validated values; :meth:`_fit_family` does the
+    estimation. The Nyquist rate of the grid,
+    :math:`\omega_{\max} = \pi / \operatorname{median}(\Delta t)`, is
+    computed here once and handed to the network as the upper edge of
+    the ordered-frequency band.
 
     Args:
         endog: The series, one-dimensional, at least three observations.
-        exog: Optional ``(n, p)`` covariates known at each ``t``; used as given.
-        time: Optional strictly increasing grid; defaults to ``0 .. n - 1``.
-        k: Number of sinusoidal components.
-        state_dim: Latent dimension.
-        alignment: ``"filtered"`` (the published run: the emission at ``t``
-            conditions on ``y_t``) or ``"predicted"`` (the emission at ``t``
-            conditions on ``y_{t-1}``).
+        exog: Optional ``(n, p)`` covariates known at each :math:`t`; used
+            as given.
+        time: Optional strictly increasing grid; defaults to
+            :math:`0, \ldots, n - 1`.
+        k: Number of sinusoidal components :math:`K`.
+        state_dim: Latent dimension :math:`d`.
+        alignment: ``"filtered"`` (the published run: the emission at
+            :math:`t` conditions on :math:`y_t`) or ``"predicted"`` (the
+            emission at :math:`t` conditions on :math:`y_{t-1}`).
         transition: ``"gru"`` or ``"timeaware"``.
         positive_frequency: Softplus the frequency head.
         ordered_frequency: Strictly increasing frequencies inside the band
-            ``[frequency_min, pi / median(dt)]``; implies positivity.
+            :math:`[\omega_{\min}, \pi / \operatorname{median}(\Delta t)]`;
+            implies positivity.
         gating: Add the sigmoid gate head.
         objective: ``"mse"`` or ``"huber"``.
-        delta: Huber threshold on the scaled residual.
-        penalties: Weights for stages that carry none.
-        schedule: The stages, in order.
+        delta: Huber threshold :math:`\delta` on the scaled residual,
+            strictly positive.
+        penalties: Weights for stages that carry none; the stage-A
+            defaults when ``None``.
+        schedule: The stages, in order; the published two when ``None``.
         scaling: ``"minmax"`` or ``"none"``.
         seed: Seed for parameter initialization; ``None`` leaves torch's
             global generator untouched and the fit unreproducible.
         device: Torch device string.
 
     Raises:
-        SpecificationError: If any option is outside its admissible set.
+        SpecificationError: If any option is outside its admissible set,
+            ``delta`` is zero, the schedule is empty or holds something
+            other than ``Stage`` records, ``penalties`` is not a record, or
+            ``seed`` is not an integer.
         DimensionError: If the data are mis-shaped or misaligned.
         NumericalError: If the data contain non-finite values.
     """
@@ -201,42 +252,42 @@ class _SpectralDecompositionModel[R](_BaseModel[R]):
 
     @property
     def exog(self) -> npt.NDArray[np.float64] | None:
-        """The validated covariates, or ``None``."""
+        """The validated covariates as a ``(n, p)`` float64 copy, or ``None``."""
         return self._exog
 
     @property
     def time(self) -> npt.NDArray[np.float64]:
-        """The time grid."""
+        """The time grid, ``(n,)`` float64, strictly increasing."""
         return self._time
 
     @property
     def k(self) -> int:
-        """Number of components."""
+        r"""Number of components :math:`K`."""
         return self._k
 
     @property
     def state_dim(self) -> int:
-        """Latent dimension."""
+        r"""Latent dimension :math:`d`."""
         return self._state_dim
 
     @property
     def alignment(self) -> str:
-        """What the emission at ``t`` conditions on."""
+        r"""What the emission at :math:`t` conditions on: ``"filtered"`` or ``"predicted"``."""
         return self._alignment
 
     @property
     def transition(self) -> str:
-        """The transition kind."""
+        """The transition kind: ``"gru"`` or ``"timeaware"``."""
         return self._transition
 
     @property
     def positive_frequency(self) -> bool:
-        """Whether frequencies are constrained positive."""
+        """Whether frequencies are constrained positive; ordering implies it."""
         return self._positive_frequency or self._ordered_frequency
 
     @property
     def ordered_frequency(self) -> bool:
-        """Whether frequencies are strictly increasing in ``k``."""
+        r"""Whether frequencies are strictly increasing in :math:`k` at every step."""
         return self._ordered_frequency
 
     @property
@@ -246,43 +297,49 @@ class _SpectralDecompositionModel[R](_BaseModel[R]):
 
     @property
     def objective(self) -> str:
-        """The prediction loss."""
+        """The prediction loss: ``"mse"`` or ``"huber"``."""
         return self._objective
 
     @property
     def penalties(self) -> _Penalties:
-        """Model-level penalty weights."""
+        """Model-level penalty weights, used by stages that carry none of their own."""
         return self._penalties
 
     @property
     def schedule(self) -> tuple[_Stage, ...]:
-        """The training stages."""
+        """The training stages, in order."""
         return self._schedule
 
     @property
     def scaling(self) -> str:
-        """The scaling choice."""
+        """The scaling choice: ``"minmax"`` or ``"none"``."""
         return self._scaling
 
     @property
     def seed(self) -> int | None:
-        """The initialization seed."""
+        """The initialization seed, or ``None``."""
         return self._seed
 
     @property
     def device(self) -> str:
-        """The torch device."""
+        """The torch device string."""
         return self._device
 
     @property
     def exog_dim(self) -> int:
-        """Number of covariate columns."""
+        r"""Number of covariate columns :math:`p`; zero without covariates."""
         return 0 if self._exog is None else int(self._exog.shape[1])
 
     # -- estimation -----------------------------------------------------------
 
     def _network_config(self) -> dict[str, Any]:
-        """Keyword arguments that rebuild the network."""
+        """Keyword arguments that rebuild the network.
+
+        Returns:
+            The constructor arguments of ``_SpectralNetwork``, which the
+            predictor also keeps so a pickled result can rebuild its
+            module.
+        """
         return {
             "input_dim": 1 + self.exog_dim,
             "state_dim": self._state_dim,
@@ -296,7 +353,15 @@ class _SpectralDecompositionModel[R](_BaseModel[R]):
         }
 
     def _build_network(self) -> _SpectralNetwork:
-        """Construct the network, seeding initialization without touching global state."""
+        """Construct the network, seeding initialization without touching global state.
+
+        With a seed, construction runs inside ``torch.random.fork_rng`` so
+        the global generator is restored afterwards; without one, torch's
+        current global state initializes the weights.
+
+        Returns:
+            The module, moved to the configured device.
+        """
         config = self._network_config()
         if self._seed is None:
             return _SpectralNetwork(**config).to(self._device)
@@ -306,10 +371,22 @@ class _SpectralDecompositionModel[R](_BaseModel[R]):
         return network.to(self._device)
 
     def _fit_family(self) -> _SpectralFit:
-        """Train on the sample and pack the raw outputs.
+        r"""Train on the sample and pack the raw outputs.
+
+        Fits the scale, builds the network and its predictor, lays out the
+        teacher-forced tensors under the alignment, runs the schedule,
+        then runs the trained network once more over the sample for the
+        paths and forms the one-step residuals
+        :math:`e_t = y_t - \hat y_{t \mid t-1}` over ``endog[1:]``, their
+        variance :math:`\hat\sigma^2` (floored at :math:`10^{-12}`) and
+        the concentrated likelihood
+        :math:`\ell = -\tfrac{m}{2}(\log 2\pi + \log\hat\sigma^2 + 1)`.
 
         Returns:
             The :class:`_SpectralFit`.
+
+        Raises:
+            NumericalError: If training diverges.
         """
         scale = (
             _MinMaxScale.fit(self._endog) if self._scaling == "minmax" else _MinMaxScale.identity()

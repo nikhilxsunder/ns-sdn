@@ -54,7 +54,7 @@ DOCS_PLOT_GALLERY=0 uv run make -C docs html   # if the docs changed
 
 - [ ] Tests added or updated and passing locally
 - [ ] Docstrings (Google style, with a doctest where useful) updated for any changed behaviour
-- [ ] `CHANGELOG.md` updated under *Unreleased*
+- [ ] `CHANGELOG.md` updated under _Unreleased_
 - [ ] No generated files committed (`docs/build`, `auto_examples`, `htmlcov`, `dist`)
 
 ## Additional context

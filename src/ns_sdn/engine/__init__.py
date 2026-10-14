@@ -19,7 +19,24 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-"""Engine subpackage: the private ``_core`` and ``_internals`` layers, for extenders."""
+"""Engine subpackage: the private ``_core`` and ``_internals`` layers, for extenders.
+
+Nothing here is public API; names and signatures may change between
+releases without notice, and the public modules re-export the few
+records a user handles under stable names. The split is by dependency:
+``_core`` imports numpy only and holds values, validators and constants;
+``_internals`` imports torch and holds mechanism. A subclass of the
+family base that adds a head, a penalty or a transition lives at this
+level and surfaces through a public module of its own.
+
+Example:
+    >>> from ns_sdn import engine
+    >>> engine.__all__
+    ['_core', '_internals']
+    >>> import sys
+    >>> "torch" in sys.modules  # _internals imports torch; _core alone would not
+    True
+"""
 
 from __future__ import annotations
 

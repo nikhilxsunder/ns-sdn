@@ -1,5 +1,5 @@
-{#- ns-sdn site footer: a three-column "where next" band, then a dark band
-with install, resources, links and the legal line. Registered in conf.py as
+{#- ns-sdn site footer: a three-column "where next" band, then a dark band with
+install, resources, links and the legal line. Registered in conf.py as
 footer_start = ["ns-sdn-footer"] with footer_center and footer_end empty, so
 this template owns the whole footer. -#}
 <div class="ns-footer">
@@ -11,8 +11,8 @@ this template owns the whole footer. -#}
       <div class="ns-footer__column">
         <h2>User guide</h2>
         <p>
-          The model in its equations, how to read the decomposition it
-          emits, and the spectral-state coordinates that summarize it.
+          The model in its equations, how to read the decomposition it emits,
+          and the spectral-state coordinates that summarize it.
         </p>
         <a class="ns-footer__cta" href="{{ pathto('user_guide/index') }}"
           >Read the guide<span aria-hidden="true">&nbsp;&rsaquo;</span></a
@@ -21,8 +21,8 @@ this template owns the whole footer. -#}
       <div class="ns-footer__column">
         <h2>Examples</h2>
         <p>
-          A synthetic chirp with a known answer, then the 10-year Treasury
-          yield from FRED, as executed scripts with their figures.
+          A synthetic chirp with a known answer, then the 10-year Treasury yield
+          from FRED, as executed scripts with their figures.
         </p>
         <a class="ns-footer__cta" href="{{ pathto('auto_examples/index') }}"
           >View the examples<span aria-hidden="true">&nbsp;&rsaquo;</span></a
@@ -31,8 +31,8 @@ this template owns the whole footer. -#}
       <div class="ns-footer__column">
         <h2>API reference</h2>
         <p>
-          The specification, the result and the spectral state, with every
-          path they carry and a runnable example on each.
+          The specification, the result and the spectral state, with every path
+          they carry and a runnable example on each.
         </p>
         <a class="ns-footer__cta" href="{{ pathto('api/index') }}"
           >View the API<span aria-hidden="true">&nbsp;&rsaquo;</span></a
@@ -50,8 +50,8 @@ this template owns the whole footer. -#}
         <div class="ns-footer__install">
           <h2>Get ns-sdn</h2>
           <p>
-            Releases are published to PyPI and announced on GitHub Releases.
-            Pin the exact version in anything that must reproduce.
+            Releases are published to PyPI and announced on GitHub Releases. Pin
+            the exact version in anything that must reproduce.
           </p>
           <pre
             class="ns-footer__code"
@@ -142,9 +142,9 @@ this template owns the whole footer. -#}
           &copy; {{ copyright }}. Released under the
           <a href="https://github.com/nikhilxsunder/ns-sdn/blob/main/LICENSE"
             >MIT License</a
-          >. ns-sdn is an independent open-source project and is not
-          affiliated with the Federal Reserve Bank of St. Louis; FRED&reg; is a
-          registered trademark of the Federal Reserve Bank of St. Louis.
+          >. ns-sdn is an independent open-source project and is not affiliated
+          with the Federal Reserve Bank of St. Louis; FRED&reg; is a registered
+          trademark of the Federal Reserve Bank of St. Louis.
         </p>
         <p class="ns-footer__build">
           ns-sdn {{ release }} {%- if last_updated %} &middot; updated {{

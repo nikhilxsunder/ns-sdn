@@ -1,0 +1,50 @@
+# Hooks run on every commit (`uvx pre-commit install`) and on demand
+# (`uvx pre-commit run --all-files`). Linting and typing go through the
+# project's own uv environment so the hook and CI agree on versions.
+#
+# Frozen or binary trees are excluded globally: the submitted paper sources
+# under papers/, the Pixelmator documents (zip archives) and exported images
+# under assets/, the stored PDFs under references/papers/, and the holding
+# area for files the shell could not delete.
+exclude: ^(papers/|assets/|references/papers/|_to_delete/|\.ns-sdn/)
+
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check --fix
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+      - id: mypy
+        name: mypy
+        entry: uv run mypy src
+        language: system
+        pass_filenames: false # whole-package view, not per-changed-file
+        require_serial: true
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-toml
+      - id: check-yaml
+        # The conda recipes are Jinja templates, not YAML, until rendered.
+        exclude: ^(conda-recipe|conda-forge)/meta\.yaml$
+      - id: check-added-large-files
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        # Jinja recipes are not YAML; the Sphinx templates and root pages
+        # carry Jinja and hand-tuned markup prettier should not reflow.
+        exclude: ^((conda-recipe|conda-forge)/meta\.yaml|docs/source/_templates/|docs/root/)
