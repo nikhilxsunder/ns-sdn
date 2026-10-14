@@ -70,7 +70,7 @@ src/ns_sdn/typing.py                              3      0   100%
 TOTAL                                           989     53    95%
 Coverage HTML written to dir htmlcov
 Coverage XML written to file coverage.xml
-============================= 71 passed in 48.65s ==============================
+============================= 71 passed in 34.85s ==============================
 ```
 
 ## Running Test Coverage Locally
