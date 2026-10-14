@@ -50,6 +50,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3724b800" />
+    <link rel="stylesheet" type="text/css" href="../_static/consent.css?v=3e90de1a" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
@@ -83,7 +84,7 @@
             </script>
     <script defer="defer" src="https://unpkg.com/@popperjs/core@2"></script>
     <script defer="defer" src="https://unpkg.com/tippy.js@6"></script>
-    <script defer="defer" src="../_static/tippy/auto_examples/plot_01_synthetic_decomposition.5a294bc9-14f6-4694-b51c-eb1d88953496.js"></script>
+    <script defer="defer" src="../_static/tippy/auto_examples/plot_01_synthetic_decomposition.58577df3-28de-4399-a6ab-bf2f86650535.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/plot_01_synthetic_decomposition';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
@@ -93,6 +94,7 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="../_static/consent.js?v=7ed81fa2"></script>
     <link rel="canonical" href="https://nikhilxsunder.github.io/ns-sdn/stable/auto_examples/plot_01_synthetic_decomposition.html" />
     <link rel="icon" href="../_static/ns-sdn-favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -697,17 +699,17 @@ page builds in under a minute. <code class="docutils literal notranslate"><span 
 </span></pre></div></div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                                       NSSDN(k=3) Results
 ================================================================================================
-Model:          NSSDN(k=3, d=32, gru, filtered)  Log-likelihood:                          49.883
-Objective:                                  mse  AIC:                                   7554.234
-Scaling:                                 minmax  BIC:                                  23519.332
-Observations:                               479  HQIC:                                 13830.318
-Parameters:                                3827  One-step RMSE:                          0.21804
-Gating:                                    True  Emission RMSE:                        0.0177576
+Model:          NSSDN(k=3, d=32, gru, filtered)  Log-likelihood:                          48.518
+Objective:                                  mse  AIC:                                   7556.965
+Scaling:                                 minmax  BIC:                                  23522.063
+Observations:                               479  HQIC:                                 13833.049
+Parameters:                                3827  One-step RMSE:                         0.218662
+Gating:                                    True  Emission RMSE:                        0.0180267
 ------------------------------------------------------------------------------------------------
                 mean amp   mean freq   period   mean gate      mix   power share
-component 1       0.0339      0.6218     10.1       0.102   +0.238         0.349
-component 2       0.0228      0.7396      8.5       0.085   +0.320         0.358
-component 3       0.0641      0.7694      8.2       0.132   -0.127         0.293
+component 1       0.0350      0.6241     10.1       0.103   +0.243         0.376
+component 2       0.0214      0.7415      8.5       0.082   +0.318         0.323
+component 3       0.0636      0.7854      8.0       0.132   -0.127         0.300
 ================================================================================================
 Filtered alignment: the emission at t conditions on y[t], so emission is a reconstruction of the
 observed series and fittedvalues report the emission at t as the one-step forecast of y[t+1]
@@ -729,8 +731,8 @@ filtered alignment the state at <code class="docutils literal notranslate"><span
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">one-step RMSE: </span><span class="si">{</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc"><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span></a><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">res</span><span class="o">.</span><span class="n">sigma2</span></a><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>identity holds: True
-emission RMSE: 0.0178
-one-step RMSE: 0.2180
+emission RMSE: 0.0180
+one-step RMSE: 0.2187
 </pre></div>
 </div>
 </section>
@@ -762,7 +764,7 @@ what the components account for.</p>
 </span></pre></div></div>
 <img src="../_images/sphx_glr_plot_01_synthetic_decomposition_002.png" srcset="../_images/sphx_glr_plot_01_synthetic_decomposition_002.png" alt="The trend head tracks the series; the emission is trend plus components" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>             series variance   0.8482
 planted oscillation variance   0.5613
-       fitted trend variance   0.8472
+       fitted trend variance   0.8467
  fitted oscillation variance   0.0001
 </pre></div>
 </div>
@@ -791,8 +793,8 @@ panel. The frequencies are read in radians per step.</p>
 </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">mean frequency per component:</span><span class="s2">&quot;</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">res</span><span class="o">.</span><span class="n">frequency</span></a><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="p">)</span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">power share per component:   </span><span class="s2">&quot;</span><span class="p">,</span> <a class="sphx-glr-backref-module-ns_sdn-spectral_decomposition sphx-glr-backref-type-py-property reference internal" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.power_share.html#ns_sdn.spectral_decomposition.NSSDNResult.power_share" title="ns_sdn.spectral_decomposition.NSSDNResult.power_share"><span class="n">res</span><span class="o">.</span><span class="n">power_share</span><span class="o">.</span><span class="n">round</span></a><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../_images/sphx_glr_plot_01_synthetic_decomposition_003.png" srcset="../_images/sphx_glr_plot_01_synthetic_decomposition_003.png" alt="Amplitude, frequency and gate paths against the planted frequencies" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>mean frequency per component: [0.622 0.74  0.769]
-power share per component:    [0.349 0.358 0.293]
+<img src="../_images/sphx_glr_plot_01_synthetic_decomposition_003.png" srcset="../_images/sphx_glr_plot_01_synthetic_decomposition_003.png" alt="Amplitude, frequency and gate paths against the planted frequencies" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>mean frequency per component: [0.624 0.742 0.785]
+power share per component:    [0.376 0.323 0.3  ]
 </pre></div>
 </div>
 </section>
@@ -826,17 +828,17 @@ components it effectively uses.</p>
 </span></pre></div></div>
 <img src="../_images/sphx_glr_plot_01_synthetic_decomposition_004.png" srcset="../_images/sphx_glr_plot_01_synthetic_decomposition_004.png" alt="Spectral-state coordinates over the sample" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                              Spectral state (k=3)
 ================================================================================
-Rows:                              480  Disentanglement:                 0.920
+Rows:                              480  Disentanglement:                 0.962
 Active threshold:                 0.01  Mean active:                      3.00
 --------------------------------------------------------------------------------
-coordinate                             min / mean / max
-centroid                       0.6278 / 0.7129 / 0.8973
-dispersion                  0.006281 / 0.06649 / 0.1134
-effective count                   2.503 / 2.926 / 2.991
-participation ratio               2.214 / 2.863 / 2.982
-velocity                   0.001278 / 0.01072 / 0.03347
-velocity (frequency)     0.0007522 / 0.009353 / 0.02808
-velocity (mass)          1.15e-05 / 0.001378 / 0.007032
+coordinate                              min / mean / max
+centroid                        0.6289 / 0.7135 / 0.8807
+dispersion                   0.008495 / 0.07226 / 0.1005
+effective count                    2.499 / 2.898 / 2.967
+participation ratio                 2.25 / 2.818 / 2.933
+velocity                     0.001008 / 0.0104 / 0.03035
+velocity (frequency)      0.0004539 / 0.008974 / 0.02598
+velocity (mass)          2.229e-05 / 0.001423 / 0.005983
 ================================================================================
 Diagnostics of a model trained on the prediction criterion alone; nothing here
 enters a loss.
@@ -861,10 +863,10 @@ the one before it, which on a smooth series is already most of the way.</p>
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">one-step RMSE, random walk: </span><span class="si">{</span><span class="n">rmse</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">target</span></a><span class="p">,</span><span class="w"> </span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">naive</span></a><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">predicted alignment, fitted oscillation variance: </span><span class="si">{</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.var.html#numpy.var" title="numpy.var"><span class="n">np</span><span class="o">.</span><span class="n">var</span></a><span class="p">(</span><a class="sphx-glr-backref-module-ns_sdn-spectral_decomposition sphx-glr-backref-type-py-property reference internal" href="../api/generated/ns_sdn.spectral_decomposition.NSSDNResult.oscillation.html#ns_sdn.spectral_decomposition.NSSDNResult.oscillation" title="ns_sdn.spectral_decomposition.NSSDNResult.oscillation"><span class="n">fwd</span><span class="o">.</span><span class="n">oscillation</span></a><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>one-step RMSE, filtered:  0.2180
-one-step RMSE, predicted: 0.0869
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>one-step RMSE, filtered:  0.2187
+one-step RMSE, predicted: 0.0864
 one-step RMSE, random walk: 0.2166
-predicted alignment, fitted oscillation variance: 0.0003
+predicted alignment, fitted oscillation variance: 0.0004
 </pre></div>
 </div>
 </section>
@@ -883,7 +885,7 @@ oscillation is a property of the fit, not of the API, and the tools
 above are how to check it. The published DGS10 run, with sixteen
 components and three thousand steps, is the configuration the papers
 read structure from; the next example runs a shorter version of it.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 43.220 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 27.053 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-01-synthetic-decomposition-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/4dea314890a4c98c17f1d32808bab378/plot_01_synthetic_decomposition.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_01_synthetic_decomposition.ipynb</span></code></a></p>
