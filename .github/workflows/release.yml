@@ -116,7 +116,7 @@ jobs:
 
     steps:
       - name: Download all the dists
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: python-package-distributions
           path: dist/
@@ -144,13 +144,13 @@ jobs:
 
     steps:
       - name: Download all the dists
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: python-package-distributions
           path: dist/
 
       - name: Download conda recipes
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: conda-recipe
           path: .
@@ -212,13 +212,13 @@ jobs:
 
     steps:
       - name: Download all the dists
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: python-package-distributions
           path: dist/
 
       - name: Download conda recipes
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: conda-recipe
           path: .
@@ -304,7 +304,7 @@ jobs:
           persist-credentials: false
 
       - name: Download all the dists
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: python-package-distributions
           path: dist/
