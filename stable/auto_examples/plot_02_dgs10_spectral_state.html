@@ -84,7 +84,7 @@
             </script>
     <script defer="defer" src="https://unpkg.com/@popperjs/core@2"></script>
     <script defer="defer" src="https://unpkg.com/tippy.js@6"></script>
-    <script defer="defer" src="../_static/tippy/auto_examples/plot_02_dgs10_spectral_state.e4fc60a9-6a5b-4314-8489-1a93a16f5805.js"></script>
+    <script defer="defer" src="../_static/tippy/auto_examples/plot_02_dgs10_spectral_state.e381cc39-a1d2-4611-9349-9ec7e617171a.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/plot_02_dgs10_spectral_state';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
@@ -685,7 +685,7 @@ kept here for fidelity to the published run.</p>
 </span>    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">holdout</span></a><span class="si">}</span><span class="s2"> held out from </span><span class="si">{</span><a class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DatetimeIndex.html#pandas.DatetimeIndex" title="pandas.DatetimeIndex"><span class="n">dates</span></a><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">split</span></a><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>3567 observations from 2017-01-03 to 2026-10-09; 365 held out from 2025-10-10
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>3585 observations from 2017-01-03 to 2026-10-27; 365 held out from 2025-10-28
 </pre></div>
 </div>
 </section>
@@ -702,22 +702,22 @@ paper’s.</p>
 </span></pre></div></div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                                       NSSDN(k=8) Results
 ================================================================================================
-Model:          NSSDN(k=8, d=64, gru, filtered)  Log-likelihood:                        6563.321
-Objective:                                  mse  AIC:                                  17051.359
-Scaling:                                 minmax  BIC:                                 108659.975
-Observations:                              3201  HQIC:                                 49894.211
-Parameters:                               15089  One-step RMSE:                        0.0311377
-Gating:                                    True  Emission RMSE:                        0.0210117
+Model:          NSSDN(k=8, d=64, gru, filtered)  Log-likelihood:                        6615.286
+Objective:                                  mse  AIC:                                  16947.428
+Scaling:                                 minmax  BIC:                                 108640.656
+Observations:                              3219  HQIC:                                 49811.239
+Parameters:                               15089  One-step RMSE:                        0.0309924
+Gating:                                    True  Emission RMSE:                         0.020767
 ------------------------------------------------------------------------------------------------
                 mean amp   mean freq   period   mean gate      mix   power share
-component 1       0.1051      0.6400      9.8       0.264   -0.152         0.537
-component 2       0.2586      0.6894      9.1       0.411   -0.012         0.018
-component 3       0.1754      0.6881      9.1       0.359   +0.013         0.011
-component 4       0.1083      0.6014     10.4       0.281   -0.070         0.128
-component 5       0.3146      0.6380      9.8       0.461   +0.011         0.026
-component 6       0.1086      0.7871      8.0       0.269   +0.082         0.185
-component 7       0.1989      0.6347      9.9       0.338   +0.010         0.007
-component 8       0.2616      0.6416      9.8       0.441   +0.026         0.087
+component 1       0.0983      0.5800     10.8       0.261   -0.148         0.472
+component 2       0.2654      0.7202      8.7       0.413   -0.011         0.017
+component 3       0.2058      0.6428      9.8       0.395   +0.011         0.011
+component 4       0.1048      0.6483      9.7       0.279   -0.073         0.138
+component 5       0.3556      0.7385      8.5       0.490   -0.011         0.032
+component 6       0.1158      0.7207      8.7       0.274   +0.091         0.284
+component 7       0.2005      0.6971      9.0       0.335   +0.008         0.005
+component 8       0.2078      0.7235      8.7       0.381   +0.020         0.041
 ================================================================================================
 Filtered alignment: the emission at t conditions on y[t], so emission is a reconstruction of the
 observed series and fittedvalues report the emission at t as the one-step forecast of y[t+1]
@@ -772,10 +772,10 @@ over the whole series, read for the holdout rows; the recursive path is
 </span><a class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
 <img src="../_images/sphx_glr_plot_02_dgs10_spectral_state_001.png" srcset="../_images/sphx_glr_plot_02_dgs10_spectral_state_001.png" alt="In-sample: the filtered emission reconstructs the training segment, Holdout: one-step conditional against recursive" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                       rmse     mae  mape_pct
-one-step (log)       0.0164  0.0133    0.8949
-one-step (level)     0.0730  0.0585    1.3202
-recursive (level)    0.4740  0.3609    7.7907
-random walk (level)  0.0352  0.0231    0.5218
+one-step (log)       0.0135  0.0109    0.7287
+one-step (level)     0.0614  0.0490    1.0867
+recursive (level)    0.5284  0.4149    8.8526
+random walk (level)  0.0363  0.0235    0.5248
 </pre></div>
 </div>
 </section>
@@ -851,12 +851,12 @@ before March 2020 and the six months from it.</p>
 </span><a class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
 <img src="../_images/sphx_glr_plot_02_dgs10_spectral_state_003.png" srcset="../_images/sphx_glr_plot_02_dgs10_spectral_state_003.png" alt="Spectral state of the training segment, 2020 window shaded" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                     before   after  change
-centroid             0.6541  0.6382 -0.0160
-dispersion           0.0569  0.0647  0.0079
-effective_count      3.8515  3.6733 -0.1782
-participation_ratio  2.7785  2.8508  0.0723
-velocity             0.0006  0.0014  0.0008
-disentanglement over the training segment: 0.936
+centroid             0.6393  0.6352 -0.0041
+dispersion           0.0603  0.0519 -0.0085
+effective_count      3.8247  3.5915 -0.2332
+participation_ratio  2.9758  3.0348  0.0589
+velocity             0.0005  0.0011  0.0006
+disentanglement over the training segment: 0.920
 </pre></div>
 </div>
 </section>
@@ -869,7 +869,7 @@ per-component paths behind it can be trusted. Whatever this shortened
 fit shows, the claim rests on the published configuration and on its
 stability across seeds; the coordinates are permutation-invariant, so a
 seed sweep of the reproduction example is the natural test.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 44.798 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 40.091 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-02-dgs10-spectral-state-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/3422e6c4c851dc61f3058cc509853527/plot_02_dgs10_spectral_state.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_02_dgs10_spectral_state.ipynb</span></code></a></p>
