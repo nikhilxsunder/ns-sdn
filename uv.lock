@@ -3,14 +3,14 @@ revision = 5
 requires-python = ">=3.12, <4.0"
 resolution-markers = [
     "python_full_version >= '3.15' and sys_platform == 'linux'",
-    "python_full_version == '3.14.*' and sys_platform == 'linux'",
-    "python_full_version < '3.14' and sys_platform == 'linux'",
     "python_full_version >= '3.15' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and sys_platform == 'win32'",
     "python_full_version >= '3.15' and sys_platform == 'emscripten'",
-    "python_full_version == '3.14.*' and sys_platform == 'emscripten'",
     "python_full_version >= '3.15' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32'",
+    "python_full_version == '3.14.*' and sys_platform == 'linux'",
+    "python_full_version == '3.14.*' and sys_platform == 'win32'",
+    "python_full_version == '3.14.*' and sys_platform == 'emscripten'",
     "python_full_version == '3.14.*' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32'",
+    "python_full_version < '3.14' and sys_platform == 'linux'",
     "python_full_version < '3.14' and sys_platform == 'win32'",
     "python_full_version < '3.14' and sys_platform == 'emscripten'",
     "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32'",
@@ -3530,14 +3530,15 @@ wheels = [
 
 [[package]]
 name = "sphinx-autodoc-typehints"
-version = "3.13.10"
+version = "3.17.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "sphinx" },
+    { name = "typing-extensions", marker = "python_full_version < '3.15'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/44/e4/bd4791d4f954ef1b9e91d0c19d0a146018e3d5f93d43b36059bedebc999e/sphinx_autodoc_typehints-3.13.10.tar.gz", hash = "sha256:f73464a09355a9f63b688a5b9093b1c0f56dc4854ea30ca326268e3d5a8e27cd", size = 100076, upload-time = "2026-10-13T18:35:31.856Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9e/a9/cfe13ff89678c6d310a8a9060333b7823bae1dbce9615c7032be89aaec20/sphinx_autodoc_typehints-3.17.4.tar.gz", hash = "sha256:a5ddd545192380292f13dd9fc232717a0925fbc66617bc51b3db1e0480db0fec", size = 511398, upload-time = "2026-10-27T19:18:44.225Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d6/b7/ea2999f049d23f41d386487b02b9231af46e733109d35ca406103f83e722/sphinx_autodoc_typehints-3.13.10-py3-none-any.whl", hash = "sha256:ab8474dd7c2ef297488849214da29dd6da140ff458592ddc30188a3b070b31f9", size = 49718, upload-time = "2026-10-13T18:35:30.336Z" },
+    { url = "https://files.pythonhosted.org/packages/fa/66/40004fe2aea60edc4800328599dd115b3058f79bf148be1746349281f308/sphinx_autodoc_typehints-3.17.4-py3-none-any.whl", hash = "sha256:251271a49e46573c2e752bcc92dae232def822a2c9983272cb04d282eadc2bfa", size = 140603, upload-time = "2026-10-27T19:18:42.674Z" },
 ]
 
 [[package]]
@@ -3870,10 +3871,10 @@ version = "2.14.1"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
     "python_full_version >= '3.15' and sys_platform == 'win32'",
-    "python_full_version == '3.14.*' and sys_platform == 'win32'",
     "python_full_version >= '3.15' and sys_platform == 'emscripten'",
-    "python_full_version == '3.14.*' and sys_platform == 'emscripten'",
     "python_full_version >= '3.15' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32'",
+    "python_full_version == '3.14.*' and sys_platform == 'win32'",
+    "python_full_version == '3.14.*' and sys_platform == 'emscripten'",
     "python_full_version == '3.14.*' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32'",
     "python_full_version < '3.14' and sys_platform == 'win32'",
     "python_full_version < '3.14' and sys_platform == 'emscripten'",
